@@ -151,11 +151,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
-vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
---require('dap-python').resolve_python = function()
---    return 'C:\\Users\\Caleb\\AppData\\Local\\Programs\\Python\\Python311\\python'
---end
+require('dap-python').setup('~/.venvs/debugpy/bin/python')
 
 -- Browser
 local browse = require('browse')
@@ -196,6 +192,13 @@ leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'h', 'n', 'j', 'k', 'l', 'm', 'u', 
 leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'h', 'n', 'j', 'k', 'l', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
 leap.init_highlight(true)
 
+vim.cmd 'syntax enable'
+vim.cmd "let g:vimtex_view_method = 'zathura'"
+
+vim.cmd "let g:UltiSnipsExpandTrigger = '<tab>'"
+vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
+vim.cmd "let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'"
+
 vim.cmd 'let &shell=\'bash.exe\''
 vim.cmd 'let &shellcmdflag = \'-c\''
 vim.cmd 'let &shellredir = \'>%s 2>&1\''
@@ -206,7 +209,6 @@ vim.cmd 'let &shellpipe=\'2>&1| tee\''
 vim.cmd 'let $TMP="/tmp"'
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
 vim.cmd 'set relativenumber'
---vim.cmd 'set autochdir'
 vim.cmd 'hi LineNr guifg=#838bb8'
 vim.cmd 'nnoremap <Space> za'
 vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
