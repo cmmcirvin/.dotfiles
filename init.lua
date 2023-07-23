@@ -6,6 +6,7 @@ require('packer').startup(function(use)
     requires={ 'nvim-tree/nvim-web-devicons', opt=True}
   }
   use 'mfussenegger/nvim-dap'
+  use 'dhruvasagar/vim-table-mode'
   use 'mfussenegger/nvim-dap-python'
   use 'mfussenegger/nvim-lint'
   use 'pocco81/autosave.nvim'
@@ -19,6 +20,7 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-nvim-lua'
   use 'hrsh7th/cmp-nvim-lsp'
+  use 'akinsho/bufferline.nvim'
   use 'sirver/ultisnips'
   use 'quangnguyen30192/cmp-nvim-ultisnips'
   use 'nvim-treesitter/nvim-treesitter'
@@ -68,7 +70,7 @@ require('lualine').setup ({
 --	lualine_x = { require 'tabline'.tabline_tabs }
 --    }
 })
---require('tabline').setup( {enable = false} )
+require('bufferline').setup()
 
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
@@ -150,6 +152,7 @@ vim.keymap.set('n', '<Leader>ds', function()
 end)
 
 require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
+vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
 --require('dap-python').resolve_python = function()
 --    return 'C:\\Users\\Caleb\\AppData\\Local\\Programs\\Python\\Python311\\python'
 --end
@@ -169,14 +172,6 @@ end, {})
 command("Docs", function()
     browse.devdocs.search()
 end)
-
-local alpha_start_group = vim.api.nvim_create_augroup("AlphaStart", { clear = true })
---vim.api.nvim_create_autocmd("BufAdd", {
---    callback = function()
---        require('alpha').start()
---    end,
---    group = alpha_start_group
---})
 
 local files_set_cwd = function(path)
   -- Works only if cursor is on the valid file system entry
@@ -218,6 +213,7 @@ vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
 vim.cmd 'nnoremap <leader>k :bn<CR>'
 vim.cmd 'nnoremap <leader>j :bp<CR>'
 vim.cmd 'nnoremap <leader>t :enew<CR>'
+vim.cmd "nnoremap <leader>a :lua require'alpha'.start()<CR>"
 vim.cmd 'nnoremap <leader>q :bd<CR>'
 vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
 vim.cmd 'nnoremap <leader>ff <cmd>Telescope find_files<cr>'
