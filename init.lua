@@ -34,6 +34,7 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-nvim-lua'
   use 'hrsh7th/cmp-nvim-lsp'
   use 'akinsho/bufferline.nvim'
+  use 'neovim/nvim-lspconfig'
   use 'sirver/ultisnips'
   use 'quangnguyen30192/cmp-nvim-ultisnips'
   use 'nvim-treesitter/nvim-treesitter'
@@ -65,10 +66,6 @@ require('lualine').setup ({
          section_separators = { left = '', right = '' },
 	 component_separators = { left = '', right = '' }
     },
---    tabline = {
---	lualine_c = { require 'tabline'.tabline_buffers },
---	lualine_x = { require 'tabline'.tabline_tabs }
---    }
 })
 require('bufferline').setup()
 
@@ -99,10 +96,21 @@ cmp.setup {
     },
     snippet = {
 	expand = function(args)
-	    --require("luasnip").lsp_expand(args.body)
 	    vim.fn["UltiSnips#Anon"](args.body)
 	end,
     },
+}
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+require'lspconfig'.pyright.setup {
+    capabilities = (function()
+		     local capabilities = vim.lsp.protocol.make_client_capabilities()
+		     capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+		     return capabilities
+		   end)()
+}
+require'lspconfig'.ruff_lsp.setup {
+    capabilities = capabilities
 }
 
 --require('startup').setup()
@@ -167,7 +175,7 @@ end, {})
 
 command("Docs", function()
     browse.devdocs.search()
-end)
+end, {})
 
 local files_set_cwd = function(path)
   -- Works only if cursor is on the valid file system entry
@@ -194,6 +202,10 @@ leap.init_highlight(true)
 
 vim.cmd 'syntax enable'
 vim.cmd "let g:vimtex_view_method = 'zathura'"
+vim.cmd "let g:tex_flavor='latex'"
+vim.cmd "let g:vimtex_quickfix_mode=0"
+vim.cmd "set conceallevel=1"
+vim.cmd "let g:tex_conceal='abdmg'"
 
 vim.cmd "let g:UltiSnipsExpandTrigger = '<tab>'"
 vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
@@ -209,14 +221,16 @@ vim.cmd 'let &shellpipe=\'2>&1| tee\''
 vim.cmd 'let $TMP="/tmp"'
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
 vim.cmd 'set relativenumber'
+vim.cmd 'set noexpandtab'
 vim.cmd 'hi LineNr guifg=#838bb8'
+vim.cmd 'nnoremap zat :!tmux new -d zathura %:r.pdf<cr>'
 vim.cmd 'nnoremap <Space> za'
 vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
-vim.cmd 'nnoremap <leader>k :bn<CR>'
-vim.cmd 'nnoremap <leader>j :bp<CR>'
+vim.cmd 'nnoremap <C-k> :bn<CR>'
+vim.cmd 'nnoremap <C-j> :bp<CR>'
+vim.cmd 'nnoremap <C-q> :bd<CR>'
 vim.cmd 'nnoremap <leader>t :enew<CR>'
 vim.cmd "nnoremap <leader>a :lua require'alpha'.start()<CR>"
-vim.cmd 'nnoremap <leader>q :bd<CR>'
 vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
 vim.cmd 'nnoremap <leader>ff <cmd>Telescope find_files<cr>'
 vim.cmd 'nnoremap <leader>fg <cmd>Telescope live_grep<cr>'
