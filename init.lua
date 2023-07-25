@@ -230,6 +230,7 @@ vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
 vim.cmd 'nnoremap <C-k> :bn<CR>'
 vim.cmd 'nnoremap <C-j> :bp<CR>'
 vim.cmd 'nnoremap <C-q> :bd<CR>'
+vim.cmd 'nnoremap <leader>x <cmd>lua vim.lsp.buf.code_action()<cr>'
 vim.cmd 'nnoremap <leader>t :enew<CR>'
 vim.cmd "nnoremap <leader>a :lua require'alpha'.start()<CR>"
 vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
