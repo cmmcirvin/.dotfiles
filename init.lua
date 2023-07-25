@@ -27,6 +27,7 @@ require('packer').startup(function(use)
   use 'lervag/vimtex'
   use 'tmhedberg/simpylfold'
   use 'burntsushi/ripgrep'
+  use 'chentoast/marks.nvim'
   use 'echasnovski/mini.files'
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-buffer'
@@ -113,7 +114,7 @@ require'lspconfig'.ruff_lsp.setup {
     capabilities = capabilities
 }
 
---require('startup').setup()
+require('marks').setup()
 require('mini.files').setup()
 
 -- Set up colorscheme
