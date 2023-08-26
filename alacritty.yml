@@ -1,0 +1,54 @@
+winpty_backend: true
+
+shell:
+  program: C:\Program Files\Git\bin\bash.exe 
+  #program: wsl
+
+env:
+  TERM: xterm-256color
+
+window:
+  decorations: none
+  startup_mode: Maximized
+
+colors:
+  # Default colors
+  primary:
+    background: '#24283b'
+    foreground: '#a9b1d6'
+
+  # Normal colors
+  normal:
+    black:   '#32344a'
+    red:     '#f7768e'
+    green:   '#9ece6a'
+    yellow:  '#e0af68'
+    blue:    '#7aa2f7'
+    magenta: '#ad8ee6'
+    cyan:    '#449dab'
+    white:   '#9699a8'
+
+  # Bright colors
+  bright:
+    black:   '#444b6a'
+    red:     '#ff7a93'
+    green:   '#b9f27c'
+    yellow:  '#ff9e64'
+    blue:    '#7da6ff'
+    magenta: '#bb9af7'
+    cyan:    '#0db9d7'
+    white:   '#acb0d0'
+
+font:
+  normal:
+    family: DroidSansM Nerd Font Mono
+    style: Regular
+  bold:
+    family: DroidSansM Nerd Font Mono
+    style: Bold
+  italic:
+    family: DroidSansM Nerd Font Mono
+    style: Oblique 
+  bold-italic:
+    family: DroidSansM Nerd Font Mono
+    style: Bold Oblique 
