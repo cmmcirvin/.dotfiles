@@ -9,6 +9,43 @@ def env(name):
 	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
 	return x != '0' and y != '0'
 
+def delline_exititemize(snip):
+    cursorline = snip.cursor[0] 
+    del snip.buffer[cursorline]
+
+    # add blank line after \end{itemize}
+    snip.buffer.append("\n", cursorline + 1 + 1)
+    # cursorline+1 is the linenr (1-based)
+
+    # place cursor on blank line after \end{itemize}
+    snip.cursor.set(cursorline+1, 0)
+
+
+def in_itemize(snip):
+    # find using searchpairpos('\begin{itemize}','','\end{itemize}','bnWz')
+    beginpos = vim.eval("searchpairpos('\\\\begin{itemize}','','\\\\end{itemize}','bnWz')")
+    endpos   = vim.eval("searchpairpos('\\\\begin{itemize}','','\\\\end{itemize}', 'nWz')")
+    curpos   = snip.cursor.to_vim_cursor()
+    if beginpos == ['0','0'] or endpos == ['0','0']: return False
+    if posCompare(beginpos, curpos) < 0 and posCompare(curpos, endpos) < 0:
+        return True
+    else:
+        return False
+
+def posCompare(cur1, cur2):
+    """ returns -1 if cur1 is before cur2, +1 if after, and 0 if cur1==cur2
+        cur1, cur2 are required to be lists of the form [row,col]
+    """
+    cur1r = int(cur1[0])
+    cur1c = int(cur1[1])
+    cur2r = int(cur2[0])
+    cur2c = int(cur2[1])
+    if   cur1r < cur2r: return -1
+    elif cur1r > cur2r: return  1
+    else:
+        if   cur1c < cur2c: return -1
+        elif cur1c > cur2c: return  1
+        else: return 0
 endglobal
 
 
@@ -77,10 +114,22 @@ snippet enum "Enumerate" bA
 \end{enumerate}
 endsnippet
 
+context "not in_itemize(snip)"
 snippet item "Itemize" bA
 \begin{itemize}
 	\item $0
 \end{itemize}
+endsnippet
+
+context "in_itemize(snip)"
+snippet "(^\s*)\\item\s*\S+.*$" "create next item" r
+`!p snip.rv=match.group(0)`
+`!p snip.rv=match.group(1)`\item $0
+endsnippet
+
+context "in_itemize(snip)"
+post_jump "delline_exititemize(snip)"
+snippet "^\s*\\item\s*" "exit itemize" r
 endsnippet
 
 snippet desc "Description" b
@@ -632,7 +681,6 @@ snippet letw "let omega" iA
 Let $\Omega \subset \C$ be open.
 endsnippet
 
-
 snippet HH "H" iA
 \mathbb{H}
 endsnippet
@@ -641,4 +689,160 @@ snippet DD "D" iA
 \mathbb{D}
 endsnippet
 
-# vim:ft=snippets
+snippet sub "Subsection" bA
+\subsection{$1}
+$2
+endsnippet
+
+snippet sec "Section" bA
+\section{$1}
+$2
+endsnippet
+
+snippet bf "Bold Font" a
+\textbf{$1}$2
+endsnippet
+
+snippet it "Italics" a
+\textit{$1}$2
+endsnippet
+
+snippet alg "Algorithm" bA
+\begin{algorithm}
+\caption{$1}\label{alg:$2}
+\begin{algorithmic}[1]
+$3
+\end{algorithmic}
+\end{algorithm}
+endsnippet
+
+snippet st "State" bA
+\State $$1 \gets $2$
+endsnippet
+
+snippet if "If" ba
+\If{$$1$}
+    $2
+\EndIf
+endsnippet
+
+snippet elif "Else If" ba
+\If{$$1$}
+    $2
+\ElsIf{$$3$}
+    $4
+\Else
+    $5
+\EndIf
+endsnippet
+
+snippet else "Else" ba
+\If{$$1$}
+    $2
+\Else
+    $3
+\EndIf
+endsnippet
+
+snippet wh "While" ba
+\While{$$1$}
+    $2
+\EndWhile
+endsnippet
+
+snippet for "For" ba
+\For{$$1$}
+    $2
+\EndFor
+endsnippet
+
+snippet hs "Tab" bA
+\hspace{\parindent}
+endsnippet
+
+snippet req "Require" bA
+\Require $$1$
+endsnippet
+
+snippet ens "Ensure" bA
+\Ensure $$1$
+endsnippet
+
+snippet // "Comment" bA
+\\\\// $1
+endsnippet
+
+snippet eqn "Equation" bA
+\begin{equation}
+    $1
+\end{equation}
+endsnippet
+
+context "math()"
+snippet ket "Ket" iA
+\ket{$1}$2
+endsnippet
+
+context "math()"
+snippet bra "Bra" iA
+\bra{$1}$2
+endsnippet
+
+context "math()"
+snippet bk "Braket" iA
+\langle $1 | $2 \rangle
+endsnippet
+
+context "math()"
+snippet ph "Phi" iA
+\phi
+endsnippet
+
+context "math()"
+snippet ps "Psi" iA
+\psi 
+endsnippet
+
+context "math()"
+snippet rh "Rho" iA
+\rho
+endsnippet
+
+context "math()"
+snippet sig "Sigma" iA
+\sigma
+endsnippet
+
+context "math()"
+snippet aa "Alpha" A
+\alpha
+endsnippet
+
+context "math()"
+snippet bb "Beta" A
+\beta
+endsnippet
+
+context "math()"
+snippet cc "Gamma" A
+\gamma
+endsnippet
+
+context "math()"
+snippet dd "Delta" A
+\delta
+endsnippet
+
+context "math()"
+snippet \1 "Identity" iA
+\mathbb{1}
+endsnippet
+
+context "math()"
+snippet ip "Inner Product" A
+\langle $1 \rangle $2
+endsnippet
+
+snippet todo  "TODO" A
+\todo[inline, color=gray!40]{$1}
+endsnippet

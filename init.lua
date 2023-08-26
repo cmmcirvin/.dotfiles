@@ -36,6 +36,7 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-nvim-lsp'
   use 'akinsho/bufferline.nvim'
   use 'neovim/nvim-lspconfig'
+  use 'neogitorg/neogit'
   use 'sirver/ultisnips'
   use 'quangnguyen30192/cmp-nvim-ultisnips'
   use 'nvim-treesitter/nvim-treesitter'
@@ -69,6 +70,7 @@ require('lualine').setup ({
     },
 })
 require('bufferline').setup()
+require('neogit').setup()
 
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
@@ -160,7 +162,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/bin/python')
+require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
 
 -- Browser
 local browse = require('browse')
@@ -224,7 +226,7 @@ vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
 vim.cmd 'set relativenumber'
 vim.cmd 'set noexpandtab'
 vim.cmd 'hi LineNr guifg=#838bb8'
-vim.cmd 'nnoremap zat :!tmux new -d zathura %:r.pdf<cr>'
+vim.cmd 'nnoremap zat :!~/AppData/Local/SumatraPDF/SumatraPDF.exe %:r.pdf &<cr>'
 vim.cmd 'nnoremap <Space> za'
 vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
 vim.cmd 'nnoremap <C-k> :bn<CR>'
