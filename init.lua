@@ -13,33 +13,51 @@ local packer_bootstrap = ensure_packer()
 
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
-  use 'folke/tokyonight.nvim'
+  use {
+    "williamboman/mason.nvim",
+    run = ":MasonUpdate"
+  }
+
+  use {'catppuccin/nvim', as='catppuccin'}
   use {
     'nvim-lualine/lualine.nvim',
     requires={ 'nvim-tree/nvim-web-devicons', opt=True}
   }
   use 'mfussenegger/nvim-dap'
-  use 'dhruvasagar/vim-table-mode'
   use 'mfussenegger/nvim-dap-python'
-  use 'mfussenegger/nvim-lint'
+  use 'rmagatti/goto-preview'
+----  use 'simrat39/rust-tools.nvim'
   use 'pocco81/autosave.nvim'
   use 'ggandor/leap.nvim'
   use 'lervag/vimtex'
   use 'tmhedberg/simpylfold'
+--  use 'dhruvasagar/vim-table-mode'
   use 'burntsushi/ripgrep'
   use 'chentoast/marks.nvim'
   use 'echasnovski/mini.files'
-  use 'hrsh7th/nvim-cmp'
+  use({
+    "hrsh7th/nvim-cmp",
+    requires = {
+      "quangnguyen30192/cmp-nvim-ultisnips",
+      config = function()
+        -- optional call to setup (see customization section)
+        require("cmp_nvim_ultisnips").setup{}
+      end,
+      -- If you want to enable filetype detection based on treesitter:
+      requires = { "nvim-treesitter/nvim-treesitter" },
+    },
+  })
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-nvim-lua'
   use 'hrsh7th/cmp-nvim-lsp'
-  use 'akinsho/bufferline.nvim'
+  use 'folke/trouble.nvim'
   use 'neovim/nvim-lspconfig'
-  use 'neogitorg/neogit'
   use 'sirver/ultisnips'
-  use 'quangnguyen30192/cmp-nvim-ultisnips'
-  use 'nvim-treesitter/nvim-treesitter'
+  use 'mfussenegger/nvim-lint'
+  use 'akinsho/bufferline.nvim'
+  use 'neogitorg/neogit'
+  use 'mbbill/undotree'
   use ({
     'lalitmee/browse.nvim',
     requires= { 'nvim-telescope/telescope.nvim',
@@ -53,24 +71,46 @@ require('packer').startup(function(use)
         require'alpha'.setup(require'alpha.themes.startify'.config)
     end
   }
-
-  if packer_bootstrap then
-    require('packer').sync()
-  end
+--
+--  if packer_bootstrap then
+--    require('packer').sync()
+--  end
 end)
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
+require("mason").setup()
+
 require('lualine').setup ({
     options = {
          section_separators = { left = '', right = '' },
 	 component_separators = { left = '', right = '' }
     },
+    sections = {
+	lualine_c = {
+	    {
+		'filename',
+		file_status = true,
+		path = 1,
+	    }
+	}
+    }
 })
 require('bufferline').setup()
+
+require('goto-preview').setup({default_mappings = true})
+
 require('neogit').setup()
+
+require('telescope').setup({
+    defaults = {
+	layout_config = {
+	    vertical = { width = 0.5 }
+	},
+    },
+})
 
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
@@ -105,22 +145,27 @@ cmp.setup {
 }
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-require'lspconfig'.pyright.setup {
+require('lspconfig').pyright.setup {
     capabilities = (function()
 		     local capabilities = vim.lsp.protocol.make_client_capabilities()
 		     capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
 		     return capabilities
 		   end)()
 }
+
 require'lspconfig'.ruff_lsp.setup {
     capabilities = capabilities
+}
+
+require('lint').linters_by_ft = {
+  python = {'pylint',}
 }
 
 require('marks').setup()
 require('mini.files').setup()
 
 -- Set up colorscheme
-vim.cmd 'colorscheme tokyonight-moon'
+vim.cmd 'colorscheme catppuccin-mocha'
 vim.cmd 'set nu'
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
@@ -136,6 +181,9 @@ dap.defaults.fallback.external_terminal = {
     command = '/usr/bin/bash';
     args = {'-e'}
 }
+
+--require('rust-tools').setup()
+
 vim.keymap.set('n', '<F5>', function() dap.continue() end)
 vim.keymap.set('n', '<F8>', function() dap.close() end)
 vim.keymap.set('n', '<F9>', function() dap.step_into() end)
@@ -162,7 +210,15 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
+require('dap-python').setup('~/.venvs/debugpy/bin/python')
+table.insert(require('dap').configurations.python, {
+	type = 'python',
+	request = 'launch',
+	console='integratedTerminal',
+	name = 'Base working directory',
+	program = '${file}',
+	cwd = './'
+})
 
 -- Browser
 local browse = require('browse')
@@ -199,11 +255,14 @@ vim.keymap.set({'n', 'x', 'o'}, 'f', '<Plug>(leap-forward-to)')
 vim.keymap.set({'n', 'x', 'o'}, 'F', '<Plug>(leap-backward-to)')
 vim.keymap.set({'n', 'x', 'o'}, 't', '<Plug>(leap-forward-till)')
 vim.keymap.set({'n', 'x', 'o'}, 'T', '<Plug>(leap-backward-till)')
-leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'h', 'n', 'j', 'k', 'l', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
-leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'h', 'n', 'j', 'k', 'l', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
+leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
+leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
 leap.init_highlight(true)
 
 vim.cmd 'syntax enable'
+vim.cmd 'filetype plugin indent on'
+--vim.cmd 'set autochdir'
+
 vim.cmd "let g:vimtex_view_method = 'zathura'"
 vim.cmd "let g:tex_flavor='latex'"
 vim.cmd "let g:vimtex_quickfix_mode=0"
@@ -214,29 +273,48 @@ vim.cmd "let g:UltiSnipsExpandTrigger = '<tab>'"
 vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
 vim.cmd "let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'"
 
-vim.cmd 'let &shell=\'bash.exe\''
-vim.cmd 'let &shellcmdflag = \'-c\''
-vim.cmd 'let &shellredir = \'>%s 2>&1\''
-vim.cmd 'set shellquote = shellxescape='
-vim.cmd 'set shellxquote='
-vim.cmd 'set shiftwidth=4'
-vim.cmd 'let &shellpipe=\'2>&1| tee\''
-vim.cmd 'let $TMP="/tmp"'
+vim.cmd 'nnoremap <c-j> :m .+1<cr>=='
+vim.cmd 'nnoremap <c-k> :m .-2<cr>=='
+vim.cmd 'inoremap <c-j> <esc>:m .+1<cr>==gi'
+vim.cmd 'inoremap <c-k> <esc>:m .-2<cr>==gi'
+vim.cmd "vnoremap <c-j> :m '>+1<cr>gv=gv"
+vim.cmd "vnoremap <c-k> :m '<-2<cr>gv=gv"
+
+vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/bin/python'"
+--vim.cmd 'set shellxquote='
+--vim.cmd 'set shiftwidth=4'
+--vim.cmd 'let $TMP="/tmp"'
+
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
 vim.cmd 'set relativenumber'
 vim.cmd 'set noexpandtab'
 vim.cmd 'hi LineNr guifg=#838bb8'
-vim.cmd 'nnoremap zat :!~/AppData/Local/SumatraPDF/SumatraPDF.exe %:r.pdf &<cr>'
+
+--vim.cmd 'nnoremap zat :!/opt/homebrew/bin/zathura %:r.pdf &<cr>'
 vim.cmd 'nnoremap <Space> za'
+
 vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
-vim.cmd 'nnoremap <C-k> :bn<CR>'
-vim.cmd 'nnoremap <C-j> :bp<CR>'
-vim.cmd 'nnoremap <C-q> :bd<CR>'
-vim.cmd 'nnoremap <leader>x <cmd>lua vim.lsp.buf.code_action()<cr>'
+vim.cmd 'nnoremap <c-l> :bn<CR>'
+vim.cmd 'nnoremap <c-h> :bp<CR>'
+vim.cmd 'nnoremap <c-q> :bd<CR>'
+
+vim.cmd 'nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>'
+
+vim.cmd 'nnoremap <leader>u <cmd>UndotreeToggle<cr>'
+vim.cmd 'nnoremap <leader>xf <cmd>lua vim.lsp.buf.code_action()<cr>'
 vim.cmd 'nnoremap <leader>t :enew<CR>'
 vim.cmd "nnoremap <leader>a :lua require'alpha'.start()<CR>"
 vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
-vim.cmd 'nnoremap <leader>ff <cmd>Telescope find_files<cr>'
-vim.cmd 'nnoremap <leader>fg <cmd>Telescope live_grep<cr>'
-vim.cmd 'nnoremap <leader>fb <cmd>Telescope buffers<cr>'
-vim.cmd 'nnoremap <Esc> <Esc> :noh<return>'
+vim.cmd 'nnoremap <leader>ff <cmd>lua require("telescope.builtin").find_files()<cr>'
+vim.cmd 'nnoremap <leader>fg <cmd>lua require("telescope.builtin").live_grep()<cr>'
+vim.cmd 'nnoremap <leader>fb <cmd>lua require("telescope.builtin").buffers()<cr>'
+vim.cmd 'nnoremap <leader>fh <cmd>lua require("telescope.builtin").help_tags()<cr>'
+
+vim.cmd 'nnoremap <leader>xx <cmd>TroubleToggle<cr>'
+vim.cmd 'nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>'
+vim.cmd 'nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>'
+vim.cmd 'nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>'
+vim.cmd 'nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>'
+vim.cmd 'nnoremap gR <cmd>TroubleToggle lsp_references<cr>'
+
+vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'

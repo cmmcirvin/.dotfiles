@@ -48,35 +48,6 @@ def posCompare(cur1, cur2):
         else: return 0
 endglobal
 
-
-snippet template "Basic template" b
-\documentclass[a4paper]{article}
-
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{textcomp}
-\usepackage[dutch]{babel}
-\usepackage{amsmath, amssymb}
-
-
-% figure support
-\usepackage{import}
-\usepackage{xifthen}
-\pdfminorversion=7
-\usepackage{pdfpages}
-\usepackage{transparent}
-\newcommand{\incfig}[1]{%
-	\def\svgwidth{\columnwidth}
-	\import{./figures/}{#1.pdf_tex}
-}
-
-\pdfsuppresswarningpagegroup=1
-
-\begin{document}
-	$0
-\end{document}
-endsnippet
-
 snippet beg "begin{} / end{}" bA
 \\begin{$1}
 	$0
@@ -234,21 +205,6 @@ snip.rv = eval('latex(' + match.group(1).replace('\\', '').replace('^', '**').re
 `
 endsnippet
 
-priority 1000
-snippet math "mathematicablock" w
-math $1 math$0
-endsnippet
-
-priority 10000
-snippet 'math(.*)math' "math" wr
-`!p
-import subprocess
-code = match.group(1)
-code = 'ToString[' + code + ', TeXForm]'
-snip.rv = subprocess.check_output(['wolframscript', '-code', code])
-`
-endsnippet
-
 snippet == "equals" iA
 &= $1 \\\\
 endsnippet
@@ -313,28 +269,9 @@ snippet conj "conjugate" iA
 \overline{$1}$0
 endsnippet
 
-snippet sum "sum" w
-\sum_{n=${1:1}}^{${2:\infty}} ${3:a_n z^n}
-endsnippet
-
-snippet taylor "taylor" w
-\sum_{${1:k}=${2:0}}^{${3:\infty}} ${4:c_$1} (x-a)^$1 $0
-endsnippet
-
-snippet lim "limit" w
-\lim_{${1:n} \to ${2:\infty}} 
-endsnippet
-
-snippet limsup "limsup" w
-\limsup_{${1:n} \to ${2:\infty}} 
-endsnippet
-
-snippet prod "product" w
-\prod_{${1:n=${2:1}}}^{${3:\infty}} ${4:${VISUAL}} $0
-endsnippet
-
-snippet part "d/dx" w
-\frac{\partial ${1:V}}{\partial ${2:x}} $0
+context "math()"
+snippet sum "sum" iA
+\sum_{$1}^{$2} $0
 endsnippet
 
 context "math()"
@@ -362,11 +299,8 @@ snippet rd "to the ... power" iA
 ^{($1)}$0
 endsnippet
 
-snippet __ "subscript" iA
-_{$1}$0
-endsnippet
-
-snippet ooo "\infty" iA
+context "math()"
+snippet inf "\infty" iA
 \infty
 endsnippet
 
@@ -617,7 +551,7 @@ snippet tt "text" iA
 endsnippet
 
 context "math()"
-snippet case "cases" wA
+snippet cases "cases" wA
 \begin{cases}
 	$1
 \end{cases}
@@ -642,6 +576,12 @@ priority 10
 context "math()"
 snippet "bar" "bar" riA
 \overline{$1}$0
+endsnippet
+
+priority 10
+context "math()"
+snippet "~" "tilde" riA
+\tilde{$1}$0
 endsnippet
 
 priority 100
@@ -684,7 +624,7 @@ snippet sec "Section" bA
 $2
 endsnippet
 
-snippet bf "Bold Font" a
+snippet bf "Bold Font" A
 \textbf{$1}$2
 endsnippet
 
@@ -758,9 +698,11 @@ snippet // "Comment" bA
 endsnippet
 
 snippet eqn "Equation" bA
-\begin{equation}
+\begin{equation*}
+\begin{aligned}
     $1
-\end{equation}
+\end{aligned}
+\end{equation*}
 endsnippet
 
 context "math()"
@@ -779,8 +721,13 @@ snippet bk "Braket" iA
 endsnippet
 
 context "math()"
-snippet rh "Rho" iA
-\rho
+snippet mb "mathbb" iA
+\mathbb{$1}$0
+endsnippet
+
+context "math()"
+snippet mc "mathcal" iA
+\mathcal{$1}$0
 endsnippet
 
 context "math()"
@@ -789,35 +736,78 @@ snippet sig "Sigma" iA
 endsnippet
 
 context "math()"
-snippet aa "Alpha" A
-\alpha
-endsnippet
-
-context "math()"
-snippet bb "Beta" A
-\beta
-endsnippet
-
-context "math()"
-snippet cc "Gamma" A
-\gamma
-endsnippet
-
-context "math()"
-snippet dd "Delta" A
-\delta
-endsnippet
-
-context "math()"
 snippet \1 "Identity" iA
 \mathbb{1}
 endsnippet
 
 context "math()"
-snippet ip "Inner Product" A
-\langle $1 \rangle $2
+snippet ip "Inner Product" iA
+\langle $1, $2 \rangle$0
 endsnippet
 
-snippet todo  "TODO" A
+snippet todo  "todo" A
 \todo[inline, color=gray!40]{$1}
+endsnippet
+
+snippet TODO "TODO" A
+\todo[inline, color=orange]{TODO: $1}
+endsnippet
+
+context "math()"
+snippet _ "subscript" iA
+_{$1}$0
+endsnippet
+
+context "math()"
+snippet ^ "superscript" iA
+^{$1}$0
+endsnippet
+
+snippet $ "math" iA
+$ $1 $$0
+endsnippet
+
+context "math()"
+snippet [ "bracket" iA
+[$1]$0
+endsnippet
+
+context "math()"
+snippet mx "max" iA
+\max_{$1}$0
+endsnippet
+
+context "math()"
+snippet mn "min" iA
+\min_{$1}$0
+endsnippet
+
+context "math()"
+snippet ui "underline i" iA
+_{i}$0
+endsnippet
+
+context "math()"
+snippet uj "underline j" iA
+_{j}$0
+endsnippet
+
+context "math()"
+snippet uk "underline k" iA
+_{k}$0
+endsnippet
+
+context "math()"
+snippet br "brackets" iA
+\\{$1\\}$0
+endsnippet
+
+context "math()"
+snippet pb "p_best" iA
+\mathcal{P}_{\text{best}}$0
+endsnippet
+
+context "math()"
+snippet pw "p_worst" iA
+\mathcal{P}_{\text{worst}}$0
 endsnippet
