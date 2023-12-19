@@ -17,21 +17,53 @@ require('packer').startup(function(use)
     "williamboman/mason.nvim",
     run = ":MasonUpdate"
   }
-
   use {'catppuccin/nvim', as='catppuccin'}
+  use {'rose-pine/neovim', as='rose-pine'}
+  use {'folke/tokyonight.nvim', as='tokyonight'}
+  use {'nyoom-engineering/oxocarbon.nvim', as='oxocarbon'}
+  use {'rebelot/kanagawa.nvim', as='kanagawa'}
   use {
     'nvim-lualine/lualine.nvim',
     requires={ 'nvim-tree/nvim-web-devicons', opt=True}
   }
+  use({
+    "kylechui/nvim-surround",
+    tag = "*",
+    config = function()
+        require("nvim-surround").setup()
+    end
+  })
   use 'mfussenegger/nvim-dap'
   use 'mfussenegger/nvim-dap-python'
   use 'rmagatti/goto-preview'
-----  use 'simrat39/rust-tools.nvim'
+  use {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  }
+  use {
+    "zbirenbaum/copilot-cmp",
+    after = { "copilot.lua" },
+    config = function ()
+      require("copilot_cmp").setup()
+    end
+  }
   use 'pocco81/autosave.nvim'
+  use({
+    "pocco81/true-zen.nvim",
+    config = function()
+      require("true-zen").setup {}
+    end,
+  })
   use 'ggandor/leap.nvim'
   use 'lervag/vimtex'
   use 'tmhedberg/simpylfold'
---  use 'dhruvasagar/vim-table-mode'
   use 'burntsushi/ripgrep'
   use 'chentoast/marks.nvim'
   use 'echasnovski/mini.files'
@@ -40,10 +72,8 @@ require('packer').startup(function(use)
     requires = {
       "quangnguyen30192/cmp-nvim-ultisnips",
       config = function()
-        -- optional call to setup (see customization section)
         require("cmp_nvim_ultisnips").setup{}
       end,
-      -- If you want to enable filetype detection based on treesitter:
       requires = { "nvim-treesitter/nvim-treesitter" },
     },
   })
@@ -71,10 +101,6 @@ require('packer').startup(function(use)
         require'alpha'.setup(require'alpha.themes.startify'.config)
     end
   }
---
---  if packer_bootstrap then
---    require('packer').sync()
---  end
 end)
 
 vim.g.loaded_netrw = 1
@@ -82,11 +108,17 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
 require("mason").setup()
+require("nvim-treesitter.configs").setup({
+	highlight={
+		enable=true,
+		disable={"latex"}
+	},
+})
 
 require('lualine').setup ({
     options = {
          section_separators = { left = '', right = '' },
-	 component_separators = { left = '', right = '' }
+	 component_separators = { left = '', right = '' },
     },
     sections = {
 	lualine_c = {
@@ -112,6 +144,11 @@ require('telescope').setup({
     },
 })
 
+vim.diagnostic.config({
+	virtual_text=false,
+	virtual_lines=false
+})
+
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup {
@@ -128,6 +165,7 @@ cmp.setup {
           end,
           { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
         ),
+	['<leader><CR>'] = cmp.mapping.confirm({ select = true })
     },
     sources = {
 	{ name = "gh_issues" },
@@ -136,6 +174,7 @@ cmp.setup {
 	{ name = "path"},
 	{ name = "ultisnips" },
 	{ name = "buffer", keyword_length = 1},
+	{ name = "copilot"},
     },
     snippet = {
 	expand = function(args)
@@ -157,22 +196,26 @@ require'lspconfig'.ruff_lsp.setup {
     capabilities = capabilities
 }
 
-require('lint').linters_by_ft = {
-  python = {'pylint',}
-}
+--require('lint').linters_by_ft = {
+--  python = {'pylint',}
+--}
 
 require('marks').setup()
 require('mini.files').setup()
 
 -- Set up colorscheme
-vim.cmd 'colorscheme catppuccin-mocha'
+--vim.cmd 'colorscheme catppuccin-mocha'
+vim.cmd 'colorscheme rose-pine'
+--vim.cmd 'colorscheme tokyonight-moon'
+--vim.cmd 'colorscheme oxocarbon'
+--vim.cmd 'colorscheme kanagawa'
 vim.cmd 'set nu'
 
-vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-    callback = function()
-        require("lint").try_lint()
-    end,
-})
+--vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+--    callback = function()
+--        require("lint").try_lint()
+--    end,
+--})
 
 -- Python Debugger
 local dap = require('dap') 
@@ -219,6 +262,18 @@ table.insert(require('dap').configurations.python, {
 	program = '${file}',
 	cwd = './'
 })
+table.insert(require('dap').configurations.python, {
+	type = 'python',
+	request = 'launch',
+	console='integratedTerminal',
+	name = 'Base working directory with arguments',
+	program = '${file}',
+	cwd = './',
+      	args = function()
+      	  local args_string = vim.fn.input('Arguments: ')
+      	  return vim.split(args_string, " +")
+      	end;
+})
 
 -- Browser
 local browse = require('browse')
@@ -259,12 +314,14 @@ leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 
 leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
 leap.init_highlight(true)
 
-vim.cmd 'syntax enable'
+--vim.cmd 'syntax enable'
 vim.cmd 'filetype plugin indent on'
---vim.cmd 'set autochdir'
 
-vim.cmd "let g:vimtex_view_method = 'zathura'"
+--vim.cmd "let g:vimtex_view_method = 'zathura'"
 vim.cmd "let g:tex_flavor='latex'"
+vim.cmd "let g:vimtex_view_method = 'skim'"
+vim.cmd "let g:vimtex_view_skim_sync = 1"
+vim.cmd "let g:vimtex_view_skim_activate = 1"
 vim.cmd "let g:vimtex_quickfix_mode=0"
 vim.cmd "set conceallevel=1"
 vim.cmd "let g:tex_conceal='abdmg'"
@@ -296,7 +353,7 @@ vim.cmd 'nnoremap <Space> za'
 vim.cmd 'nnoremap gb :ls<CR>:b<Space>'
 vim.cmd 'nnoremap <c-l> :bn<CR>'
 vim.cmd 'nnoremap <c-h> :bp<CR>'
-vim.cmd 'nnoremap <c-q> :bd<CR>'
+vim.cmd 'nnoremap <c-q> :bn<bar>:bd#<CR>'
 
 vim.cmd 'nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>'
 
@@ -315,6 +372,7 @@ vim.cmd 'nnoremap <leader>xw <cmd>TroubleToggle workspace_diagnostics<cr>'
 vim.cmd 'nnoremap <leader>xd <cmd>TroubleToggle document_diagnostics<cr>'
 vim.cmd 'nnoremap <leader>xq <cmd>TroubleToggle quickfix<cr>'
 vim.cmd 'nnoremap <leader>xl <cmd>TroubleToggle loclist<cr>'
-vim.cmd 'nnoremap gR <cmd>TroubleToggle lsp_references<cr>'
+vim.cmd 'nnoremap gr <cmd>TroubleToggle lsp_references<cr>'
+vim.cmd 'nnoremap <leader>za :TZAtaraxis<CR>'
 
 vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'

@@ -126,7 +126,7 @@ snippet iff "iff" Ai
 \iff
 endsnippet
 
-snippet mk "Math" wA
+snippet mk "Math" iA
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
 	snip.rv = ' '
@@ -206,7 +206,7 @@ snip.rv = eval('latex(' + match.group(1).replace('\\', '').replace('^', '**').re
 endsnippet
 
 snippet == "equals" iA
-&= $1 \\\\
+&= $1
 endsnippet
 
 snippet != "equals" iA
@@ -403,8 +403,8 @@ snippet lll "l" iA
 endsnippet
 
 context "math()"
-snippet nabl "nabla" iA
-\nabla 
+snippet nb "nabla" iA
+\nabla$0
 endsnippet
 
 context "math()"
@@ -420,6 +420,11 @@ endsnippet
 context "math()"
 snippet norm "norm" iA
 \|$1\|$0
+endsnippet
+
+context "math()"
+snippet abs "abs" iA
+|$1|$0
 endsnippet
 
 priority 100
@@ -439,7 +444,6 @@ context "math()"
 snippet '(?<!\\)(arcsin|arccos|arctan|arccot|arccsc|arcsec|pi|zeta|int)' "ln" rwA
 \\`!p snip.rv = match.group(1)`
 endsnippet
-
 
 priority 100
 context "math()"
@@ -481,7 +485,6 @@ snippet << "<<" iA
 \ll
 endsnippet
 
-
 snippet ~~ "~" iA
 \sim 
 endsnippet
@@ -515,30 +518,9 @@ snippet nnn "bigcap" iA
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
 
-snippet OO "emptyset" iA
-\O
-endsnippet
-
-snippet RR "real" iA
-\R
-endsnippet
-
-snippet QQ "Q" iA
-\Q
-endsnippet
-
-snippet ZZ "Z" iA
-\Z
-endsnippet
-
 snippet <! "normal" iA
 \triangleleft 
 endsnippet
-
-snippet <> "hokje" iA
-\diamond 
-endsnippet
-
 
 context "math()"
 snippet '(?<!i)sts' "text subscript" irA
@@ -555,10 +537,6 @@ snippet cases "cases" wA
 \begin{cases}
 	$1
 \end{cases}
-endsnippet
-
-snippet SI "SI" iA
-\SI{$1}{$2}
 endsnippet
 
 snippet bigfun "Big function" iA
@@ -580,8 +558,8 @@ endsnippet
 
 priority 10
 context "math()"
-snippet "~" "tilde" riA
-\tilde{$1}$0
+snippet "~" "widetilde" riA
+\widetilde{$1}$0
 endsnippet
 
 priority 100
@@ -614,13 +592,18 @@ snippet DD "D" iA
 \mathbb{D}
 endsnippet
 
+snippet sec "Section" bA
+\section{$1}
+$2
+endsnippet
+
 snippet sub "Subsection" bA
 \subsection{$1}
 $2
 endsnippet
 
-snippet sec "Section" bA
-\section{$1}
+snippet sbb "Subsubsection" bA
+\subsubsection{$1}
 $2
 endsnippet
 
@@ -635,7 +618,7 @@ endsnippet
 snippet alg "Algorithm" bA
 \begin{algorithm}
 \caption{$1}\label{alg:$2}
-\begin{algorithmic}[1]
+\begin{algorithmic}
 $3
 \end{algorithmic}
 \end{algorithm}
@@ -721,6 +704,11 @@ snippet bk "Braket" iA
 endsnippet
 
 context "math()"
+snippet kb "Braket" iA
+| $1 \rangle \langle $2 |
+endsnippet
+
+context "math()"
 snippet mb "mathbb" iA
 \mathbb{$1}$0
 endsnippet
@@ -737,7 +725,7 @@ endsnippet
 
 context "math()"
 snippet \1 "Identity" iA
-\mathbb{1}
+\mathds{1}
 endsnippet
 
 context "math()"
@@ -761,15 +749,6 @@ endsnippet
 context "math()"
 snippet ^ "superscript" iA
 ^{$1}$0
-endsnippet
-
-snippet $ "math" iA
-$ $1 $$0
-endsnippet
-
-context "math()"
-snippet [ "bracket" iA
-[$1]$0
 endsnippet
 
 context "math()"
@@ -798,16 +777,39 @@ _{k}$0
 endsnippet
 
 context "math()"
+snippet opt "optimal" iA
+^{*}$0
+endsnippet
+
+context "math()"
+snippet up "superscript" iA
+^{$1}$0
+endsnippet
+
+context "math()"
 snippet br "brackets" iA
 \\{$1\\}$0
 endsnippet
 
 context "math()"
-snippet pb "p_best" iA
-\mathcal{P}_{\text{best}}$0
+snippet txt "text" iA
+\text{$1}$0
 endsnippet
 
-context "math()"
-snippet pw "p_worst" iA
-\mathcal{P}_{\text{worst}}$0
+snippet cm "cmnote" iA
+\cmnote{$1}$0
+endsnippet
+
+snippet graph "graph" ia
+\begin{tikzpicture}
+    \node[shape=circle,draw=black] (A) at (0,0) {A};
+    \node[shape=circle,draw=black] (B) at (0,3) {B};
+    \node[shape=circle,draw=black] (C) at (3,0) {C};
+    \node[shape=circle,draw=black] (D) at (3,3) {D};
+
+    \path [-](A) edge node[right] {} (B);   
+    \path [-](A) edge node[right] {} (C);   
+    \path [-](B) edge node[right] {} (D);   
+    \path [-](C) edge node[right] {} (D);   
+\end{tikzpicture}
 endsnippet
