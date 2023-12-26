@@ -346,6 +346,7 @@ vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
 vim.cmd 'set relativenumber'
 vim.cmd 'set noexpandtab'
 vim.cmd 'hi LineNr guifg=#838bb8'
+--vim.cmd 'set background=dark'
 
 --vim.cmd 'nnoremap zat :!/opt/homebrew/bin/zathura %:r.pdf &<cr>'
 vim.cmd 'nnoremap <Space> za'
