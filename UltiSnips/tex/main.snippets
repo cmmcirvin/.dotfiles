@@ -59,6 +59,83 @@ snippet ... "ldots" iA
 \ldots
 endsnippet
 
+snippet tmp "Template"
+\documentclass[11pt]{article}
+
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{braket}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amsthm}
+\usepackage[usenames]{color}
+\usepackage{hyperref}
+\usepackage{dsfont}
+\usepackage{physics}
+\usepackage{comment}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+
+\theoremstyle{definition}
+
+\special{papersize=8.5in,11in}
+\setlength{\topmargin}{-0.125in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in}
+\hypersetup{pdfpagemode=UseNone}
+
+\usepackage{color,graphicx}
+
+\newcommand{\cmnote}[1]{\textcolor{orange}{(CM: #1)}}
+
+\usepackage{tabstackengine}
+\setstackEOL{,}
+\setstackTAB{ }
+\setstacktabbedgap{1ex}
+\let\mat\bracketMatrixstack
+
+\begin{document}
+
+\begin{center}
+    \huge \bf ${1:Title}
+\end{center}
+
+\begin{center}
+    \bf ${2:Subtitle}
+\end{center}
+
+\medskip
+
+\begin{abstract} 
+
+${3:Abstract Body}
+
+\end{abstract}
+
+\tableofcontents 
+
+\medskip
+
+\section{${4:Section Title}}
+
+${0:Document Body}
+
+\end{document}
+
+endsnippet
+
+priority 10000
+snippet lnk "Link" iA
+\href{$1}{\color{blue}{$2}}$0
+endsnippet
+
 snippet table "Table environment" b
 \begin{table}[${1:htpb}]
 	\centering
@@ -68,6 +145,128 @@ snippet table "Table environment" b
 	$0${5/((?<=.)c|l|r)|./(?1: & )/g}
 	\end{tabular}
 \end{table}
+endsnippet
+
+snippet scn "Screenshot" b
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{$3}
+\end{figure}
+endsnippet
+
+snippet fig "Figure environment" b
+\begin{figure}[${1:htpb}]
+	\centering
+	${2:\includegraphics[width=0.8\textwidth]{$3}}
+	\caption{${4:$3}}
+	\label{fig:${5:${3/\W+/-/g}}}
+\end{figure}
+endsnippet
+
+snippet enum "Enumerate" bA
+\begin{enumerate}
+	\item $0
+\end{enumerate}
+endsnippet
+
+context "not in_itemize(snip)"
+snippet item "Itemize" bA
+\begin{itemize}
+	\item $0
+\end{itemize}
+endsnippet
+
+context "in_itemize(snip)"
+snippet "(^\s*)\\item\s*\S+.*$" "create next item" r
+`!p snip.rv=match.group(0)`
+`!p snip.rv=match.group(1)`\item $0
+endsnippet
+
+context "in_itemize(snip)"
+post_jump "delline_exititemize(snip)"
+snippet "^\s*\\item\s*" "exit itemize" r
+endsnippet
+
+snippet desc "Description" b
+\begin{description}
+	\item[$1] $0
+\end{description}
+endsnippet
+
+snippet pac "Package" b
+\usepackage[${1:options}]{${2:package}}$0
+endsnippet
+
+snippet => "implies" Ai
+\implies
+endsnippet
+
+snippet =< "implied by" Ai
+\impliedby
+endsnippet
+
+context "math()"
+snippet iff "iff" Ai
+\iff
+endsnippet
+
+snippet mk "Math" iA
+$${1}$`!p
+if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
+	snip.rv = ' '
+else:
+	snip.rv = ''
+`$2
+endsnippet
+
+snippet dm "Math" wA
+\[
+${1:${VISUAL}}
+.\] $0
+endsnippet
+
+snippet ali "Align" bA
+\begin{align*}
+	${1:${VISUAL}}
+.\end{align*}
+endsnippet
+
+
+context "math()"
+snippet // "Fraction" iA
+\\frac{$1}{$2}$0
+endsnippet
+
+snippet / "Fraction" i
+\\frac{${VISUAL}}{$1}$0
+endsnippet
+
+context "math()"
+snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "symbol frac" wrA
+\\frac{`!p snip.rv = match.group(1)`}{$1}$0
+endsnippet
+
+priority 1000
+snippet lnk "Link" iA
+\href{$1}{\color{blue}{$2}}$0
+endsnippet
+
+snippet table "Table environment" b
+\begin{table}[${1:htpb}]
+	\centering
+	\caption{${2:caption}}
+	\label{tab:${3:label}}
+	\begin{tabular}{${5:c}}
+	$0${5/((?<=.)c|l|r)|./(?1: & )/g}
+	\end{tabular}
+\end{table}
+endsnippet
+
+snippet scn "Screenshot" b
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{$3}
+\end{figure}
 endsnippet
 
 snippet fig "Figure environment" b
