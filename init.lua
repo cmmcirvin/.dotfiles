@@ -14,6 +14,8 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   'rose-pine/neovim',
+  'rktjmp/lush.nvim',
+  'Scysta/pink-panic.nvim',
   'echasnovski/mini.files',
   'pocco81/autosave.nvim',
   'ggandor/leap.nvim',
@@ -34,6 +36,15 @@ require("lazy").setup({
   'ap/vim-css-color',
   'chentoast/marks.nvim',
   'nvim-lualine/lualine.nvim',
+  {
+    "folke/noice.nvim",
+    opts={},
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+      }
+  },
   {
     'akinsho/bufferline.nvim',
     dependencies = 
@@ -71,7 +82,8 @@ require('rose-pine').setup({
   }
 })
 
-vim.cmd 'colorscheme rose-pine'
+--vim.cmd 'colorscheme rose-pine'
+vim.cmd 'colorscheme pink-panic'
 
 -- Navigation
 
@@ -142,6 +154,15 @@ require('nvim-treesitter.configs').setup {
 
 vim.cmd 'syntax enable'
 
+
+-- Python Debugger
+local dap = require('dap') 
+dap.defaults.switchbuf = 'v'
+dap.defaults.fallback.external_terminal = {
+    command = '~/AppData/Local/Programs/Git/usr/bin/bash';
+    args = {'-e'}
+}
+
 -- Autocomplete
 
 -- Cmp
@@ -184,6 +205,8 @@ vim.cmd 'syntax enable'
 --vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
 --vim.cmd "let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'"
 
+vim.opt.termguicolors = true
+
 vim.cmd 'nnoremap <c-l> :bn<CR>'
 vim.cmd 'nnoremap <c-h> :bp<CR>'
 vim.cmd 'nnoremap <c-q> :bd<CR>'
@@ -203,5 +226,10 @@ vim.cmd 'inoremap <c-j> <esc>:m .+1<cr>==gi'
 vim.cmd 'inoremap <c-k> <esc>:m .-2<cr>==gi'
 vim.cmd "vnoremap <c-j> :m '>+1<cr>gv=gv"
 vim.cmd "vnoremap <c-k> :m '<-2<cr>gv=gv"
+
+vim.cmd "let &shell='bash.exe'"
+vim.cmd "let &shellcmdflag='-c'"
+
+vim.cmd 'nnoremap <leader>o <cmd>browse oldfiles<cr>'
 
 vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
