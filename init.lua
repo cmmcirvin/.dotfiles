@@ -37,6 +37,13 @@ require("lazy").setup({
   'chentoast/marks.nvim',
   'nvim-lualine/lualine.nvim',
   {
+      'goolord/alpha-nvim',
+      dependencies = { 'nvim-tree/nvim-web-devicons' },
+      config = function ()
+          require'alpha'.setup(require'alpha.themes.startify'.config)
+      end
+  },
+  {
     "folke/noice.nvim",
     opts={},
     event = "VeryLazy",
@@ -161,6 +168,21 @@ dap.defaults.switchbuf = 'v'
 dap.defaults.fallback.external_terminal = {
     command = '~/AppData/Local/Programs/Git/usr/bin/bash';
     args = {'-e'}
+}
+
+--Greeter
+
+local startify = require("alpha.themes.startify")
+
+-- Set header
+startify.section.header.val = {
+"      ██████████            ██████████                       ",
+"     ██████████              ████████                        ", 
+"    ██████████████████ ███████████ ███  ██████████  ",
+"   █████████████████ ████████████ █████ ██████████████  ",
+"  ███████████████   ██████████████ █████ █████ ████ █████  ",
+" ██████████████████████████████████ █████ █████ ████ █████ ",
+"█████  ███ ██████████████████ ████ █████ █████ ████ ██████"
 }
 
 -- Autocomplete
