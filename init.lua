@@ -14,9 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   'rose-pine/neovim',
-  'rktjmp/lush.nvim',
-  'Scysta/pink-panic.nvim',
-  'echasnovski/mini.files',
+--  'echasnovski/mini.files',
   'pocco81/autosave.nvim',
   'ggandor/leap.nvim',
   {
@@ -27,6 +25,7 @@ require("lazy").setup({
       'nvim-treesitter/nvim-treesitter'
     }
   },
+  'nvim-telescope/telescope-file-browser.nvim',
   'dstein64/vim-startuptime',
   'williamboman/mason.nvim',
   'mfussenegger/nvim-dap',
@@ -40,7 +39,7 @@ require("lazy").setup({
       'goolord/alpha-nvim',
       dependencies = { 'nvim-tree/nvim-web-devicons' },
       config = function ()
-          require'alpha'.setup(require'alpha.themes.startify'.config)
+          require'alpha'.setup(require'alpha.themes.dashboard'.config)
       end
   },
   {
@@ -80,7 +79,7 @@ require('mason').setup()
 
 require('rose-pine').setup({
   styles = {
-    italic = false
+    italic = false,
   },
   highlight_groups = {
     Comment = { italic = true },
@@ -89,8 +88,7 @@ require('rose-pine').setup({
   }
 })
 
---vim.cmd 'colorscheme rose-pine'
-vim.cmd 'colorscheme pink-panic'
+vim.cmd 'colorscheme rose-pine'
 
 -- Navigation
 
@@ -105,22 +103,73 @@ leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 
 leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
 leap.init_highlight(true)
 
--- MiniFiles
+-- Filesystem
 
-require('mini.files').setup()
+-- Minifiles
 
-local files_set_cwd = function(path)
-  local cur_entry_path = MiniFiles.get_fs_entry().path
-  local cur_directory = vim.fs.dirname(cur_entry_path)
-  vim.fn.chdir(cur_directory)
+--require('mini.files').setup()
+
+--local files_set_cwd = function(path)
+--  local cur_entry_path = MiniFiles.get_fs_entry().path
+--  local cur_directory = vim.fs.dirname(cur_entry_path)
+--  vim.fn.chdir(cur_directory)
+--end
+--
+--vim.api.nvim_create_autocmd('User', {
+--  pattern = 'MiniFilesBufferCreate',
+--  callback = function(args)
+--    vim.keymap.set('n', 'g~', files_set_cwd, { buffer = args.data.buf_id })
+--  end,
+--})
+
+--vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
+
+-- Telescope File Browser
+
+vim.cmd 'nnoremap <leader>fe <cmd>Telescope file_browser<cr>'
+
+local select_one_or_multi = function(prompt_bufnr)
+  local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+  local multi = picker:get_multi_selection()
+  if not vim.tbl_isempty(multi) then
+    require('telescope.actions').close(prompt_bufnr)
+    for _, j in pairs(multi) do
+      if j.path ~= nil then
+        vim.cmd(string.format('%s %s', 'edit', j.path))
+      end
+    end
+  else
+    require('telescope.actions').select_default(prompt_bufnr)
+  end
+--  vim.cmd('Telescope file_browser')
 end
 
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'MiniFilesBufferCreate',
-  callback = function(args)
-    vim.keymap.set('n', 'g~', files_set_cwd, { buffer = args.data.buf_id })
-  end,
-})
+--local select_and_reopen = function(prompt_bufnr)
+--  require('telescope.actions').select_default(prompt_bufnr)
+--  vim.cmd('Telescope file_browser')
+--end
+
+local fb_actions = require('telescope').extensions.file_browser.actions
+require('telescope').setup {
+  defaults = {
+    mappings = {
+      i = {
+        ['<S-CR>'] = select_one_or_multi,
+	['J'] = require('telescope.actions').move_selection_next,
+	['K'] = require('telescope.actions').move_selection_previous,
+	['L'] = require('telescope.actions').toggle_selection,
+	['R'] = fb_actions.rename,
+	['M'] = fb_actions.move,
+	['Y'] = fb_actions.copy,
+	['D'] = fb_actions.remove
+      },
+      n = {
+        ['<S-CR>'] = select_one_or_multi,
+	['l'] = require('telescope.actions').toggle_selection
+      }
+    }
+  }
+}
 
 -- Bufferline
 
@@ -146,7 +195,6 @@ require('lualine').setup ({
 })
 
 -- Commands
-vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
 vim.cmd 'set nu'
 vim.cmd 'set relativenumber'
 
@@ -172,10 +220,10 @@ dap.defaults.fallback.external_terminal = {
 
 --Greeter
 
-local startify = require("alpha.themes.startify")
+local dashboard = require("alpha.themes.dashboard")
 
 -- Set header
-startify.section.header.val = {
+dashboard.section.header.val = {
 "      ██████████            ██████████                       ",
 "     ██████████              ████████                        ", 
 "    ██████████████████ ███████████ ███  ██████████  ",
@@ -248,9 +296,6 @@ vim.cmd 'inoremap <c-j> <esc>:m .+1<cr>==gi'
 vim.cmd 'inoremap <c-k> <esc>:m .-2<cr>==gi'
 vim.cmd "vnoremap <c-j> :m '>+1<cr>gv=gv"
 vim.cmd "vnoremap <c-k> :m '<-2<cr>gv=gv"
-
-vim.cmd "let &shell='bash.exe'"
-vim.cmd "let &shellcmdflag='-c'"
 
 vim.cmd 'nnoremap <leader>o <cmd>browse oldfiles<cr>'
 
