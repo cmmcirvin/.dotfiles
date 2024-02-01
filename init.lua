@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   'rose-pine/neovim',
---  'echasnovski/mini.files',
+  'eandrju/cellular-automaton.nvim',
   'pocco81/autosave.nvim',
   'ggandor/leap.nvim',
   {
@@ -88,6 +88,7 @@ require('mason').setup()
 require('rose-pine').setup({
   styles = {
     italic = false,
+    transparency = true,
   },
   highlight_groups = {
     Comment = { italic = true },
@@ -97,6 +98,11 @@ require('rose-pine').setup({
 })
 
 vim.cmd 'colorscheme rose-pine'
+
+-- Notifications
+require("notify").setup({
+  background_colour="#00000000"
+})
 
 -- Navigation
 
@@ -112,25 +118,6 @@ leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 
 leap.init_highlight(true)
 
 -- Filesystem
-
--- Minifiles
-
---require('mini.files').setup()
-
---local files_set_cwd = function(path)
---  local cur_entry_path = MiniFiles.get_fs_entry().path
---  local cur_directory = vim.fs.dirname(cur_entry_path)
---  vim.fn.chdir(cur_directory)
---end
---
---vim.api.nvim_create_autocmd('User', {
---  pattern = 'MiniFilesBufferCreate',
---  callback = function(args)
---    vim.keymap.set('n', 'g~', files_set_cwd, { buffer = args.data.buf_id })
---  end,
---})
-
---vim.cmd 'nnoremap <leader>fe <cmd>lua MiniFiles.open()<cr>'
 
 -- Telescope File Browser
 
@@ -162,7 +149,7 @@ require('telescope').setup {
   defaults = {
     mappings = {
       i = {
-        ['<S-CR>'] = select_one_or_multi,
+        ['<CR>'] = select_one_or_multi,
 	['J'] = require('telescope.actions').move_selection_next,
 	['K'] = require('telescope.actions').move_selection_previous,
 	['L'] = require('telescope.actions').toggle_selection,
@@ -173,7 +160,7 @@ require('telescope').setup {
 	['D'] = fb_actions.remove
       },
       n = {
-        ['<S-CR>'] = select_one_or_multi,
+        ['<CR>'] = select_one_or_multi,
 	['l'] = require('telescope.actions').toggle_selection
       }
     }
@@ -280,46 +267,47 @@ table.insert(require('dap').configurations.python, {
 local dashboard = require("alpha.themes.dashboard")
 
 -- Set header
---dashboard.section.header.val = {
---"      ███ ██████████████    █████████████████████  ",
---"     ███             ████   █  █                       █ ", 
---"    ███████████████████████████████████",
---"   ████████████████████████████████████",
---"  █████████   ████████████████████████ ",
---" ████ ███████  ██████████████████████  ",
---"████   █████ ████████ ████████████████████   "
---}
-
-
 dashboard.section.header.val = {
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠁⠚⡴⣤⣀⠀⠀⠀⠀⡟⣴⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠟⡿⣶⣤⣀⠀⠿⣿⣴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠋⡿⣿⣾⣴⣡⠉⠞⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠿⣿⣿⣿⣶⣠⢀⠀⡴⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⡀⣀⣤⣦⣶⣶⣶⣶⣶⣶⣴⣥⣿⣿⣿⣿⣿⣿⣿⣿⣴⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠉⠉⠉⡏⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⡀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣩⢃⣿⣼⢀⠀⠀⠀⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⣄⣦⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣾⣠⠀⠀⣿⣴⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⡀⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠿⠿⣿⣿⣿⣿⣿⣾⣶⣿⢹⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠁⠈⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠁⠟⣿⣿⡿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⡄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠿⡿⣿⣿⣾⢀⠀⠀⠀⠁⠉⠈⠇⠻⠙⠋⡿⠻⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣹⠀⠀⠀⠁⠟⣿⣾⣤⣀⢀⠀⠀⠖⣤⣀⢀⠀⠁⣀⣤⣶⣶⣤⢀⠀⠀⠀",
-"⠀⠀⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣼⣀⠀⠀⠀⣇⣿⣿⣿⣿⣀⢀⠀⠁⠟⣿⣿⣿⣿⣿⣿⢻⠉⠈⠀⠀⠀",
-"⠀⠀⠃⣿⢹⠁⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣤⣁⠋⠛⠿⠿⠿⠛⠙⠀⠀⠀⡏⣿⣿⣿⣿⣿⣿⣶⣴⣤⣤⢀",
-"⠀⠀⠀⠃⠸⠀⠁⡟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣴⣠⠀⠀⠀⠀⠀⠀⠀⡇⣿⣿⠙⠛⡿⣿⣿⣿⣿⣿⣾",
-"⠀⠀⠀⠀⠀⠀⠀⠀⡟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣠⠀⠀⠀⠀⠀⠿⣿⣶⠤⠀⠀⠀⠀⠀⠀⠉",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⡀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⡀⣄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠂⠒⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠁⠚⡴⣤⣀⠀⠀⠀⠀⡟⣴⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠟⡿⣶⣤⣀⠀⠿⣿⣴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠋⡿⣿⣾⣴⣡⠉⠞⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠿⣿⣿⣿⣶⣠⢀⠀⡴⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⡀⣀⣤⣦⣶⣶⣶⣶⣶⣶⣴⣥⣿⣿⣿⣿⣿⣿⣿⣿⣴⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠉⠉⠉⡏⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⡀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣩⢃⣿⣼⢀⠀⠀⠀⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⣄⣦⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣾⣠⠀⠀⣿⣴⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⡀⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠿⠿⣿⣿⣿⣿⣿⣾⣶⣿⢹⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠁⠈⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠁⠟⣿⣿⡿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⡄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠿⡿⣿⣿⣾⢀⠀⠀⠀⠁⠉⠈⠇⠻⠙⠋⡿⠻⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣹⠀⠀⠀⠁⠟⣿⣾⣤⣀⢀⠀⠀⠖⣤⣀⢀⠀⠁⣀⣤⣶⣶⣤⢀⠀⠀⠀           ",
+"           ⠀⠀⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣼⣀⠀⠀⠀⣇⣿⣿⣿⣿⣀⢀⠀⠁⠟⣿⣿⣿⣿⣿⣿⢻⠉⠈⠀⠀⠀           ",
+"           ⠀⠀⠃⣿⢹⠁⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣤⣁⠋⠛⠿⠿⠿⠛⠙⠀⠀⠀⡏⣿⣿⣿⣿⣿⣿⣶⣴⣤⣤⢀           ",
+"           ⠀⠀⠀⠃⠸⠀⠁⡟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣴⣠⠀⠀⠀⠀⠀⠀⠀⡇⣿⣿⠙⠛⡿⣿⣿⣿⣿⣿⣾           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⡟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣠⠀⠀⠀⠀⠀⠿⣿⣶⠤⠀⠀⠀⠀⠀⠀⠉           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⠀⠀⡀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠀⠀⡀⣄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"           ⠀⠀⠀⠀⠂⠒⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀           ",
+"      ███ ███████████████    █████████████████████  ",
+"     ███              ████   █  █                       █ ", 
+"    █████████ ██████████████████████████",
+"   █████████████████████████████████████",
+"  █████████    ████████████████████████ ",
+" ████ ████ ███  ██████████████████████  ",
+"████   ██████ ████████ ████████████████████   "
 }
 
--- Autocomplete
-
--- Cmp
-
+dashboard.section.buttons.val = {
+    dashboard.button("o", "   > Recent" , ":Telescope oldfiles<cr>"),
+    dashboard.button("f", "   > Find file", ":Telescope find_files<cr>"),
+    dashboard.button("e", "   > Explorer", ":Telescope file_browser<cr>"),
+    dashboard.button("g", "   > Grep"   , ":Telescope live_grep<cr>"),
+    dashboard.button("b", "   > Buffers" , ":Telescope buffers<cr>"),
+    dashboard.button("h", "   > Help", ":Telescope help_tags<cr>")
+}
+ 
 --local cmp = require('cmp')
 --local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 --cmp.setup {
@@ -358,7 +346,16 @@ dashboard.section.header.val = {
 --vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
 --vim.cmd "let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'"
 
+-- Git
+
+-- Neogit
+
+require('neogit').setup()
+
 vim.opt.termguicolors = true
+
+map("n", "<leader>66", "<cmd>CellularAutomaton make_it_rain<cr>")
+map("n", "<leader>42", "<cmd>CellularAutomaton game_of_life<cr>")
 
 map("n", "<c-l>", ":bn<CR>")
 map("n", "<c-h>", ":bp<CR>")
