@@ -73,6 +73,14 @@ require("lazy").setup({
 --  'hrsh7th/cmp-nvim-lsp',
 })
 
+local map = function(mode, l, r, opts)
+  opts = opts or {}
+  opts.silent = true
+  vim.keymap.set(mode, l, r, opts)
+end
+
+local telescope = require("telescope.builtin")
+
 require('mason').setup()
 
 -- Colorschemes
@@ -223,14 +231,40 @@ dap.defaults.fallback.external_terminal = {
 local dashboard = require("alpha.themes.dashboard")
 
 -- Set header
+--dashboard.section.header.val = {
+--"      ██████████            ██████████                       ",
+--"     ██████████              ████████                        ", 
+--"    ██████████████████ ███████████ ███  ██████████  ",
+--"   █████████████████ ████████████ █████ ██████████████  ",
+--"  ███████████████   ██████████████ █████ █████ ████ █████  ",
+--" ██████████████████████████████████ █████ █████ ████ █████ ",
+--"█████  ███ ██████████████████ ████ █████ █████ ████ ██████"
+--}
+
+
 dashboard.section.header.val = {
-"      ██████████            ██████████                       ",
-"     ██████████              ████████                        ", 
-"    ██████████████████ ███████████ ███  ██████████  ",
-"   █████████████████ ████████████ █████ ██████████████  ",
-"  ███████████████   ██████████████ █████ █████ ████ █████  ",
-" ██████████████████████████████████ █████ █████ ████ █████ ",
-"█████  ███ ██████████████████ ████ █████ █████ ████ ██████"
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠁⠚⡴⣤⣀⠀⠀⠀⠀⡟⣴⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠟⡿⣶⣤⣀⠀⠿⣿⣴⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠋⡿⣿⣾⣴⣡⠉⠞⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠃⠿⣿⣿⣿⣶⣠⢀⠀⡴⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⡀⣀⣤⣦⣶⣶⣶⣶⣶⣶⣴⣥⣿⣿⣿⣿⣿⣿⣿⣿⣴⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠉⠉⠉⡏⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣰⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⡀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣩⢃⣿⣼⢀⠀⠀⠀⣠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⣄⣦⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣿⣾⣠⠀⠀⣿⣴⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⡀⣷⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠿⠿⣿⣿⣿⣿⣿⣾⣶⣿⢹⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠁⠈⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢸⠀⠀⠀⠁⠟⣿⣿⡿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⡄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⠿⡿⣿⣿⣾⢀⠀⠀⠀⠁⠉⠈⠇⠻⠙⠋⡿⠻⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⣧⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣹⠀⠀⠀⠁⠟⣿⣾⣤⣀⢀⠀⠀⠖⣤⣀⢀⠀⠁⣀⣤⣶⣶⣤⢀⠀⠀⠀",
+"⠀⠀⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣼⣀⠀⠀⠀⣇⣿⣿⣿⣿⣀⢀⠀⠁⠟⣿⣿⣿⣿⣿⣿⢻⠉⠈⠀⠀⠀",
+"⠀⠀⠃⣿⢹⠁⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣤⣁⠋⠛⠿⠿⠿⠛⠙⠀⠀⠀⡏⣿⣿⣿⣿⣿⣿⣶⣴⣤⣤⢀",
+"⠀⠀⠀⠃⠸⠀⠁⡟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣴⣠⠀⠀⠀⠀⠀⠀⠀⡇⣿⣿⠙⠛⡿⣿⣿⣿⣿⣿⣾",
+"⠀⠀⠀⠀⠀⠀⠀⠀⡟⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣠⠀⠀⠀⠀⠀⠿⣿⣶⠤⠀⠀⠀⠀⠀⠀⠉",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⡇⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⡀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⡀⣄⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠂⠒⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
 }
 
 -- Autocomplete
@@ -277,26 +311,26 @@ dashboard.section.header.val = {
 
 vim.opt.termguicolors = true
 
-vim.cmd 'nnoremap <c-l> :bn<CR>'
-vim.cmd 'nnoremap <c-h> :bp<CR>'
-vim.cmd 'nnoremap <c-q> :bd<CR>'
+map("n", "<c-l>", ":bn<CR>")
+map("n", "<c-h>", ":bp<bn<CR>")
+map("n", "<c-q>", ":bd<bn<CR>")
 
-vim.cmd 'nnoremap <leader>u <cmd>UndotreeToggle<cr>'
-vim.cmd 'nnoremap <leader>t :enew<CR>'
-vim.cmd 'nnoremap <leader>ff <cmd>lua require("telescope.builtin").find_files()<cr>'
-vim.cmd 'nnoremap <leader>fg <cmd>lua require("telescope.builtin").live_grep()<cr>'
-vim.cmd 'nnoremap <leader>fb <cmd>lua require("telescope.builtin").buffers()<cr>'
-vim.cmd 'nnoremap <leader>fh <cmd>lua require("telescope.builtin").help_tags()<cr>'
+map("n", "<leader>u", "<cmd>UndotreeToggle<cr>")
+map("n", "<leader>t", ":enew<CR>")
 
-vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'
+map("n", "<leader>fo", telescope.oldfiles)
+map("n", "<leader>ff", telescope.find_files)
+map("n", "<leader>fg", telescope.live_grep)
+map("n", "<leader>fb", telescope.buffers)
+map("n", "<leader>fh", telescope.help_tags)
 
-vim.cmd 'nnoremap <c-j> :m .+1<cr>=='
-vim.cmd 'nnoremap <c-k> :m .-2<cr>=='
-vim.cmd 'inoremap <c-j> <esc>:m .+1<cr>==gi'
-vim.cmd 'inoremap <c-k> <esc>:m .-2<cr>==gi'
-vim.cmd "vnoremap <c-j> :m '>+1<cr>gv=gv"
-vim.cmd "vnoremap <c-k> :m '<-2<cr>gv=gv"
+map("n", "<Esc>", "<Esc>:noh<return>")
 
-vim.cmd 'nnoremap <leader>o <cmd>browse oldfiles<cr>'
+map("n", "<c-j>", ":m .+1<cr>==")
+map("n", "<c-k>", ":m .-2<cr>==")
+map("i", "<c-j>", "<esc>:m .+1<cr>==gi")
+map("i", "<c-k>", "<esc>:m .-2<cr>==gi")
+map("v", "<c-j>", ":m '>+1<cr>gv=gv")
+map("v", "<c-k>", ":m '<-2<cr>gv=gv")
 
 vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
