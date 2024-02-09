@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'rose-pine/neovim',
   'eandrju/cellular-automaton.nvim',
+  'folke/trouble.nvim',
   'pocco81/autosave.nvim',
   'ggandor/leap.nvim',
   {
@@ -28,6 +29,8 @@ require("lazy").setup({
   'nvim-telescope/telescope-file-browser.nvim',
   'dstein64/vim-startuptime',
   'williamboman/mason.nvim',
+  'neovim/nvim-lspconfig',
+  'williamboman/mason-lspconfig.nvim',
   'mfussenegger/nvim-dap',
   'mfussenegger/nvim-dap-python',
   'neogitorg/neogit',
@@ -59,18 +62,18 @@ require("lazy").setup({
     }
   },
   'rmagatti/goto-preview',
---  'sirver/ultisnips',
---  {
---    'hrsh7th/nvim-cmp',
---    dependencies = 
---    {
---      'quangnguyen30192/cmp-nvim-ultisnips'
---    }
---  },
---  'hrsh7th/cmp-buffer',
---  'hrsh7th/cmp-path',
---  'hrsh7th/cmp-nvim-lua',
---  'hrsh7th/cmp-nvim-lsp',
+  'sirver/ultisnips',
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = 
+    {
+      'quangnguyen30192/cmp-nvim-ultisnips'
+    }
+  },
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'hrsh7th/cmp-nvim-lua',
+  'hrsh7th/cmp-nvim-lsp',
 })
 
 local map = function(mode, l, r, opts)
@@ -200,6 +203,9 @@ vim.cmd 'set relativenumber'
 require('nvim-treesitter.configs').setup {
   highlight = {
     enable = true
+  },
+  indent = {
+    enable = false
   }
 }
 
@@ -334,37 +340,43 @@ dashboard.section.buttons.val = {
     dashboard.button("h", "   > Help", ":Telescope help_tags<cr>")
 }
  
---local cmp = require('cmp')
---local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
---cmp.setup {
---    mapping = {
---	["<Tab>"] = cmp.mapping(
---          function(fallback)
---            cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
---          end,
---          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
---        ),
---        ["<S-Tab>"] = cmp.mapping(
---          function(fallback)
---            cmp_ultisnips_mappings.jump_backwards(fallback)
---          end,
---          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
---        ),
---    },
---    sources = {
---	{ name = "gh_issues" },
---	{ name = "nvim_lua" },
---	{ name = "nvim_lsp" },
---	{ name = "path"},
---	{ name = "ultisnips" },
---	{ name = "buffer", keyword_length = 1},
---    },
---    snippet = {
---	expand = function(args)
---	    vim.fn["UltiSnips#Anon"](args.body)
---	end,
---    },
---}
+local cmp = require('cmp')
+local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+cmp.setup {
+    mapping = {
+	["J"] = cmp.mapping(
+          function(fallback)
+            cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+          end,
+          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+        ),
+        ["K"] = cmp.mapping(
+          function(fallback)
+            cmp_ultisnips_mappings.jump_backwards(fallback)
+          end,
+          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+        ),
+    },
+    sources = {
+	{ name = "gh_issues" },
+	{ name = "nvim_lua" },
+	{ name = "nvim_lsp" },
+	{ name = "path"},
+	{ name = "ultisnips" },
+	{ name = "buffer", keyword_length = 1},
+    },
+    snippet = {
+	expand = function(args)
+	    vim.fn["UltiSnips#Anon"](args.body)
+	end,
+    },
+}
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+require('lspconfig').pyright.setup {
+  capabilities = capabilities,
+}
 
 -- UltiSnips
 
@@ -405,6 +417,31 @@ map("i", "<c-k>", "<esc>:m .-2<cr>==gi")
 map("v", "<c-j>", ":m '>+1<cr>gv=gv")
 map("v", "<c-k>", ":m '<-2<cr>gv=gv")
 
+-- Trouble
+map("n", "<leader>xx", function() require("trouble").toggle() end)
+map("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
+map("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
+map("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
+map("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
+map("n", "gR", function() require("trouble").toggle("lsp_references") end)
+
 vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
 
+vim.cmd "setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=8"
+
 vim.opt.fillchars = { eob = ' ' }
+
+-- lsp-config
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  end,
+})
+
+vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'
