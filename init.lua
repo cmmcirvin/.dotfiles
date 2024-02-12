@@ -17,6 +17,7 @@ require("lazy").setup({
   'eandrju/cellular-automaton.nvim',
   'folke/trouble.nvim',
   'pocco81/autosave.nvim',
+  'lervag/vimtex',
   'ggandor/leap.nvim',
   {
     'nvim-telescope/telescope.nvim',
@@ -246,7 +247,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
+require('dap-python').setup('~/.venvs/debugpy/bin/python')
 table.insert(require('dap').configurations.python, {
 	type = 'python',
 	request = 'launch',
@@ -367,7 +368,7 @@ cmp.setup {
     },
     snippet = {
 	expand = function(args)
-	    vim.fn["UltiSnips#Anon"](args.body)
+            vim.fn["UltiSnips#Anon"](args.body)
 	end,
     },
 }
@@ -445,3 +446,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'
+
+vim.cmd "let g:tex_flavor='latex'"
+vim.cmd "let g:vimtex_view_method = 'skim'"
+vim.cmd "let g:vimtex_view_skim_sync = 1"
+vim.cmd "let g:vimtex_view_skim_activate = 1"
+vim.cmd "let g:vimtex_quickfix_mode=0"
+vim.cmd "let g:tex_conceal='abdmg'"
+vim.cmd "set conceallevel=1"
+
+vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
