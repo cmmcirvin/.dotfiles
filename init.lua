@@ -14,10 +14,12 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   'rose-pine/neovim',
+  'airblade/vim-gitgutter',
   'eandrju/cellular-automaton.nvim',
   'folke/trouble.nvim',
   'pocco81/autosave.nvim',
   'lervag/vimtex',
+  'rmagatti/auto-session',
   'ggandor/leap.nvim',
   {
     'nvim-telescope/telescope.nvim',
@@ -92,7 +94,7 @@ require('mason').setup()
 require('rose-pine').setup({
   styles = {
     italic = false,
-    transparency = true,
+    transparency = false,
   },
   highlight_groups = {
     Comment = { italic = true },
@@ -124,8 +126,6 @@ leap.init_highlight(true)
 -- Filesystem
 
 -- Telescope File Browser
-
-vim.cmd 'nnoremap <leader>fe <cmd>Telescope file_browser<cr>'
 
 local select_one_or_multi = function(prompt_bufnr)
   local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
@@ -170,6 +170,12 @@ require('telescope').setup {
     }
   }
 }
+
+-- Session manager
+
+require("auto-session").setup({
+    auto_session_suppress_dirs = { "~/", "~/Documents", "~/Downloads", "/" }
+})
 
 -- Bufferline
 
@@ -216,10 +222,10 @@ vim.cmd 'syntax enable'
 -- Python Debugger
 local dap = require('dap') 
 dap.defaults.switchbuf = 'v'
-dap.defaults.fallback.external_terminal = {
-    command = '~/AppData/Local/Programs/Git/usr/bin/bash';
-    args = {'-e'}
-}
+--dap.defaults.fallback.external_terminal = {
+--    command = '~\\AppData\\Local\\Programs\\Git\\usr\\bin\\bash';
+--    args = {'-e'}
+--}
 
 vim.keymap.set('n', '<F5>', function() dap.continue() end)
 vim.keymap.set('n', '<F8>', function() dap.close() end)
@@ -247,7 +253,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/bin/python')
+require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
 table.insert(require('dap').configurations.python, {
 	type = 'python',
 	request = 'launch',
@@ -378,6 +384,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('lspconfig').pyright.setup {
   capabilities = capabilities,
 }
+require('lspconfig').jdtls.setup { cmd = { 'jdtls' } }
 
 -- UltiSnips
 
@@ -390,6 +397,11 @@ require('lspconfig').pyright.setup {
 -- Neogit
 
 require('neogit').setup()
+
+-- Gitgutter
+
+vim.cmd "let g:gitgutter_show_msg_on_hunk_jumping = 0"
+vim.cmd "GitGutterSignsDisable"
 
 vim.opt.termguicolors = true
 
@@ -408,6 +420,8 @@ map("n", "<leader>ff", telescope.find_files)
 map("n", "<leader>fg", telescope.live_grep)
 map("n", "<leader>fb", telescope.buffers)
 map("n", "<leader>fh", telescope.help_tags)
+map("n", "<leader>fe", "<cmd>Telescope file_browser<cr>")
+map("n", "<leader>fc", "<cmd>Telescope file_browser path=%:p:h<cr>")
 
 map("n", "<Esc>", "<Esc>:noh<return>")
 
@@ -428,7 +442,7 @@ map("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
 vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
 
-vim.cmd "setlocal expandtab shiftwidth=4 softtabstop=4 tabstop=8"
+vim.cmd "set expandtab shiftwidth=4 softtabstop=4 tabstop=4"
 
 vim.opt.fillchars = { eob = ' ' }
 
@@ -454,5 +468,8 @@ vim.cmd "let g:vimtex_view_skim_activate = 1"
 vim.cmd "let g:vimtex_quickfix_mode=0"
 vim.cmd "let g:tex_conceal='abdmg'"
 vim.cmd "set conceallevel=1"
+
+vim.cmd "set cursorline"
+vim.cmd "set colorcolumn=80"
 
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
