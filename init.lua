@@ -94,7 +94,7 @@ require('mason').setup()
 require('rose-pine').setup({
   styles = {
     italic = false,
-    transparency = false,
+    transparency = true,
   },
   highlight_groups = {
     Comment = { italic = true },
@@ -106,9 +106,12 @@ require('rose-pine').setup({
 vim.cmd 'colorscheme rose-pine'
 
 -- Notifications
+
 require("notify").setup({
-  background_colour="#00000000"
+  background_colour="#000000"
 })
+
+-- Noice
 
 -- Navigation
 
@@ -174,7 +177,8 @@ require('telescope').setup {
 -- Session manager
 
 require("auto-session").setup({
-    auto_session_suppress_dirs = { "~/", "~/Documents", "~/Downloads", "/" }
+    auto_session_suppress_dirs = { "~/", "~/Documents", "~/Downloads", "/" },
+    auto_session_create_enabled = false,
 })
 
 -- Bufferline
@@ -253,7 +257,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
+require('dap-python').setup('~/.venvs/debugpy/bin/python')
 table.insert(require('dap').configurations.python, {
 	type = 'python',
 	request = 'launch',
@@ -333,11 +337,6 @@ dashboard.section.header.val = {
 "                                                                    ",
 }                                                                      
                                                                        
-                                                                       
-                                                                       
-
-
-
 dashboard.section.buttons.val = {
     dashboard.button("o", "   > Recent" , ":Telescope oldfiles<cr>"),
     dashboard.button("f", "   > Find file", ":Telescope find_files<cr>"),
@@ -354,6 +353,7 @@ cmp.setup {
 	["J"] = cmp.mapping(
           function(fallback)
             cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+
           end,
           { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
         ),
@@ -440,7 +440,9 @@ map("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
 map("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
 map("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
-vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
+map("n", "<leader>ss", "<cmd>SessionSave<cr>")
+
+vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/bin/python'"
 
 vim.cmd "set expandtab shiftwidth=4 softtabstop=4 tabstop=4"
 
@@ -470,6 +472,6 @@ vim.cmd "let g:tex_conceal='abdmg'"
 vim.cmd "set conceallevel=1"
 
 vim.cmd "set cursorline"
-vim.cmd "set colorcolumn=80"
+--vim.cmd "set colorcolumn=80"
 
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
