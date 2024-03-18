@@ -14,8 +14,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
   'rose-pine/neovim',
-  'airblade/vim-gitgutter',
-  'eandrju/cellular-automaton.nvim',
+  'stevearc/aerial.nvim',
+  'mfussenegger/nvim-jdtls',
+  'sindrets/diffview.nvim',
   'folke/trouble.nvim',
   'pocco81/autosave.nvim',
   'lervag/vimtex',
@@ -38,7 +39,6 @@ require("lazy").setup({
   'mfussenegger/nvim-dap-python',
   'neogitorg/neogit',
   'mbbill/undotree',
-  'ap/vim-css-color',
   'chentoast/marks.nvim',
   'nvim-lualine/lualine.nvim',
   {
@@ -54,7 +54,7 @@ require("lazy").setup({
     event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
+--      "rcarriga/nvim-notify",
       }
   },
   {
@@ -103,13 +103,13 @@ require('rose-pine').setup({
   }
 })
 
-vim.cmd 'colorscheme rose-pine'
+vim.cmd 'colorscheme rose-pine-moon'
 
 -- Notifications
 
-require("notify").setup({
-  background_colour="#000000"
-})
+--require("notify").setup({
+--  background_colour="#000000"
+--})
 
 -- Noice
 
@@ -257,7 +257,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/bin/python')
+require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
 table.insert(require('dap').configurations.python, {
 	type = 'python',
 	request = 'launch',
@@ -360,6 +360,26 @@ require('lspconfig').pyright.setup {
 }
 require('lspconfig').jdtls.setup { cmd = { 'jdtls' } }
 
+local config = {
+  cmd = {'/Users/cmcirvin/AppData/Local/nvim-data/jdtls'},
+  root_dir = '/Users/cmcirvin/Documents/lh-remoting-master-unclass'
+--  root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
+}
+require('jdtls').start_or_attach(config)
+
+-- Aerial
+
+require("aerial").setup({
+  -- optionally use on_attach to set keymaps when aerial has attached to a buffer
+  on_attach = function(bufnr)
+    -- Jump forwards/backwards with '{' and '}'
+    vim.keymap.set("n", "[", "<cmd>AerialPrev<CR>", { buffer = bufnr })
+    vim.keymap.set("n", "]", "<cmd>AerialNext<CR>", { buffer = bufnr })
+  end,
+})
+
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
 -- UltiSnips
 
 --vim.cmd "let g:UltiSnipsExpandTrigger = '<tab>'"
@@ -370,17 +390,11 @@ require('lspconfig').jdtls.setup { cmd = { 'jdtls' } }
 
 -- Neogit
 
-require('neogit').setup()
-
--- Gitgutter
-
-vim.cmd "let g:gitgutter_show_msg_on_hunk_jumping = 0"
-vim.cmd "GitGutterSignsDisable"
+require('neogit').setup({
+    integrations = { diffview = true }
+})
 
 vim.opt.termguicolors = true
-
-map("n", "<leader>66", "<cmd>CellularAutomaton make_it_rain<cr>")
-map("n", "<leader>42", "<cmd>CellularAutomaton game_of_life<cr>")
 
 map("n", "<c-l>", ":bn<CR>")
 map("n", "<c-h>", ":bp<CR>")
@@ -416,7 +430,7 @@ map("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
 map("n", "<leader>ss", "<cmd>SessionSave<cr>")
 
-vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/bin/python'"
+vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
 
 vim.cmd "set expandtab shiftwidth=4 softtabstop=4 tabstop=4"
 
@@ -446,6 +460,6 @@ vim.cmd "let g:tex_conceal='abdmg'"
 vim.cmd "set conceallevel=1"
 
 vim.cmd "set cursorline"
---vim.cmd "set colorcolumn=80"
+vim.cmd "set colorcolumn=80"
 
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
