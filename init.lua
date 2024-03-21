@@ -15,7 +15,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'rose-pine/neovim',
   'stevearc/aerial.nvim',
-  'mfussenegger/nvim-jdtls',
   'sindrets/diffview.nvim',
   'folke/trouble.nvim',
   'pocco81/autosave.nvim',
@@ -105,16 +104,6 @@ require('rose-pine').setup({
 
 vim.cmd 'colorscheme rose-pine-moon'
 
--- Notifications
-
---require("notify").setup({
---  background_colour="#000000"
---})
-
--- Noice
-
--- Navigation
-
 -- Leap
 
 leap = require('leap')
@@ -143,13 +132,7 @@ local select_one_or_multi = function(prompt_bufnr)
   else
     require('telescope.actions').select_default(prompt_bufnr)
   end
---  vim.cmd('Telescope file_browser')
 end
-
---local select_and_reopen = function(prompt_bufnr)
---  require('telescope.actions').select_default(prompt_bufnr)
---  vim.cmd('Telescope file_browser')
---end
 
 local fb_actions = require('telescope').extensions.file_browser.actions
 require('telescope').setup {
@@ -226,10 +209,6 @@ vim.cmd 'syntax enable'
 -- Python Debugger
 local dap = require('dap') 
 dap.defaults.switchbuf = 'v'
---dap.defaults.fallback.external_terminal = {
---    command = '~\\AppData\\Local\\Programs\\Git\\usr\\bin\\bash';
---    args = {'-e'}
---}
 
 vim.keymap.set('n', '<F5>', function() dap.continue() end)
 vim.keymap.set('n', '<F8>', function() dap.close() end)
@@ -257,7 +236,7 @@ vim.keymap.set('n', '<Leader>ds', function()
   sidebar.open()
 end)
 
-require('dap-python').setup('~/.venvs/debugpy/Scripts/python')
+require('dap-python').setup('~/.venvs/debugpy/bin/python')
 table.insert(require('dap').configurations.python, {
 	type = 'python',
 	request = 'launch',
@@ -358,14 +337,6 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('lspconfig').pyright.setup {
   capabilities = capabilities,
 }
-require('lspconfig').jdtls.setup { cmd = { 'jdtls' } }
-
-local config = {
-  cmd = {'/Users/cmcirvin/AppData/Local/nvim-data/jdtls'},
-  root_dir = '/Users/cmcirvin/Documents/lh-remoting-master-unclass'
---  root_dir = vim.fs.dirname(vim.fs.find({'gradlew', '.git', 'mvnw'}, { upward = true })[1]),
-}
-require('jdtls').start_or_attach(config)
 
 -- Aerial
 
@@ -430,7 +401,7 @@ map("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
 map("n", "<leader>ss", "<cmd>SessionSave<cr>")
 
-vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/Scripts/python'"
+vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/bin/python'"
 
 vim.cmd "set expandtab shiftwidth=4 softtabstop=4 tabstop=4"
 
@@ -451,8 +422,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'
 
-vim.cmd "let g:tex_flavor='latex'"
 vim.cmd "let g:vimtex_view_method = 'skim'"
+vim.cmd "let g:tex_flavor='latex'"
 vim.cmd "let g:vimtex_view_skim_sync = 1"
 vim.cmd "let g:vimtex_view_skim_activate = 1"
 vim.cmd "let g:vimtex_quickfix_mode=0"
@@ -460,6 +431,5 @@ vim.cmd "let g:tex_conceal='abdmg'"
 vim.cmd "set conceallevel=1"
 
 vim.cmd "set cursorline"
-vim.cmd "set colorcolumn=80"
 
 vim.cmd 'tnoremap <Esc> <C-\\><C-n>'
