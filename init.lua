@@ -29,6 +29,16 @@ require("lazy").setup({
       'nvim-treesitter/nvim-treesitter'
     }
   },
+  {
+    "Exafunction/codeium.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    config = function()
+      require("codeium").setup({})
+    end
+  },
   'nvim-telescope/telescope-file-browser.nvim',
   'dstein64/vim-startuptime',
   'williamboman/mason.nvim',
@@ -298,32 +308,39 @@ dashboard.section.buttons.val = {
     dashboard.button("b", "   > Buffers" , ":Telescope buffers<cr>"),
     dashboard.button("h", "   > Help", ":Telescope help_tags<cr>")
 }
- 
+
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup {
+    sources = {
+	    { name = "codeium" },
+    },
     mapping = {
-	["J"] = cmp.mapping(
-          function(fallback)
-            cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
-
-          end,
-          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
-        ),
+  	    ["J"] = cmp.mapping(
+              function(fallback)
+                cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+              end,
+              { "i", "s" }
+            ),
         ["K"] = cmp.mapping(
-          function(fallback)
-            cmp_ultisnips_mappings.jump_backwards(fallback)
-          end,
-          { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
-        ),
+              function(fallback)
+                cmp_ultisnips_mappings.jump_backwards(fallback)
+              end,
+              { "i", "s" }
+            ),
+        ['L'] = cmp.mapping.scroll_docs(-4),
+        ['H'] = cmp.mapping.scroll_docs(4),
+        ['C'] = cmp.mapping.confirm({ select = true }),
+        ['E'] = cmp.mapping.abort(),
     },
     sources = {
-	{ name = "gh_issues" },
-	{ name = "nvim_lua" },
-	{ name = "nvim_lsp" },
-	{ name = "path"},
-	{ name = "ultisnips" },
-	{ name = "buffer", keyword_length = 1},
+	    { name = "gh_issues" },
+	    { name = "nvim_lua" },
+	    { name = "nvim_lsp" },
+	    { name = "path" },
+	    { name = "ultisnips" },
+	    { name = "codeium" },
+	    { name = "buffer", keyword_length = 1},
     },
     snippet = {
 	expand = function(args)
