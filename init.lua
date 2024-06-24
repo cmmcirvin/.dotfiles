@@ -16,10 +16,48 @@ require("lazy").setup({
   'rose-pine/neovim',
   'stevearc/aerial.nvim',
   'sindrets/diffview.nvim',
-  'folke/trouble.nvim',
+--  'folke/trouble.nvim',
+  {
+    "folke/trouble.nvim",
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = "Trouble",
+    keys = {
+      {
+        "<leader>xx",
+        "<cmd>Trouble diagnostics toggle<cr>",
+        desc = "Diagnostics (Trouble)",
+      },
+      {
+        "<leader>xX",
+        "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+        desc = "Buffer Diagnostics (Trouble)",
+      },
+      {
+        "<leader>cs",
+        "<cmd>Trouble symbols toggle focus=false<cr>",
+        desc = "Symbols (Trouble)",
+      },
+      {
+        "<leader>cl",
+        "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      {
+        "<leader>xL",
+        "<cmd>Trouble loclist toggle<cr>",
+        desc = "Location List (Trouble)",
+      },
+      {
+        "<leader>xQ",
+        "<cmd>Trouble qflist toggle<cr>",
+        desc = "Quickfix List (Trouble)",
+      },
+    },
+  },
   'pocco81/autosave.nvim',
   'lervag/vimtex',
   'rmagatti/auto-session',
+  'luckasRanarison/nvim-devdocs',
   'ggandor/leap.nvim',
   {
     'nvim-telescope/telescope.nvim',
@@ -47,6 +85,7 @@ require("lazy").setup({
   'mfussenegger/nvim-dap',
   'mfussenegger/nvim-dap-python',
   'neogitorg/neogit',
+  'sindrets/diffview.nvim',
   'mbbill/undotree',
   'chentoast/marks.nvim',
   'nvim-lualine/lualine.nvim',
@@ -149,19 +188,11 @@ require('telescope').setup {
   defaults = {
     mappings = {
       i = {
-        ['<CR>'] = select_one_or_multi,
-	['J'] = require('telescope.actions').move_selection_next,
-	['K'] = require('telescope.actions').move_selection_previous,
-	['L'] = require('telescope.actions').toggle_selection,
-	['C'] = fb_actions.create,
-	['R'] = fb_actions.rename,
-	['M'] = fb_actions.move,
-	['Y'] = fb_actions.copy,
-	['D'] = fb_actions.remove
+        ['<S-CR>'] = select_one_or_multi,
       },
       n = {
-        ['<CR>'] = select_one_or_multi,
-	['l'] = require('telescope.actions').toggle_selection
+        ['<S-CR>'] = select_one_or_multi,
+        ['l'] = require('telescope.actions').toggle_selection
       }
     }
   }
@@ -248,24 +279,26 @@ end)
 
 require('dap-python').setup('~/.venvs/debugpy/bin/python')
 table.insert(require('dap').configurations.python, {
-	type = 'python',
-	request = 'launch',
-	console='integratedTerminal',
-	name = 'Base working directory',
-	program = '${file}',
-	cwd = './'
+    type = 'python',
+    justMyCode = false,
+    request = 'launch',
+    console='integratedTerminal',
+    name = 'Base working directory',
+    program = '${file}',
+    cwd = './'
 })
 table.insert(require('dap').configurations.python, {
-	type = 'python',
-	request = 'launch',
-	console='integratedTerminal',
-	name = 'Base working directory with arguments',
-	program = '${file}',
-	cwd = './',
-      	args = function()
-      	  local args_string = vim.fn.input('Arguments: ')
-      	  return vim.split(args_string, " +")
-      	end;
+    type = 'python',
+    justMyCode = false,
+    request = 'launch',
+    console='integratedTerminal',
+    name = 'Base working directory with arguments',
+    program = '${file}',
+    cwd = './',
+    args = function()
+      local args_string = vim.fn.input('Arguments: ')
+      return vim.split(args_string, " +")
+    end;
 })
 
 --Greeter
@@ -313,10 +346,10 @@ local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup {
     sources = {
-	    { name = "codeium" },
+        { name = "codeium" },
     },
     mapping = {
-  	    ["J"] = cmp.mapping(
+          ["J"] = cmp.mapping(
               function(fallback)
                 cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
               end,
@@ -330,22 +363,22 @@ cmp.setup {
             ),
         ['L'] = cmp.mapping.scroll_docs(-4),
         ['H'] = cmp.mapping.scroll_docs(4),
-        ['C'] = cmp.mapping.confirm({ select = true }),
-        ['E'] = cmp.mapping.abort(),
+        ['<leader>c'] = cmp.mapping.confirm({ select = true }),
+        ['<leader>e'] = cmp.mapping.abort(),
     },
     sources = {
-	    { name = "gh_issues" },
-	    { name = "nvim_lua" },
-	    { name = "nvim_lsp" },
-	    { name = "path" },
-	    { name = "ultisnips" },
-	    { name = "codeium" },
-	    { name = "buffer", keyword_length = 1},
+        { name = "gh_issues" },
+        { name = "nvim_lua" },
+        { name = "nvim_lsp" },
+        { name = "path" },
+        { name = "ultisnips" },
+        { name = "codeium" },
+        { name = "buffer", keyword_length = 1},
     },
     snippet = {
-	expand = function(args)
+    expand = function(args)
             vim.fn["UltiSnips#Anon"](args.body)
-	end,
+    end,
     },
 }
 
@@ -384,9 +417,9 @@ require('neogit').setup({
 
 vim.opt.termguicolors = true
 
-map("n", "<c-l>", ":bn<CR>")
-map("n", "<c-h>", ":bp<CR>")
-map("n", "<c-q>", ":bd<CR>")
+map("n", "<c-l>", ":bn!<CR>")
+map("n", "<c-h>", ":bp!<CR>")
+map("n", "<c-q>", ":bp<bar>bd! #<CR>")
 
 map("n", "<leader>u", "<cmd>UndotreeToggle<cr>")
 map("n", "<leader>t", ":enew<CR>")
@@ -409,12 +442,12 @@ map("v", "<c-j>", ":m '>+1<cr>gv=gv")
 map("v", "<c-k>", ":m '<-2<cr>gv=gv")
 
 -- Trouble
-map("n", "<leader>xx", function() require("trouble").toggle() end)
-map("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
-map("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
-map("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
-map("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
-map("n", "gR", function() require("trouble").toggle("lsp_references") end)
+--map("n", "<leader>xx", function() require("trouble").toggle() end)
+--map("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end)
+--map("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end)
+--map("n", "<leader>xq", function() require("trouble").toggle("quickfix") end)
+--map("n", "<leader>xl", function() require("trouble").toggle("loclist") end)
+--map("n", "gR", function() require("trouble").toggle("lsp_references") end)
 
 map("n", "<leader>ss", "<cmd>SessionSave<cr>")
 
@@ -424,6 +457,21 @@ vim.cmd "set expandtab shiftwidth=4 softtabstop=4 tabstop=4"
 
 vim.opt.fillchars = { eob = ' ' }
 
+-- Documentation
+
+require("nvim-devdocs").setup({
+  float_win = {
+    relative = "editor",
+    height = vim.api.nvim_win_get_height(0) - 20,
+    width = vim.api.nvim_win_get_width(0) - 20,
+    border = "rounded",
+  },
+  previewer_cmd = "glow",
+  cmd_args = { "-s", "dracula", "-w", vim.api.nvim_win_get_width(0) - 20 }
+})
+
+map("n", "<leader>dd", ":DevdocsOpenFloat<CR>")
+
 -- lsp-config
 
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -432,12 +480,17 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local opts = { buffer = ev.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- 'K' again to jump into window
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
   end,
 })
 
 vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'
+--vim.cmd 'nnoremap <c-q> :bp<bar>bd #<CR>'
+
+vim.cmd 'set list'
+vim.cmd 'set lcs+=space:·'
 
 vim.cmd "let g:vimtex_view_method = 'skim'"
 vim.cmd "let g:tex_flavor='latex'"
@@ -446,6 +499,11 @@ vim.cmd "let g:vimtex_view_skim_activate = 1"
 vim.cmd "let g:vimtex_quickfix_mode=0"
 vim.cmd "let g:tex_conceal='abdmg'"
 vim.cmd "set conceallevel=1"
+vim.cmd "set foldmethod=expr"
+vim.cmd "set foldexpr=nvim_treesitter#foldexpr()"
+vim.cmd "set nofoldenable"
+map("n", "<space>", "za")
+map("v", "<space>", "zf")
 
 vim.cmd "set cursorline"
 
