@@ -16,7 +16,6 @@ require("lazy").setup({
   'rose-pine/neovim',
   'stevearc/aerial.nvim',
   'sindrets/diffview.nvim',
---  'folke/trouble.nvim',
   {
     "folke/trouble.nvim",
     opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -67,16 +66,6 @@ require("lazy").setup({
       'nvim-treesitter/nvim-treesitter'
     }
   },
-  {
-    "Exafunction/codeium.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "hrsh7th/nvim-cmp",
-    },
-    config = function()
-      require("codeium").setup({})
-    end
-  },
   'nvim-telescope/telescope-file-browser.nvim',
   'dstein64/vim-startuptime',
   'williamboman/mason.nvim',
@@ -125,6 +114,7 @@ require("lazy").setup({
   'hrsh7th/cmp-path',
   'hrsh7th/cmp-nvim-lua',
   'hrsh7th/cmp-nvim-lsp',
+  'tzachar/cmp-ai',
 })
 
 local map = function(mode, l, r, opts)
@@ -345,11 +335,8 @@ dashboard.section.buttons.val = {
 local cmp = require('cmp')
 local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup {
-    sources = {
-        { name = "codeium" },
-    },
     mapping = {
-          ["J"] = cmp.mapping(
+        ["J"] = cmp.mapping(
               function(fallback)
                 cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
               end,
@@ -363,17 +350,27 @@ cmp.setup {
             ),
         ['L'] = cmp.mapping.scroll_docs(-4),
         ['H'] = cmp.mapping.scroll_docs(4),
-        ['<leader>c'] = cmp.mapping.confirm({ select = true }),
+        ['<leader>c'] = cmp.mapping(
+             cmp.mapping.complete({
+               config = {
+                 sources = cmp.config.sources({
+                   { name = 'cmp_ai' },
+                 }),
+               },
+             }),
+             { "i", "s" }
+        ),
+        ['<S-CR>'] = cmp.mapping.confirm({ select = true }),
         ['<leader>e'] = cmp.mapping.abort(),
     },
     sources = {
-        { name = "gh_issues" },
-        { name = "nvim_lua" },
-        { name = "nvim_lsp" },
-        { name = "path" },
-        { name = "ultisnips" },
-        { name = "codeium" },
-        { name = "buffer", keyword_length = 1},
+--        { name = "gh_issues" },
+--        { name = "nvim_lua" },
+--        { name = "nvim_lsp" },
+--        { name = "path" },
+--        { name = "ultisnips" },
+--        { name = "cmp_ai" },
+--        { name = "buffer", keyword_length = 1},
     },
     snippet = {
     expand = function(args)
@@ -387,6 +384,35 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 require('lspconfig').pyright.setup {
   capabilities = capabilities,
 }
+
+local cmp_ai = require('cmp_ai.config')
+cmp_ai:setup({
+  max_lines = 10,
+  provider = 'HF',
+  notify = true,
+  notify_callback = function(msg)
+    vim.notify(msg)
+  end,
+  run_on_every_keystroke = true,
+  ignored_file_types = {
+  },
+})
+
+--local cmp_ai = require('cmp_ai.config')
+--cmp_ai:setup({
+--  max_lines = 10,
+--  provider = 'Ollama',
+--  provider_options = {
+--      model = 'starcoder2:15b',
+--  },
+--  notify = true,
+--  notify_callback = function(msg)
+--    vim.notify(msg)
+--  end,
+--  run_on_every_keystroke = false,
+--  ignored_file_types = {
+--  },
+--})
 
 -- Aerial
 
@@ -502,6 +528,7 @@ vim.cmd "set conceallevel=1"
 vim.cmd "set foldmethod=expr"
 vim.cmd "set foldexpr=nvim_treesitter#foldexpr()"
 vim.cmd "set nofoldenable"
+
 map("n", "<space>", "za")
 map("v", "<space>", "zf")
 
