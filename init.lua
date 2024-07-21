@@ -15,7 +15,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   'rose-pine/neovim',
   'stevearc/aerial.nvim',
-  'sindrets/diffview.nvim',
+  'echasnovski/mini.move',
+  'echasnovski/mini.animate',
   {
     "folke/trouble.nvim",
     opts = {}, -- for default options, refer to the configuration section for custom setup.
@@ -53,11 +54,18 @@ require("lazy").setup({
       },
     },
   },
-  'pocco81/autosave.nvim',
+  {
+    "kylechui/nvim-surround",
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+        require("nvim-surround").setup({})
+    end
+  },
+  'pocco81/auto-save.nvim',
   'lervag/vimtex',
   'rmagatti/auto-session',
   'luckasRanarison/nvim-devdocs',
-  'ggandor/leap.nvim',
   {
     'nvim-telescope/telescope.nvim',
     dependencies =
@@ -65,6 +73,17 @@ require("lazy").setup({
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter'
     }
+  },
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    },
   },
   'nvim-telescope/telescope-file-browser.nvim',
   'dstein64/vim-startuptime',
@@ -94,13 +113,13 @@ require("lazy").setup({
 --      "rcarriga/nvim-notify",
       }
   },
-  {
-    'akinsho/bufferline.nvim',
-    dependencies = 
-    {
-      'nvim-tree/nvim-web-devicons'
-    }
-  },
+--  {
+--    'akinsho/bufferline.nvim',
+--    dependencies = 
+--    {
+--      'nvim-tree/nvim-web-devicons'
+--    }
+--  },
   'rmagatti/goto-preview',
   'sirver/ultisnips',
   {
@@ -143,16 +162,26 @@ require('rose-pine').setup({
 
 vim.cmd 'colorscheme rose-pine-moon'
 
+-- Mini
+require('mini.move').setup()
+require('mini.animate').setup({
+    cursor = { enable=true, timing=function(_, n) return 250 / n end, },
+    scroll = { enable=false },
+    resize = { enable=false },
+    open = { enable=false },
+    close = { enable=false },
+})
+
 -- Leap
 
-leap = require('leap')
-vim.keymap.set({'n', 'x', 'o'}, 'f', '<Plug>(leap-forward-to)')
-vim.keymap.set({'n', 'x', 'o'}, 'F', '<Plug>(leap-backward-to)')
-vim.keymap.set({'n', 'x', 'o'}, 't', '<Plug>(leap-forward-till)')
-vim.keymap.set({'n', 'x', 'o'}, 'T', '<Plug>(leap-backward-till)')
-leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
-leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
-leap.init_highlight(true)
+--leap = require('leap')
+--vim.keymap.set({'n', 'x', 'o'}, 'f', '<Plug>(leap-forward-to)')
+--vim.keymap.set({'n', 'x', 'o'}, 'F', '<Plug>(leap-backward-to)')
+--vim.keymap.set({'n', 'x', 'o'}, 't', '<Plug>(leap-forward-till)')
+--vim.keymap.set({'n', 'x', 'o'}, 'T', '<Plug>(leap-backward-till)')
+--leap.opts.labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
+--leap.opts.safe_labels = {'e', 'r', 'g', 'v', 'c', 'n', 'm', 'u', 'b', 't', 'y', 's', 'f', 'd'}
+--leap.init_highlight(true)
 
 -- Filesystem
 
@@ -197,32 +226,42 @@ require("auto-session").setup({
 
 -- Bufferline
 
-require('bufferline').setup()
+--require('bufferline').setup()
 
 -- Lualine
 
 require('lualine').setup ({
   options = {
-    section_separators = { left = '', right = '' },
-    component_separators = { left = '', right = '' }
+--    component_separators = { left = '', right = '' },
+    component_separators = { left = '', right = '' },
+    section_separators = { left = '', right = '' },
   },
   sections = {
-    lualine_c = 
+    lualine_a =
     {
-      {
-  'filename',
-        file_status = true,
-        path = 1,
-      }
-    }
+        {
+            'branch'
+        }
+    },
+    lualine_b =
+    {
+        {
+            'buffers',
+            use_mode_colors = true,
+            max_length = vim.o.columns,
+            
+        }
+    },
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z ={},
   }
 })
 
 -- Commands
-vim.cmd 'set nu'
-vim.cmd 'set relativenumber'
-
--- Syntax
+vim.cmd 'set number'
+vim.cmd 'set rnu'
 
 -- Treesitter
 require('nvim-treesitter.configs').setup {
@@ -348,8 +387,8 @@ cmp.setup {
               end,
               { "i", "s" }
             ),
-        ['L'] = cmp.mapping.scroll_docs(-4),
-        ['H'] = cmp.mapping.scroll_docs(4),
+        ['L'] = cmp.mapping.scroll_docs(4),
+        ['H'] = cmp.mapping.scroll_docs(-4),
         ['<leader>c'] = cmp.mapping(
              cmp.mapping.complete({
                config = {
@@ -364,13 +403,13 @@ cmp.setup {
         ['<leader>e'] = cmp.mapping.abort(),
     },
     sources = {
---        { name = "gh_issues" },
---        { name = "nvim_lua" },
---        { name = "nvim_lsp" },
---        { name = "path" },
---        { name = "ultisnips" },
+        { name = "gh_issues" },
+        { name = "nvim_lua" },
+        { name = "nvim_lsp" },
+        { name = "path" },
+        { name = "ultisnips" },
 --        { name = "cmp_ai" },
---        { name = "buffer", keyword_length = 1},
+        { name = "buffer", keyword_length = 1},
     },
     snippet = {
     expand = function(args)
@@ -429,9 +468,9 @@ vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 
 -- UltiSnips
 
---vim.cmd "let g:UltiSnipsExpandTrigger = '<tab>'"
---vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
---vim.cmd "let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'"
+vim.cmd "let g:UltiSnipsExpandTrigger = '<tab>'"
+vim.cmd "let g:UltiSnipsJumpForwardTrigger = '<tab>'"
+vim.cmd "let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'"
 
 -- Git
 
@@ -493,7 +532,7 @@ require("nvim-devdocs").setup({
     border = "rounded",
   },
   previewer_cmd = "glow",
-  cmd_args = { "-s", "dracula", "-w", vim.api.nvim_win_get_width(0) - 20 }
+--  cmd_args = { "-s", "dracula", "-w", vim.api.nvim_win_get_width(0) - 20 }
 })
 
 map("n", "<leader>dd", ":DevdocsOpenFloat<CR>")
@@ -512,6 +551,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- marks
+
+require('marks').setup({})
+
 vim.cmd 'nnoremap <Esc> <Esc>:noh<return>'
 --vim.cmd 'nnoremap <c-q> :bp<bar>bd #<CR>'
 
@@ -528,6 +571,8 @@ vim.cmd "set conceallevel=1"
 vim.cmd "set foldmethod=expr"
 vim.cmd "set foldexpr=nvim_treesitter#foldexpr()"
 vim.cmd "set nofoldenable"
+vim.cmd "set nofixeol"
+vim.cmd "set nofixendofline"
 
 map("n", "<space>", "za")
 map("v", "<space>", "zf")
