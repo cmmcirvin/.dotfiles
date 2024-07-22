@@ -63,6 +63,13 @@ require("lazy").setup({
     end
   },
   'pocco81/auto-save.nvim',
+  {
+      'kevinhwang91/nvim-ufo',
+      dependencies = 
+      {
+          'kevinhwang91/promise-async'
+      }
+  },
   'lervag/vimtex',
   'rmagatti/auto-session',
   'luckasRanarison/nvim-devdocs',
@@ -76,14 +83,11 @@ require("lazy").setup({
   },
   {
     "folke/flash.nvim",
-    event = "VeryLazy",
-    opts = {},
     keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    },
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "flash" },
+      { "f", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "flash treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "remote flash" }
+    }
   },
   'nvim-telescope/telescope-file-browser.nvim',
   'dstein64/vim-startuptime',
@@ -133,7 +137,7 @@ require("lazy").setup({
   'hrsh7th/cmp-path',
   'hrsh7th/cmp-nvim-lua',
   'hrsh7th/cmp-nvim-lsp',
-  'tzachar/cmp-ai',
+  -- 'tzachar/cmp-ai',
 })
 
 local map = function(mode, l, r, opts)
@@ -172,6 +176,15 @@ require('mini.animate').setup({
     close = { enable=false },
 })
 
+-- Flash
+
+require('flash').setup({
+    modes = {
+        char = { enabled = false, keys = {} },
+        search = { enabled = true }
+    }
+})
+
 -- Leap
 
 --leap = require('leap')
@@ -205,6 +218,7 @@ end
 local fb_actions = require('telescope').extensions.file_browser.actions
 require('telescope').setup {
   defaults = {
+    layout_strategy = 'flex',
     mappings = {
       i = {
         ['<S-CR>'] = select_one_or_multi,
@@ -213,7 +227,7 @@ require('telescope').setup {
         ['<S-CR>'] = select_one_or_multi,
         ['l'] = require('telescope.actions').toggle_selection
       }
-    }
+    },
   }
 }
 
@@ -236,7 +250,7 @@ require('lualine').setup ({
     component_separators = { left = '', right = '' },
     section_separators = { left = '', right = '' },
   },
-  sections = {
+  tabline = {
     lualine_a =
     {
         {
@@ -256,7 +270,8 @@ require('lualine').setup ({
     lualine_x = {},
     lualine_y = {},
     lualine_z ={},
-  }
+  },
+  sections = {}
 })
 
 -- Commands
@@ -389,16 +404,16 @@ cmp.setup {
             ),
         ['L'] = cmp.mapping.scroll_docs(4),
         ['H'] = cmp.mapping.scroll_docs(-4),
-        ['<leader>c'] = cmp.mapping(
-             cmp.mapping.complete({
-               config = {
-                 sources = cmp.config.sources({
-                   { name = 'cmp_ai' },
-                 }),
-               },
-             }),
-             { "i", "s" }
-        ),
+        -- ['<leader>c'] = cmp.mapping(
+        --      cmp.mapping.complete({
+        --        config = {
+        --          sources = cmp.config.sources({
+        --            { name = 'cmp_ai' },
+        --          }),
+        --        },
+        --      }),
+        --      { "i", "s" }
+        -- ),
         ['<S-CR>'] = cmp.mapping.confirm({ select = true }),
         ['<leader>e'] = cmp.mapping.abort(),
     },
@@ -424,18 +439,18 @@ require('lspconfig').pyright.setup {
   capabilities = capabilities,
 }
 
-local cmp_ai = require('cmp_ai.config')
-cmp_ai:setup({
-  max_lines = 10,
-  provider = 'HF',
-  notify = true,
-  notify_callback = function(msg)
-    vim.notify(msg)
-  end,
-  run_on_every_keystroke = true,
-  ignored_file_types = {
-  },
-})
+-- local cmp_ai = require('cmp_ai.config')
+-- cmp_ai:setup({
+--   max_lines = 10,
+--   provider = 'HF',
+--   notify = true,
+--   notify_callback = function(msg)
+--     vim.notify(msg)
+--   end,
+--   run_on_every_keystroke = true,
+--   ignored_file_types = {
+--   },
+-- })
 
 --local cmp_ai = require('cmp_ai.config')
 --cmp_ai:setup({
@@ -551,6 +566,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- nvim-ufo
+require('ufo').setup({
+    provider_selector = function(bufnr, filetype, buftype)
+        return {'treesitter', 'indent'}
+    end
+})
+
 -- marks
 
 require('marks').setup({})
@@ -568,9 +590,9 @@ vim.cmd "let g:vimtex_view_skim_activate = 1"
 vim.cmd "let g:vimtex_quickfix_mode=0"
 vim.cmd "let g:tex_conceal='abdmg'"
 vim.cmd "set conceallevel=1"
-vim.cmd "set foldmethod=expr"
-vim.cmd "set foldexpr=nvim_treesitter#foldexpr()"
-vim.cmd "set nofoldenable"
+--vim.cmd "set foldmethod=expr"
+--vim.cmd "set foldexpr=nvim_treesitter#foldexpr()"
+--vim.cmd "set nofoldenable"
 vim.cmd "set nofixeol"
 vim.cmd "set nofixendofline"
 
