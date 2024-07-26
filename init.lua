@@ -64,11 +64,72 @@ require("lazy").setup({
   },
   'pocco81/auto-save.nvim',
   {
-      'kevinhwang91/nvim-ufo',
-      dependencies = 
+    "kevinhwang91/nvim-ufo",
+    enabled = true,
+    dependencies = { "kevinhwang91/promise-async" },
+    event = "BufRead",
+    keys = {
       {
-          'kevinhwang91/promise-async'
-      }
+        "zR",
+        function()
+          require("ufo").openAllFolds()
+        end,
+      },
+      {
+        "zM",
+        function()
+          require("ufo").closeAllFolds()
+        end,
+      },
+      {
+        "zp",
+        function()
+          local winid = require("ufo").peekFoldedLinesUnderCursor()
+          if not winid then
+            vim.lsp.buf.hover()
+          end
+        end,
+      },
+    },
+    config = function()
+      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+      vim.o.foldcolumn = "0"
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 100
+      vim.o.foldenable = true
+      local handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = (" 󰁂 %d "):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, "MoreMsg" })
+        return newVirtText
+      end
+  
+      require("ufo").setup({
+        open_fold_hl_timeout = 0,
+        fold_virt_text_handler = handler,
+      })
+    end,
   },
   'lervag/vimtex',
   'rmagatti/auto-session',
@@ -114,30 +175,22 @@ require("lazy").setup({
     event = "VeryLazy",
     dependencies = {
       "MunifTanjim/nui.nvim",
---      "rcarriga/nvim-notify",
       }
   },
---  {
---    'akinsho/bufferline.nvim',
---    dependencies = 
---    {
---      'nvim-tree/nvim-web-devicons'
---    }
---  },
   'rmagatti/goto-preview',
   'sirver/ultisnips',
   {
     'hrsh7th/nvim-cmp',
     dependencies = 
     {
-      'quangnguyen30192/cmp-nvim-ultisnips'
+      'quangnguyen30192/cmp-nvim-ultisnips',
     }
   },
   'hrsh7th/cmp-buffer',
   'hrsh7th/cmp-path',
   'hrsh7th/cmp-nvim-lua',
   'hrsh7th/cmp-nvim-lsp',
-  -- 'tzachar/cmp-ai',
+  'tzachar/cmp-ai',
 })
 
 local map = function(mode, l, r, opts)
@@ -180,8 +233,7 @@ require('mini.animate').setup({
 
 require('flash').setup({
     modes = {
-        char = { enabled = false, keys = {} },
-        search = { enabled = true }
+        char = { enabled = false, keys = {} }
     }
 })
 
@@ -275,8 +327,8 @@ require('lualine').setup ({
 })
 
 -- Commands
-vim.cmd 'set number'
-vim.cmd 'set rnu'
+--vim.cmd 'set number'
+--vim.cmd 'set rnu'
 
 -- Treesitter
 require('nvim-treesitter.configs').setup {
@@ -404,16 +456,16 @@ cmp.setup {
             ),
         ['L'] = cmp.mapping.scroll_docs(4),
         ['H'] = cmp.mapping.scroll_docs(-4),
-        -- ['<leader>c'] = cmp.mapping(
-        --      cmp.mapping.complete({
-        --        config = {
-        --          sources = cmp.config.sources({
-        --            { name = 'cmp_ai' },
-        --          }),
-        --        },
-        --      }),
-        --      { "i", "s" }
-        -- ),
+        ['<leader>c'] = cmp.mapping(
+             cmp.mapping.complete({
+               config = {
+                 sources = cmp.config.sources({
+                   { name = 'cmp_ai' },
+                 }),
+               },
+             }),
+             { "i", "s" }
+        ),
         ['<S-CR>'] = cmp.mapping.confirm({ select = true }),
         ['<leader>e'] = cmp.mapping.abort(),
     },
@@ -452,21 +504,24 @@ require('lspconfig').pyright.setup {
 --   },
 -- })
 
---local cmp_ai = require('cmp_ai.config')
---cmp_ai:setup({
---  max_lines = 10,
---  provider = 'Ollama',
---  provider_options = {
---      model = 'starcoder2:15b',
---  },
---  notify = true,
---  notify_callback = function(msg)
---    vim.notify(msg)
---  end,
---  run_on_every_keystroke = false,
---  ignored_file_types = {
---  },
---})
+local cmp_ai = require('cmp_ai.config')
+cmp_ai:setup({
+  max_lines = 10,
+  provider = 'Ollama',
+  provider_options = {
+      model = 'codellama:7b-code',
+      options = {
+          temperature = 0.2,
+          num_predict = 15,
+          context = "",
+--          stop = {""}
+      }
+  },
+  notify = false,
+  run_on_every_keystroke = false,
+  ignored_file_types = {
+  },
+})
 
 -- Aerial
 
@@ -567,11 +622,22 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- nvim-ufo
-require('ufo').setup({
-    provider_selector = function(bufnr, filetype, buftype)
-        return {'treesitter', 'indent'}
-    end
-})
+
+vim.o.foldlevel = 99
+--vim.o.foldcolumn = '1'
+--vim.o.foldlevelstart = 99
+--vim.o.foldenable = true
+--
+--vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+--vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+--vim.keymap.set('n', 'zp', require('ufo').peekFoldedLinesUnderCursor)
+--
+--require('ufo').setup({
+--    open_fold_hl_timeout = 0,
+--    provider_selector = function(bufnr, filetype, buftype)
+--        return {'lsp', 'indent'}
+--    end
+--})
 
 -- marks
 
