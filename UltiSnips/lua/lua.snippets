@@ -1,0 +1,13 @@
+priority -50
+
+snippet plugin "plugin" i
+local plugin = {"$1"}
+
+function plugin.config()
+  require("$2").setup({
+    $3
+  })
+end
+
+return plugin
+endsnippet
