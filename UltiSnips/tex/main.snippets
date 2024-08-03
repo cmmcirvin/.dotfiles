@@ -20,7 +20,6 @@ def delline_exititemize(snip):
     # place cursor on blank line after \end{itemize}
     snip.cursor.set(cursorline+1, 0)
 
-
 def in_itemize(snip):
     # find using searchpairpos('\begin{itemize}','','\end{itemize}','bnWz')
     beginpos = vim.eval("searchpairpos('\\\\begin{itemize}','','\\\\end{itemize}','bnWz')")
@@ -147,6 +146,10 @@ snippet table "Table environment" b
 \end{table}
 endsnippet
 
+snippet hl "Horizontal line" bA
+\hline
+endsnippet
+
 snippet scn "Screenshot" b
 \begin{figure}
 	\centering
@@ -230,7 +233,6 @@ snippet ali "Align" bA
 	${1:${VISUAL}}
 .\end{align*}
 endsnippet
-
 
 context "math()"
 snippet // "Fraction" iA
