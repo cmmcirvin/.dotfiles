@@ -7,7 +7,7 @@ plugin.keys = {
     local gs = vim.go.smartcase
     vim.go.ignorecase = true
     vim.go.smartcase = false
-    require("flash").jump()
+    require("flash").jump({jump={autojump=true}})
     vim.go.ignorecase = gi
     vim.go.smartcase = gs
   end, desc = "flash" },
