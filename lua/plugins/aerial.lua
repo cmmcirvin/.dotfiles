@@ -54,7 +54,8 @@ function plugin.config()
       end,
     }
   })
-  vim.keymap.set("n", "<leader>a", "<cmd>AerialNavToggle<CR>")
+  vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle float<CR>")
+  vim.keymap.set("n", "<leader>n", "<cmd>AerialNavToggle<CR>")
 end
 
 return plugin
