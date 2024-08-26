@@ -20,3 +20,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
   end,
 })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'python',
+  callback = function(args)
+    vim.lsp.start({
+      name = 'pyright2',
+      cmd = {'pyright'},
+      -- root_dir = vim.fs.root(args.buf, {'setup.py', 'pyproject.toml'}),
+    })
+  end,
+})
