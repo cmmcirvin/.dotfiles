@@ -27,6 +27,10 @@ function plugin.config()
     },
     keymaps = {
       normal_cur = "yS"
+    },
+    aliases = {
+      ["a"] = "}",
+      ["B"] = ">"
     }
   }
 end

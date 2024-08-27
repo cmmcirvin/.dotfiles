@@ -1,5 +1,4 @@
 vim.cmd "set list"
-vim.cmd "set lcs+=space:·"
 vim.cmd "set nofixeol"
 vim.cmd "set nofixendofline"
 vim.cmd "set cursorline"

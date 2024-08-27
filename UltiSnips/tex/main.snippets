@@ -58,7 +58,7 @@ snippet ... "ldots" iA
 \ldots
 endsnippet
 
-snippet tmp "Template"
+snippet temp "Template"
 \documentclass[11pt]{article}
 
 \usepackage{palatino}
@@ -74,10 +74,8 @@ snippet tmp "Template"
 \usepackage{dsfont}
 \usepackage{physics}
 \usepackage{comment}
+\usepackage{indentfirst}
 \usepackage[colorinlistoftodos]{todonotes}
-
-\usepackage{tikz}
-\usetikzlibrary{quantikz}
 
 \theoremstyle{definition}
 
@@ -109,16 +107,6 @@ snippet tmp "Template"
 \begin{center}
     \bf ${2:Subtitle}
 \end{center}
-
-\medskip
-
-\begin{abstract} 
-
-${3:Abstract Body}
-
-\end{abstract}
-
-\tableofcontents 
 
 \medskip
 
@@ -235,7 +223,7 @@ snippet ali "Align" bA
 endsnippet
 
 context "math()"
-snippet // "Fraction" iA
+snippet fr "Fraction" iA
 \\frac{$1}{$2}$0
 endsnippet
 
@@ -875,10 +863,6 @@ endsnippet
 
 snippet ens "Ensure" bA
 \Ensure $$1$
-endsnippet
-
-snippet // "Comment" bA
-\\\\// $1
 endsnippet
 
 snippet eqn "Equation" bA
