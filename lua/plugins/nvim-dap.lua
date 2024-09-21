@@ -7,7 +7,11 @@ plugin.dependencies = {
 function plugin.config()
   local dap = require('dap')
   dap.defaults.switchbuf = 'v'
-  
+
+  dap.defaults.fallback.terminal_win_cmd = "lua vim.api.nvim_open_win(vim.api.nvim_create_buf(true, false), true, {relative='editor', row=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.7), col=0, width=math.floor(vim.opt.columns:get() * 0.5), height=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.25), title='dap-terminal', border='single'})"
+--  dap.defaults.fallback.terminal_win_cmd = "below 10split new"
+  dap.defaults.fallback.focus_terminal = true
+
   vim.keymap.set('n', '<F5>', function() dap.continue() end)
   vim.keymap.set('n', '<F8>', function() dap.close() end)
   vim.keymap.set('n', '<F9>', function() dap.step_into() end)
@@ -16,7 +20,7 @@ function plugin.config()
   vim.keymap.set('n', '<Leader>b', function() dap.toggle_breakpoint() end)
   vim.keymap.set('n', '<Leader>B', function() dap.set_breakpoint() end)
   vim.keymap.set('n', '<Leader>lp', function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
-  vim.keymap.set('n', '<Leader>dr', function() dap.repl.open() end)
+  vim.keymap.set('n', '<Leader>dr', function() dap.repl.open({}, "lua vim.api.nvim_open_win(vim.api.nvim_create_buf(true, false), true, {relative='editor', row=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.7), col=math.ceil(vim.opt.columns:get() * 0.5), width=math.floor(vim.opt.columns:get() * 0.5), height=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.25), title='dap-repl', border='single'})") end)
   vim.keymap.set('n', '<Leader>dl', function() dap.run_last() end)
   vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
     require('dap.ui.widgets').hover()

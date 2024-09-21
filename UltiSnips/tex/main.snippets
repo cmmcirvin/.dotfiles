@@ -76,6 +76,7 @@ snippet temp "Template"
 \usepackage{comment}
 \usepackage{indentfirst}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{mdframed}
 
 \theoremstyle{definition}
 
@@ -91,12 +92,22 @@ snippet temp "Template"
 \usepackage{color,graphicx}
 
 \newcommand{\cmnote}[1]{\textcolor{orange}{(CM: #1)}}
+\newcommand{\anki}[1]{\textcolor{orange}{[Anki: #1]}}
 
 \usepackage{tabstackengine}
 \setstackEOL{,}
 \setstackTAB{ }
 \setstacktabbedgap{1ex}
 \let\mat\bracketMatrixstack
+
+\mdfdefinestyle{solutionstyle}{%
+linecolor=black,linewidth=2pt,%
+frametitlerule=true,%
+frametitlebackgroundcolor=gray!20,
+innertopmargin=\topskip,
+}
+\mdtheorem[style=solutionstyle]{solution}{Solution}
+\mdtheorem[style=solutionstyle]{definition}{Definition}
 
 \begin{document}
 
@@ -116,11 +127,6 @@ ${0:Document Body}
 
 \end{document}
 
-endsnippet
-
-priority 10000
-snippet lnk "Link" iA
-\href{$1}{\color{blue}{$2}}$0
 endsnippet
 
 snippet table "Table environment" b
@@ -222,23 +228,14 @@ snippet ali "Align" bA
 .\end{align*}
 endsnippet
 
-context "math()"
-snippet fr "Fraction" iA
-\\frac{$1}{$2}$0
-endsnippet
-
-snippet / "Fraction" i
-\\frac{${VISUAL}}{$1}$0
-endsnippet
-
-context "math()"
-snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "symbol frac" wrA
-\\frac{`!p snip.rv = match.group(1)`}{$1}$0
-endsnippet
-
 priority 1000
 snippet lnk "Link" iA
 \href{$1}{\color{blue}{$2}}$0
+endsnippet
+
+priority 1000
+snippet ref "Ref" i
+\ref{fig:$1}$0
 endsnippet
 
 snippet table "Table environment" b
@@ -251,91 +248,6 @@ snippet table "Table environment" b
 	\end{tabular}
 \end{table}
 endsnippet
-
-snippet scn "Screenshot" b
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{$3}
-\end{figure}
-endsnippet
-
-snippet fig "Figure environment" b
-\begin{figure}[${1:htpb}]
-	\centering
-	${2:\includegraphics[width=0.8\textwidth]{$3}}
-	\caption{${4:$3}}
-	\label{fig:${5:${3/\W+/-/g}}}
-\end{figure}
-endsnippet
-
-snippet enum "Enumerate" bA
-\begin{enumerate}
-	\item $0
-\end{enumerate}
-endsnippet
-
-context "not in_itemize(snip)"
-snippet item "Itemize" bA
-\begin{itemize}
-	\item $0
-\end{itemize}
-endsnippet
-
-context "in_itemize(snip)"
-snippet "(^\s*)\\item\s*\S+.*$" "create next item" r
-`!p snip.rv=match.group(0)`
-`!p snip.rv=match.group(1)`\item $0
-endsnippet
-
-context "in_itemize(snip)"
-post_jump "delline_exititemize(snip)"
-snippet "^\s*\\item\s*" "exit itemize" r
-endsnippet
-
-snippet desc "Description" b
-\begin{description}
-	\item[$1] $0
-\end{description}
-endsnippet
-
-snippet pac "Package" b
-\usepackage[${1:options}]{${2:package}}$0
-endsnippet
-
-snippet => "implies" Ai
-\implies
-endsnippet
-
-snippet =< "implied by" Ai
-\impliedby
-endsnippet
-
-context "math()"
-snippet iff "iff" Ai
-\iff
-endsnippet
-
-snippet mk "Math" iA
-$${1}$`!p
-if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
-	snip.rv = ' '
-else:
-	snip.rv = ''
-`$2
-endsnippet
-
-snippet dm "Math" wA
-\[
-${1:${VISUAL}}
-.\] $0
-endsnippet
-
-snippet ali "Align" bA
-\begin{align*}
-	${1:${VISUAL}}
-.\end{align*}
-endsnippet
-
 
 context "math()"
 snippet // "Fraction" iA
@@ -429,23 +341,23 @@ snippet lr "left( right)" i
 \left( ${1:${VISUAL}} \right) $0
 endsnippet
 
-snippet lr( "left( right)" i
+snippet lr( "left( right)" iA
 \left( ${1:${VISUAL}} \right) $0
 endsnippet
 
-snippet lr| "left| right|" i
+snippet lr| "left| right|" iA
 \left| ${1:${VISUAL}} \right| $0
 endsnippet
 
-snippet lr{ "left\{ right\}" i
+snippet lr{ "left\{ right\}" iA
 \left\\{ ${1:${VISUAL}} \right\\} $0
 endsnippet
 
-snippet lrb "left\{ right\}" i
+snippet lrb "left\{ right\}" iA
 \left\\{ ${1:${VISUAL}} \right\\} $0
 endsnippet
 
-snippet lr[ "left[ right]" i
+snippet lr[ "left[ right]" iA
 \left[ ${1:${VISUAL}} \right] $0
 endsnippet
 
@@ -611,11 +523,6 @@ snippet norm "norm" iA
 \|$1\|$0
 endsnippet
 
-context "math()"
-snippet abs "abs" iA
-|$1|$0
-endsnippet
-
 priority 100
 context "math()"
 snippet '(?<!\\)(sin|cos|arccot|cot|csc|ln|log|exp|star|perp)' "ln" rwA
@@ -769,30 +676,23 @@ snippet "([a-zA-Z])hat" "hat" riA
 \hat{`!p snip.rv=match.group(1)`}
 endsnippet
 
-snippet letw "let omega" iA
-Let $\Omega \subset \C$ be open.
-endsnippet
-
-snippet HH "H" iA
-\mathbb{H}
-endsnippet
-
-snippet DD "D" iA
-\mathbb{D}
+context "math()"
+snippet bs "boldsymbol" iA
+\boldsymbol{$1}$0
 endsnippet
 
 snippet sec "Section" bA
-\section{$1}
+\section*{$1}
 $2
 endsnippet
 
 snippet sub "Subsection" bA
-\subsection{$1}
+\subsection*{$1}
 $2
 endsnippet
 
 snippet sbb "Subsubsection" bA
-\subsubsection{$1}
+\subsubsection*{$1}
 $2
 endsnippet
 
@@ -985,6 +885,20 @@ snippet cm "cmnote" iA
 \cmnote{$1}$0
 endsnippet
 
+snippet anki "anki" iA
+\anki{$1}$0
+endsnippet
+
+context "math()"
+snippet prp "propto" iA
+\propto 
+endsnippet
+
+context "math()"
+snippet app "approx" iA
+\approx 
+endsnippet
+
 snippet graph "graph" ia
 \begin{tikzpicture}
     \node[shape=circle,draw=black] (A) at (0,0) {A};
@@ -997,4 +911,18 @@ snippet graph "graph" ia
     \path [-](B) edge node[right] {} (D);   
     \path [-](C) edge node[right] {} (D);   
 \end{tikzpicture}
+endsnippet
+
+snippet slt "solution" iA
+\begin{solution*}
+    $1
+\end{solution*}
+$0
+endsnippet
+
+snippet dfn "defintion" iA
+\begin{definition*}
+    $1
+\end{definition*}
+$0
 endsnippet

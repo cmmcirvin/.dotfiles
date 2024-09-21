@@ -29,16 +29,17 @@ function plugin.config()
             end,
             { "i", "s" }
           ),
-      ['L'] = cmp.mapping.scroll_docs(4),
-      ['H'] = cmp.mapping.scroll_docs(-4),
-      ['<S-CR>'] = cmp.mapping.confirm({ select = true }),
-      ['<leader>e'] = cmp.mapping.abort(),
+      ['<leader>j'] = cmp.mapping.scroll_docs(4),
+      ['<leader>h'] = cmp.mapping.scroll_docs(-4),
+      ['L'] = cmp.mapping.confirm({ select = true }),
+      ['H'] = cmp.mapping.abort(),
     },
     sources = {
-      { name = "nvim_lsp" },
-      { name = "ultisnips" },
-      { name = "path" },
-      { name = "buffer", keyword_length = 1},
+      { name = "ultisnips", group_index=0},
+      { name = "copilot", group_index=1},
+      { name = "nvim_lsp", group_index=1},
+      { name = "path", group_index=1},
+      { name = "buffer", keyword_length=1, group_index=1},
     },
     snippet = {
       expand = function(args)
