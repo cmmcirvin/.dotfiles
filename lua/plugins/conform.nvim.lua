@@ -3,7 +3,8 @@ local plugin = {"stevearc/conform.nvim"}
 function plugin.config()
   require("conform").setup({
     formatters_by_ft = {
-      python = { "isort", "black", "ruff_fix", "fix8", "unify", "pybetter"}
+      python = { "isort", "black" },
+      json = { "jq" },
     }
   })
 

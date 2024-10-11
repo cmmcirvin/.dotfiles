@@ -2,6 +2,8 @@ vim.cmd "set list"
 vim.cmd "set nofixeol"
 vim.cmd "set nofixendofline"
 vim.cmd "set cursorline"
+vim.cmd "set wfh"
+vim.cmd "set wfw"
 
 vim.cmd "syntax enable"
 
@@ -26,7 +28,6 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.lsp.start({
       name = 'pyright2',
       cmd = {'pyright'},
-      -- root_dir = vim.fs.root(args.buf, {'setup.py', 'pyproject.toml'}),
     })
   end,
 })
