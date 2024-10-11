@@ -1,4 +1,4 @@
-local plugin = {"mfussenegger/nvim-dap"}
+          local plugin = {"mfussenegger/nvim-dap"}
 
 plugin.dependencies = {
   {"mfussenegger/nvim-dap-python"}
@@ -19,6 +19,7 @@ function plugin.config()
   vim.keymap.set('n', '<F11>', function() dap.step_out() end)
   vim.keymap.set('n', '<Leader>b', function() dap.toggle_breakpoint() end)
   vim.keymap.set('n', '<Leader>lp', function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+  vim.keymap.set('n', '<Leader>dr', function() dap.repl.open({}, "vsplit new") end)
 --  vim.keymap.set('n', '<Leader>dr', function() dap.repl.open({}, "lua vim.api.nvim_open_win(vim.api.nvim_create_buf(true, false), true, {relative='editor', row=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.7), col=math.ceil(vim.opt.columns:get() * 0.52), width=math.floor(vim.opt.columns:get() * 0.48), height=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.25), title='dap-repl', border='single'})") end)
   vim.keymap.set('n', '<Leader>dl', function() dap.run_last() end)
   vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
