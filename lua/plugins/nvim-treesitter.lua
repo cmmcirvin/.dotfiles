@@ -7,7 +7,8 @@ plugin.dependencies = {
 function plugin.config()
   require("nvim-treesitter.configs").setup{
     highlight = {
-      enable = true
+      enable = true,
+      disable = { "markdown" }
     },
     indent = {
       enable = false

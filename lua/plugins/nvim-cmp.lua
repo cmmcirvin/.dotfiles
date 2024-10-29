@@ -46,6 +46,9 @@ function plugin.config()
             vim.fn["UltiSnips#Anon"](args.body)
       end,
     },
+    experimental = {
+      ghost_text = true
+    }
   })
 
 end

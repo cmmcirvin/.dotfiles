@@ -23,13 +23,18 @@ function plugin.config()
           local env = require("nvim-surround.config").get_input "Environment: "
           return { { "\\begin{" .. env .. "}" }, { "\\end{" .. env .. "}" } }
         end,
-      },
+      }
     },
     keymaps = {
       normal_cur = "yS"
     },
     aliases = {
       ["a"] = "}",
+      ["p"] = ")",
+      ["b"] = "**",
+      ["i"] = "_",
+      ["x"] = "~~",
+      ["c"] = "```",
       ["B"] = ">"
     }
   }

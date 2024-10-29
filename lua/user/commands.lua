@@ -5,6 +5,11 @@ vim.cmd "set nofixendofline"
 vim.cmd "set cursorline"
 vim.cmd "set wfh"
 vim.cmd "set wfw"
+vim.cmd "set splitbelow"
+
+vim.cmd "let g:mkdp_auto_close = 0"
+vim.cmd "let g:mkdp_theme = 'light'"
+vim.cmd "let g:vim_markdown_math = 1"
 
 vim.cmd "syntax enable"
 
@@ -20,6 +25,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- 'K' again to jump into window
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.g.vimtex_enabled = 1
+    vim.g.tex_flavor = 'latex'
   end,
 })
 

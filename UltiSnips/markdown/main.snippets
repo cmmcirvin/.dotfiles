@@ -45,6 +45,7 @@ def posCompare(cur1, cur2):
         if   cur1c < cur2c: return -1
         elif cur1c > cur2c: return  1
         else: return 0
+
 endglobal
 
 snippet beg "begin{} / end{}" bA
@@ -58,106 +59,8 @@ snippet ... "ldots" iA
 \ldots
 endsnippet
 
-snippet temp "Template"
-\documentclass[11pt]{article}
-
-\usepackage{palatino}
-\usepackage{mathpazo}
-\usepackage{braket}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{latexsym}
-\usepackage{amsthm}
-\usepackage[usenames]{color}
-\usepackage{hyperref}
-\usepackage{dsfont}
-\usepackage{physics}
-\usepackage{comment}
-\usepackage{indentfirst}
-\usepackage[colorinlistoftodos]{todonotes}
-\usepackage{mdframed}
-
-\theoremstyle{definition}
-
-\special{papersize=8.5in,11in}
-\setlength{\topmargin}{-0.125in}
-\setlength{\headheight}{0in}
-\setlength{\headsep}{0in}
-\setlength{\textheight}{9in}
-\setlength{\textwidth}{6.5in}
-\setlength{\oddsidemargin}{0in}
-\hypersetup{pdfpagemode=UseNone}
-
-\usepackage{color,graphicx}
-
-\newcommand{\cmnote}[1]{\textcolor{orange}{(CM: #1)}}
-\newcommand{\anki}[1]{\textcolor{orange}{[Anki: #1]}}
-
-\usepackage{tabstackengine}
-\setstackEOL{,}
-\setstackTAB{ }
-\setstacktabbedgap{1ex}
-\let\mat\bracketMatrixstack
-
-\mdfdefinestyle{solutionstyle}{%
-linecolor=black,linewidth=2pt,%
-frametitlerule=true,%
-frametitlebackgroundcolor=gray!20,
-innertopmargin=\topskip,
-}
-\mdtheorem[style=solutionstyle]{solution}{Solution}
-\mdtheorem[style=solutionstyle]{definition}{Definition}
-
-\begin{document}
-
-\begin{center}
-    \huge \bf ${1:Title}
-\end{center}
-
-\begin{center}
-    \bf ${2:\date}
-\end{center}
-
-\medskip
-
-\section{${4:Section Title}}
-
-${0:Document Body}
-
-\end{document}
-
-endsnippet
-
-snippet table "Table environment" b
-\begin{table}[${1:htpb}]
-	\centering
-	\caption{${2:caption}}
-	\label{tab:${3:label}}
-	\begin{tabular}{${5:c}}
-	$0${5/((?<=.)c|l|r)|./(?1: & )/g}
-	\end{tabular}
-\end{table}
-endsnippet
-
 snippet hl "Horizontal line" bA
 \hline
-endsnippet
-
-snippet scn "Screenshot" b
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{$3}
-\end{figure}
-endsnippet
-
-snippet fig "Figure environment" b
-\begin{figure}[${1:htpb}]
-	\centering
-	${2:\includegraphics[width=0.8\textwidth]{$3}}
-	\caption{${4:$3}}
-	\label{fig:${5:${3/\W+/-/g}}}
-\end{figure}
 endsnippet
 
 snippet enum "Enumerate" bA
@@ -207,6 +110,27 @@ snippet iff "iff" Ai
 \iff
 endsnippet
 
+snippet mc "Code" iA
+\`\`\`${1:py}
+${2:${VISUAL}}
+\`\`\`
+$0
+endsnippet
+
+snippet fnt "Footnote" bA
+[^${1:${VISUAL:Footnote}}]$0
+
+[^$1]:${2:Text}
+endsnippet
+
+snippet dl "Disclosure" A
+<details open="">
+  <summary>$1</summary>
+  $2
+</details>
+$0
+endsnippet
+
 snippet mk "Math" iA
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
@@ -216,44 +140,19 @@ else:
 `
 endsnippet
 
-snippet dm "Math" wA
-\[
-${1:${VISUAL}}
-.\] $0
-endsnippet
-
-snippet ali "Align" bA
-\begin{align*}
-	${1:${VISUAL}}
-.\end{align*}
-endsnippet
-
 priority 1000
 snippet lnk "Link" iA
-\href{$1}{\color{blue}{$2}}$0
+[$1](${2:link})$0
 endsnippet
 
-priority 1000
-snippet ref "Ref" i
-\ref{fig:$1}$0
-endsnippet
 
-snippet table "Table environment" b
-\begin{table}[${1:htpb}]
-	\centering
-	\caption{${2:caption}}
-	\label{tab:${3:label}}
-	\begin{tabular}{${5:c}}
-	$0${5/((?<=.)c|l|r)|./(?1: & )/g}
-	\end{tabular}
-\end{table}
-endsnippet
 
 context "math()"
 snippet // "Fraction" iA
 \\frac{$1}{$2}$0
 endsnippet
 
+context "math()"
 snippet / "Fraction" i
 \\frac{${VISUAL}}{$1}$0
 endsnippet
@@ -289,27 +188,12 @@ snippet '([A-Za-z])_(\d\d)' "auto subscript2" wrA
 `!p snip.rv = match.group(1)`_{`!p snip.rv = match.group(2)`}
 endsnippet
 
-
-snippet sympy "sympyblock " w
-sympy $1 sympy$0
-endsnippet
-
-priority 10000
-snippet 'sympy(.*)sympy' "sympy" wr
-`!p
-from sympy import *
-x, y, z, t = symbols('x y z t')
-k, m, n = symbols('k m n', integer=True)
-f, g, h = symbols('f g h', cls=Function)
-init_printing()
-snip.rv = eval('latex(' + match.group(1).replace('\\', '').replace('^', '**').replace('{', '(').replace('}', ')') + ')')
-`
-endsnippet
-
+context "math()"
 snippet == "equals" iA
 &= $1
 endsnippet
 
+context "math()"
 snippet != "equals" iA
 \neq 
 endsnippet
@@ -325,42 +209,49 @@ snippet floor "floor" iA
 endsnippet
 
 snippet pmat "pmat" iA
-\begin{pmatrix} $1 \end{pmatrix} $0
+\begin{pmatrix} $1 \end{pmatrix}$0
 endsnippet
 
 snippet bmat "bmat" iA
-\begin{bmatrix} $1 \end{bmatrix} $0
+\begin{bmatrix} $1 \end{bmatrix}$0
 endsnippet
 
 context "math()"
 snippet () "left( right)" iA
-\left( ${1:${VISUAL}} \right) $0
+\left( ${1:${VISUAL}} \right)$0
 endsnippet
 
+context "math()"
 snippet lr "left( right)" i
-\left( ${1:${VISUAL}} \right) $0
+\left( ${1:${VISUAL}} \right)$0
 endsnippet
 
+context "math()"
 snippet lr( "left( right)" iA
-\left( ${1:${VISUAL}} \right) $0
+\left( ${1:${VISUAL}} \right)$0
 endsnippet
 
+context "math()"
 snippet lr| "left| right|" iA
-\left| ${1:${VISUAL}} \right| $0
+\left| ${1:${VISUAL}} \right|$0
 endsnippet
 
+context "math()"
 snippet lr{ "left\{ right\}" iA
-\left\\{ ${1:${VISUAL}} \right\\} $0
+\left\\{ ${1:${VISUAL}} \right\\}$0
 endsnippet
 
+context "math()"
 snippet lrb "left\{ right\}" iA
-\left\\{ ${1:${VISUAL}} \right\\} $0
+\left\\{ ${1:${VISUAL}} \right\\}$0
 endsnippet
 
+context "math()"
 snippet lr[ "left[ right]" iA
-\left[ ${1:${VISUAL}} \right] $0
+\left[ ${1:${VISUAL}} \right]$0
 endsnippet
 
+context "math()"
 snippet lra "leftangle rightangle" iA
 \left<${1:${VISUAL}} \right>$0
 endsnippet
@@ -377,7 +268,7 @@ endsnippet
 
 context "math()"
 snippet sq "\sqrt{}" iA
-\sqrt{${1:${VISUAL}}} $0
+\sqrt{${1:${VISUAL}}}$0
 endsnippet
 
 context "math()"
@@ -468,40 +359,11 @@ snippet xmm "x" iA
 x_{m}
 endsnippet
 
-snippet R0+ "R0+" iA
-\\R_0^+
-endsnippet
-
-snippet plot "Plot" w
-\begin{figure}[$1]
-	\centering
-	\begin{tikzpicture}
-		\begin{axis}[
-			xmin= ${2:-10}, xmax= ${3:10},
-			ymin= ${4:-10}, ymax = ${5:10},
-			axis lines = middle,
-		]
-			\addplot[domain=$2:$3, samples=${6:100}]{$7};
-		\end{axis}
-	\end{tikzpicture}
-	\caption{$8}
-	\label{${9:$8}}
-\end{figure}
-endsnippet
-
-snippet nn "Tikz node" w
-\node[$5] (${1/[^0-9a-zA-Z]//g}${2}) ${3:at (${4:0,0}) }{$${1}$};
-$0
-endsnippet
-
 context "math()"
 snippet mcal "mathcal" iA
 \mathcal{$1}$0
 endsnippet
 
-snippet lll "l" iA
-\ell
-endsnippet
 
 context "math()"
 snippet nb "nabla" iA
@@ -511,11 +373,6 @@ endsnippet
 context "math()"
 snippet xx "cross" iA
 \times 
-endsnippet
-
-priority 100
-snippet ** "cdot" iA
-\cdot 
 endsnippet
 
 context "math()"
@@ -573,18 +430,22 @@ snippet \\\ "setminus" iA
 \setminus
 endsnippet
 
+context "math()"
 snippet >> ">>" iA
 \gg
 endsnippet
 
+context "math()"
 snippet << "<<" iA
 \ll
 endsnippet
 
+context "math()"
 snippet ~~ "~" iA
 \sim 
 endsnippet
 
+context "math()"
 snippet notin "not in " iA
 \not\in 
 endsnippet
@@ -635,17 +496,6 @@ snippet cases "cases" wA
 \end{cases}
 endsnippet
 
-snippet bigfun "Big function" iA
-\begin{align*}
-	$1: $2 &\longrightarrow $3 \\\\
-	$4 &\longmapsto $1($4) = $0
-.\end{align*}
-endsnippet
-
-snippet cvec "column vector" iA
-\begin{pmatrix} ${1:x}_${2:1}\\\\ \vdots\\\\ $1_${2:n} \end{pmatrix}
-endsnippet
-
 priority 10
 context "math()"
 snippet "bar" "bar" riA
@@ -688,95 +538,47 @@ snippet bs "boldsymbol" iA
 endsnippet
 
 snippet sec "Section" bA
-\section*{$1}
-$2
+# ${1:Section Name} #
+$0
 endsnippet
 
-snippet sub "Subsection" bA
-\subsection*{$1}
-$2
+snippet sub "SubSection" bA
+## ${1:Section Name} ##
+$0
 endsnippet
 
 snippet sbb "Subsubsection" bA
-\subsubsection*{$1}
-$2
+### ${1:Section Name} ###
+$0
+endsnippet
+
+snippet par "Paragraph" bA
+#### ${1:Paragraph Name} ####
+$0
+endsnippet
+
+snippet spar "Paragraph" bA
+##### ${1:Paragraph Name} #####
+$0
 endsnippet
 
 snippet bf "Bold Font" A
-\textbf{$1}$2
+**$1**$2
 endsnippet
 
-snippet it "Italics" a
-\textit{$1}$2
-endsnippet
-
-snippet alg "Algorithm" bA
-\begin{algorithm}
-\caption{$1}\label{alg:$2}
-\begin{algorithmic}
-$3
-\end{algorithmic}
-\end{algorithm}
-endsnippet
-
-snippet st "State" bA
-\State $$1 \gets $2$
-endsnippet
-
-snippet if "If" ba
-\If{$$1$}
-    $2
-\EndIf
-endsnippet
-
-snippet elif "Else If" ba
-\If{$$1$}
-    $2
-\ElsIf{$$3$}
-    $4
-\Else
-    $5
-\EndIf
-endsnippet
-
-snippet else "Else" ba
-\If{$$1$}
-    $2
-\Else
-    $3
-\EndIf
-endsnippet
-
-snippet wh "While" ba
-\While{$$1$}
-    $2
-\EndWhile
-endsnippet
-
-snippet for "For" ba
-\For{$$1$}
-    $2
-\EndFor
-endsnippet
-
-snippet hs "Tab" bA
-\hspace{\parindent}
-endsnippet
-
-snippet req "Require" bA
-\Require $$1$
-endsnippet
-
-snippet ens "Ensure" bA
-\Ensure $$1$
+snippet it "Italics" A
+_$1_$2
 endsnippet
 
 snippet eqn "Equation" bA
-\begin{equation*}
-\begin{aligned}
-    $1
-\end{aligned}
-\end{equation*}
+$$
+${1}
+$$
+$0
+endsnippet
+
+snippet br "Break" A
+<br> $0
 endsnippet
 
 context "math()"
@@ -887,12 +689,17 @@ snippet txt "text" iA
 \text{$1}$0
 endsnippet
 
-snippet cm "cmnote" iA
-\cmnote{$1}$0
+snippet anki "anki" iA
+> **_${1:NOTE:}_** <br>
+$2<br>
+
+$0
 endsnippet
 
-snippet anki "anki" iA
-\anki{$1}$0
+snippet clz "cloze" iA
+> $1
+
+$0
 endsnippet
 
 context "math()"
@@ -903,32 +710,4 @@ endsnippet
 context "math()"
 snippet app "approx" iA
 \approx 
-endsnippet
-
-snippet graph "graph" ia
-\begin{tikzpicture}
-    \node[shape=circle,draw=black] (A) at (0,0) {A};
-    \node[shape=circle,draw=black] (B) at (0,3) {B};
-    \node[shape=circle,draw=black] (C) at (3,0) {C};
-    \node[shape=circle,draw=black] (D) at (3,3) {D};
-
-    \path [-](A) edge node[right] {} (B);   
-    \path [-](A) edge node[right] {} (C);   
-    \path [-](B) edge node[right] {} (D);   
-    \path [-](C) edge node[right] {} (D);   
-\end{tikzpicture}
-endsnippet
-
-snippet slt "solution" iA
-\begin{solution*}
-    $1
-\end{solution*}
-$0
-endsnippet
-
-snippet dfn "defintion" iA
-\begin{definition*}
-    $1
-\end{definition*}
-$0
 endsnippet
