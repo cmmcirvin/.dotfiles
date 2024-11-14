@@ -8,7 +8,6 @@ function plugin.config()
   require("nvim-treesitter.configs").setup{
     highlight = {
       enable = true,
-      disable = { "markdown" }
     },
     indent = {
       enable = false
