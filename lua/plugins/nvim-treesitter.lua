@@ -5,9 +5,11 @@ plugin.dependencies = {
 }
 
 function plugin.config()
+  local disabled_filetypes = {os.getenv("NVIM_TREESITTER_DISABLED")} or {}
   require("nvim-treesitter.configs").setup{
     highlight = {
       enable = true,
+      disable = disabled_filetypes,
     },
     indent = {
       enable = false

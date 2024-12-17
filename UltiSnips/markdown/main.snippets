@@ -54,11 +54,6 @@ snippet beg "begin{} / end{}" bA
 \\end{$1}
 endsnippet
 
-priority 100
-snippet ... "ldots" iA
-\ldots
-endsnippet
-
 snippet hl "Horizontal line" bA
 \hline
 endsnippet
@@ -145,7 +140,12 @@ snippet lnk "Link" iA
 [$1](${2:link})$0
 endsnippet
 
-
+snippet cd "Code" iA
+\`\`\`python
+$1
+\`\`\`
+$0
+endsnippet
 
 context "math()"
 snippet // "Fraction" iA
@@ -455,22 +455,27 @@ snippet inn "in " iA
 \in 
 endsnippet
 
+context "math()"
 snippet NN "n" iA
 \N
 endsnippet
 
+context "math()"
 snippet Nn "cap" iA
 \cap 
 endsnippet
 
+context "math()"
 snippet UU "cup" iA
 \cup 
 endsnippet
 
+context "math()"
 snippet uuu "bigcup" iA
 \bigcup_{${1:i \in ${2: I}}} $0
 endsnippet
 
+context "math()"
 snippet nnn "bigcap" iA
 \bigcap_{${1:i \in ${2: I}}} $0
 endsnippet
@@ -710,4 +715,8 @@ endsnippet
 context "math()"
 snippet app "approx" iA
 \approx 
+endsnippet
+
+snippet ckls "checklist" iA
+- [ ] $1
 endsnippet
