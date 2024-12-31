@@ -32,6 +32,10 @@ function plugin.config()
         n = {
           ['<S-CR>'] = select_one_or_multi,
           ['l'] = require('telescope.actions').toggle_selection,
+          ['K'] = require('telescope.actions').preview_scrolling_up,
+          ['J'] = require('telescope.actions').preview_scrolling_down,
+          ['L'] = require('telescope.actions').preview_scrolling_right,
+          ['H'] = require('telescope.actions').preview_scrolling_left,
         }
       },
     }

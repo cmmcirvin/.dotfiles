@@ -10,7 +10,8 @@ function plugin.config()
       width = vim.api.nvim_win_get_width(0) - 20,
       border = "rounded",
     },
-    previewer_cmd = "glow",
+    previewer_cmd = nil,
+    wrap = true,
   })
 end
 

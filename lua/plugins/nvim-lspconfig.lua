@@ -3,7 +3,12 @@ local plugin = {'neovim/nvim-lspconfig'}
 function plugin.config()
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-  require("lspconfig").pyright.setup {
+  lspconfig = require("lspconfig")
+  -- lspconfig.pyright.setup {
+  --   capabilities = capabilities
+  -- }
+
+  lspconfig.basedpyright.setup {
     capabilities = capabilities
   }
 end

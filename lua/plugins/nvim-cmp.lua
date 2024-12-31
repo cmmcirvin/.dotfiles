@@ -14,6 +14,7 @@ plugin.dependencies = {
 function plugin.config()
   local cmp = require('cmp')
   local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
+  local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
   cmp.setup({
     mapping = {
@@ -30,7 +31,7 @@ function plugin.config()
             { "i", "s" }
           ),
       ['J'] = cmp.mapping.scroll_docs(4),
-      ['H'] = cmp.mapping.scroll_docs(-4),
+      ['K'] = cmp.mapping.scroll_docs(-4),
       ['<c-l>'] = cmp.mapping.confirm({ select = true }),
       ['<c-h>'] = cmp.mapping.abort(),
     },
@@ -50,6 +51,8 @@ function plugin.config()
       ghost_text = true
     }
   })
+
+  cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 end
 
