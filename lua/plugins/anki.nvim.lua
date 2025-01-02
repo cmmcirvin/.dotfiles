@@ -9,4 +9,10 @@ plugin.opts = {
       },
     }
   }
+
+plugin.config = function()
+  require("anki").setup({
+    enabled = os.getenv("ANKI_NVIM_ENABLED") == "true",
+  })
+end
 return plugin
