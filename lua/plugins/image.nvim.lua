@@ -7,9 +7,9 @@ function plugin.config()
     max_height_window_percentage=100,
     integrations = {
       markdown = {
-        floating_windows = true
+        enabled = false
       }
-    }
+    },
   })
 end
 
