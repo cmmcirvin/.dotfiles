@@ -39,8 +39,8 @@ function plugin.config()
     local sidebar = widgets.sidebar(widgets.scopes)
     sidebar.open()
   end)
-  
-  require('dap-python').setup('python')
+
+  require('dap-python').setup('./.venv/bin/python')
   table.insert(require('dap').configurations.python, {
       type = 'python',
       justMyCode = false,
