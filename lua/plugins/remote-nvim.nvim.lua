@@ -10,4 +10,10 @@ plugin.dependencies = {
 
 plugin.config = true
 
+function plugin.config()
+  require("remote-nvim").setup({
+    progress_view = {type = "popup"},
+  })
+end
+
 return plugin
