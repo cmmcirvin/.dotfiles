@@ -34,13 +34,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.g.tex_flavor = 'latex'
   end,
 })
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'python',
-  callback = function(args)
-    vim.lsp.start({
-      name = 'pyright2',
-      cmd = {'pyright'},
-    })
-  end,
-})
