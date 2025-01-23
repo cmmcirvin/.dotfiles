@@ -58,7 +58,7 @@ snippet ... "ldots" iA
 \ldots
 endsnippet
 
-snippet temp "Template"
+snippet lec "Template"
 \documentclass[11pt]{article}
 
 \usepackage{palatino}
@@ -109,21 +109,20 @@ innertopmargin=\topskip,
 \mdtheorem[style=solutionstyle]{solution}{Solution}
 \mdtheorem[style=solutionstyle]{definition}{Definition}
 
+\title{Lecture Notes ${1:Class Name}}
+\author{Caleb McIrvin}
+\date{\today}
+
 \begin{document}
 
-\begin{center}
-    \huge \bf ${1:Title}
-\end{center}
+\maketitle
+\tableofcontents
 
-\begin{center}
-    \bf ${2:\date}
-\end{center}
+\vspace{.25in}
 
-\medskip
+\section{${2:Section Title}}
 
-\section{${4:Section Title}}
-
-${0:Document Body}
+$0
 
 \end{document}
 

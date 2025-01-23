@@ -4,7 +4,7 @@ function plugin.config()
   require("rose-pine").setup({
    styles = {
       italic = false,
-      transparency = false,
+      transparency = true,
     },
     highlight_groups = {
       Comment = { italic = true },

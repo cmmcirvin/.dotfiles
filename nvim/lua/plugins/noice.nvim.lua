@@ -20,6 +20,12 @@ function plugin.config()
       long_message_to_split = true, -- long messages will be sent to a split
       lsp_doc_border = false, -- add a border to hover docs and signature help
     },
+    routes = {
+      {
+        view = "notify",
+        filter = { event = "msg_showmode" },
+      }
+    }
   })
 end
 
