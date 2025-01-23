@@ -4,7 +4,7 @@ print()
 
 function plugin.config()
   palette = require("rose-pine.palette")
-  print(vim.inspect(palette))
+
   require("lualine").setup({
     options = {
       component_separators = { left = '', right = '' },
