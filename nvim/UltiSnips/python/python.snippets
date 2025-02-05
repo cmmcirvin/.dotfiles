@@ -5,8 +5,22 @@ priority -50
 ###########################################################################
 
 snippet ifmain "ifmain" b
+from simple_parsing import ArgumentParser
+from cfg import Config
+
 if __name__ == `!p snip.rv = get_quoting_style(snip)`__main__`!p snip.rv = get_quoting_style(snip)`:
-	${1:${VISUAL:main()}}
+	parser = ArgumentParser()
+	parser.add_arguments(Config)
+	args = parser.parse_args()
+	$0
+endsnippet
+
+snippet cfg "cfg" b
+from dataclasses import dataclass
+
+@dataclass
+class Config:
+	
 endsnippet
 
 snippet with "with" b

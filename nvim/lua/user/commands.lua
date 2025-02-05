@@ -34,3 +34,5 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.g.tex_flavor = 'latex'
   end,
 })
+
+vim.fn.sign_define('DapBreakpoint',{ text ='👀', texthl ='', linehl ='', numhl =''})

@@ -2,7 +2,6 @@ vim.keymap.set("n", "<c-l>", ":bn!<CR>")
 vim.keymap.set("n", "<Esc>", "<Esc>:noh<return>")
 vim.keymap.set("n", "<c-h>", ":bp!<CR>")
 vim.keymap.set("n", "<c-q>", ":bp<bar>bd! #<CR>")
-vim.keymap.set("n", "<leader>t", ":enew<CR>")
 vim.keymap.set("n", "<Esc>", "<Esc>:noh<return>")
 
 vim.keymap.set("n", "<c-j>", ":m .+1<cr>==")
