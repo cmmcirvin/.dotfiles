@@ -8,7 +8,6 @@ function plugin.config()
   local dap = require('dap')
   dap.defaults.switchbuf = 'v'
 
---  dap.defaults.fallback.terminal_win_cmd = "lua vim.api.nvim_open_win(vim.api.nvim_create_buf(true, false), true, {relative='editor', row=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.7), col=0, width=math.floor(vim.opt.columns:get() * 0.5), height=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.25), title='dap-terminal', border='single'})"
   dap.defaults.fallback.terminal_win_cmd = "below 10split new"
   dap.defaults.fallback.focus_terminal = true
 
@@ -22,7 +21,6 @@ function plugin.config()
   vim.keymap.set('n', '<Leader>dr', function() dap.repl.open({}, "vsplit new") end)
   vim.keymap.set('n', '<Leader>db', function() dap.repl.open({}, "split new") end)
   vim.keymap.set('n', '<Leader>vk', function() require("osv").launch({port=8086}) end)
---  vim.keymap.set('n', '<Leader>dr', function() dap.repl.open({}, "lua vim.api.nvim_open_win(vim.api.nvim_create_buf(true, false), true, {relative='editor', row=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.7), col=math.ceil(vim.opt.columns:get() * 0.52), width=math.floor(vim.opt.columns:get() * 0.48), height=math.floor((vim.opt.lines:get() - vim.opt.cmdheight:get()) * 0.25), title='dap-repl', border='single'})") end)
   vim.keymap.set('n', '<Leader>dl', function() dap.run_last() end)
   vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
     require('dap.ui.widgets').hover()
@@ -41,7 +39,7 @@ function plugin.config()
   end)
 
   require('dap-python').setup('./.venv/bin/python')
-  table.insert(require('dap').configurations.python, {
+  table.insert(dap.configurations.python, {
       type = 'python',
       justMyCode = false,
       request = 'launch',
@@ -50,19 +48,48 @@ function plugin.config()
       program = '${file}',
       cwd = './'
   })
-  table.insert(require('dap').configurations.python, {
-      type = 'python',
-      justMyCode = false,
-      request = 'launch',
-      console='integratedTerminal',
-      name = 'Base working directory with arguments',
-      program = '${file}',
-      cwd = './',
-      args = function()
-        local args_string = vim.fn.input('Arguments: ')
-        return vim.split(args_string, " +")
-      end;
+  table.insert(dap.configurations.python, {
+    type = 'python',
+    justMyCode = false,
+    request = 'launch',
+    console='integratedTerminal',
+    name = 'Base working directory with arguments',
+    program = '${file}',
+    cwd = './',
+    args = function()
+      local args_string = vim.fn.input('Arguments: ')
+      return vim.split(args_string, " +")
+    end;
   })
+
+  dap.configurations.cpp = {
+    {
+      name = "Launch executable",
+      type = "codelldb",
+      request = "launch",
+      program = function()
+        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+      end,
+      cwd = "${workspaceFolder}",
+      stopOnEntry = false,
+    },
+    {
+      name = "Attach to process",
+      type = "codelldb",
+      request = "attach",
+      processId = require("dap.utils").pick_process,
+      cwd = "${workspaceFolder}",
+    },
+  }
+
+  dap.adapters.codelldb = {
+    type = "server",
+    port = "${port}",
+    executable = {
+      command = "codelldb",
+      args = { "--port", "${port}" },
+    },
+  }
 
   dap.configurations.lua = { 
     {

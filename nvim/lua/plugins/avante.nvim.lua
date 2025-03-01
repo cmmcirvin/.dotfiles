@@ -11,6 +11,12 @@ local plugin = {
     provider = "copilot",
     auto_suggestions_provider = "copilot",
   },
+  web_search_engine = {
+    provider = "tavily",
+  },
+  file_selector = {
+    provider = "telescope",
+  },
   build = "make",
   dependencies = {
     "nvim-treesitter/nvim-treesitter",
