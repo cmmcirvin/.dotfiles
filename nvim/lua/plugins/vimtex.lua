@@ -2,12 +2,18 @@ local plugin = {"lervag/vimtex"}
 
 function plugin.init()
   vim.cmd "let g:vimtex_view_method = 'skim'"
-  vim.cmd "let g:tex_flavor='latex'"
-  vim.cmd "let g:vimtex_view_skim_sync = 1"
-  vim.cmd "let g:vimtex_view_skim_activate = 1"
   vim.cmd "let g:vimtex_quickfix_mode=0"
-  vim.cmd "let g:tex_conceal='abdmg'"
-  vim.cmd "set conceallevel=1"
+  vim.cmd "let g:vimtex_fold_enabled=0"
+  vim.cmd "set conceallevel=2"
 end
+
+-- vim.api.nvim_exec([[
+-- augroup VimtexConfig
+--   autocmd!
+--   autocmd TextChangedI *.tex silent! call vimtex#compiler#compile()
+-- augroup END
+-- ]], false)
+
+plugin.lazy = false
 
 return plugin

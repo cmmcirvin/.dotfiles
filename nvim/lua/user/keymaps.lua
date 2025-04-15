@@ -81,5 +81,3 @@ function open_floating_window()
   })
 
 end
-
--- vim.keymap.set({'n', 'v'}, '<leader>pl', ':lua open_floating_window()<CR>')
