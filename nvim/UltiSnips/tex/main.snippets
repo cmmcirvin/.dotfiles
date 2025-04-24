@@ -60,56 +60,11 @@ endsnippet
 
 snippet lec "Template"
 \documentclass[11pt]{article}
+\usepackage[a4paper, total={7in, 10in}]{geometry}
+\usepackage{graphicx}
+\usepackage{caption}
 
-\usepackage{palatino}
-\usepackage{mathpazo}
-\usepackage{braket}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{latexsym}
-\usepackage{amsthm}
-\usepackage[usenames]{color}
-\usepackage{hyperref}
-\usepackage{dsfont}
-\usepackage{physics}
-\usepackage{comment}
-\usepackage{indentfirst}
-\usepackage[colorinlistoftodos]{todonotes}
-\usepackage{mdframed}
-
-\theoremstyle{definition}
-
-\special{papersize=8.5in,11in}
-\setlength{\topmargin}{-0.125in}
-\setlength{\headheight}{0in}
-\setlength{\headsep}{0in}
-\setlength{\textheight}{9in}
-\setlength{\textwidth}{6.5in}
-\setlength{\oddsidemargin}{0in}
-\hypersetup{pdfpagemode=UseNone}
-
-\usepackage{color,graphicx}
-
-\newcommand{\cmnote}[1]{\textcolor{orange}{(CM: #1)}}
-\newcommand{\anki}[1]{\textcolor{orange}{[Anki: #1]}}
-
-\usepackage{tabstackengine}
-\setstackEOL{,}
-\setstackTAB{ }
-\setstacktabbedgap{1ex}
-\let\mat\bracketMatrixstack
-
-\mdfdefinestyle{solutionstyle}{%
-linecolor=black,linewidth=2pt,%
-frametitlerule=true,%
-frametitlebackgroundcolor=gray!20,
-innertopmargin=\topskip,
-}
-\mdtheorem[style=solutionstyle]{solution}{Solution}
-\mdtheorem[style=solutionstyle]{definition}{Definition}
-
-\title{Lecture Notes ${1:Class Name}}
+\title{\textbf{$1}}
 \author{Caleb McIrvin}
 \date{\today}
 
