@@ -1,3 +1,7 @@
+if not os.getenv("IN_LOCAL_SHELL") then
+  return {}
+end
+
 local plugin = {"luckasRanarison/nvim-devdocs"}
 
 function plugin.config()

@@ -1,3 +1,7 @@
+if not os.getenv("IN_LOCAL_SHELL") then
+  return {}
+end
+
 local plugin = {"rmagatti/auto-session"}
 
 function plugin.config()
