@@ -21,10 +21,20 @@ function plugin.config()
       require('telescope.actions').select_default(prompt_bufnr)
     end
   end
-  
+
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "TelescopePreviewerLoaded",
+    callback = function(args)
+      vim.wo.wrap = true
+    end,
+  })
+
   require('telescope').setup {
     defaults = {
       layout_strategy = 'flex',
+      layout_config = {
+        width = 0.9
+      },
       mappings = {
         i = {
           ['<S-CR>'] = select_one_or_multi,
@@ -37,7 +47,7 @@ function plugin.config()
           ['L'] = require('telescope.actions').preview_scrolling_right,
           ['H'] = require('telescope.actions').preview_scrolling_left,
         }
-      },
+      }
     }
   }
 
