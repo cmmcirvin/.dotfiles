@@ -30,6 +30,25 @@ def posCompare(cur1, cur2):
 
 endglobal
 
+snippet tmw "Tomorrow" iA
+# `!p snip.rv = vim.eval('strftime("%m/%d/%Y", localtime() + 86400)')`
+- [ ] Cleared Anki
+- [ ] Added to Anki
+`!p
+import datetime
+snip.rv = ''
+# Saturday tasks
+if (datetime.datetime.now() + datetime.timedelta(days=1)).weekday() == 5:
+    snip.rv += '- [ ] Created weekly plan\n'
+    snip.rv += '- [ ] Watered plants\n'
+    snip.rv += '- [ ] Grocery shopping\n'
+# Gym
+if (datetime.datetime.now() + datetime.timedelta(days=1)).weekday() in [0, 1, 3, 4, 5]:
+    snip.rv += '- [ ] Gym\n'
+`
+$0
+endsnippet
+
 snippet hl "Horizontal line" bA
 ---
 endsnippet

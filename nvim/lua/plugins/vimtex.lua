@@ -5,7 +5,7 @@ end
 local plugin = {"lervag/vimtex"}
 
 function plugin.init()
-  vim.cmd "let g:vimtex_view_method = 'skim'"
+  vim.cmd "let g:vimtex_view_method = 'zathura'"
   vim.cmd "let g:vimtex_quickfix_mode=0"
   vim.cmd "let g:vimtex_fold_enabled=0"
   vim.cmd "set conceallevel=2"
