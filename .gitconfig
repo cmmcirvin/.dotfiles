@@ -32,3 +32,5 @@
 	cl = "clean"
 	r = "remote add origin"
 	i = "init"
+	ps = "push"
+	pl = "pull"
