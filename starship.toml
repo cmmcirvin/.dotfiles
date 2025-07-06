@@ -1,0 +1,50 @@
+# ~/.config/starship.toml
+# Rose Pine themed starship prompt
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$line_break\
+$character"""
+
+[username]
+format = "[$user]($style)@"
+style_user = "bold #c4a7e7"
+show_always = true
+
+[hostname]
+format = "[$hostname]($style) "
+style = "bold #c4a7e7"
+ssh_only = false
+
+[directory]
+style = "bold #ebbcba"
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = " "
+style = "bold #9ccfd8"
+
+[git_status]
+format = "[$all_status$ahead_behind]($style) "
+style = "bold #f6c177"
+conflicted = "⚡"
+ahead = "⇡"
+behind = "⇣"
+diverged = "⇕"
+untracked = "?"
+stashed = "$"
+modified = "!"
+staged = "+"
+renamed = "»"
+deleted = "✘"
+
+[character]
+success_symbol = "[└─](bold #31748f)"
+error_symbol = "[└─](bold #eb6f92)"
+vicmd_symbol = "[└─](bold #c4a7e7)"
