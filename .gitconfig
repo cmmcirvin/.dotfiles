@@ -1,0 +1,34 @@
+[credential "https://code.vt.edu"]
+	provider = generic
+[credential "https://git.overleaf.com"]
+	provider = generic
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+[user]
+	name = Caleb McIrvin
+	email = calebmcirvin111@gmail.com
+[credential "https://huggingface.co"]
+	provider = generic
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[init]
+	defaultBranch = main
+[alias]
+	a = "add"
+	b = "branch"
+	c = "commit --verbose"
+	ca = "commit --all --verbose"
+	d = "branch -D"
+	s = "status -s"
+	w = "switch"
+	wd = "switch --detach"
+	cr = "switch -c"
+	cl = "clean"
+	r = "remote add origin"
+	i = "init"
