@@ -13,7 +13,7 @@ vim.cmd "let g:vim_markdown_math = 1"
 vim.cmd "syntax enable"
 
 vim.cmd "tnoremap <Esc> <C-\\><C-n>"
-vim.cmd "let g:python3_host_prog = '~/.venvs/debugpy/bin/python'"
+vim.cmd "let g:python3_host_prog = '~/.venv/bin/python'"
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
