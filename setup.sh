@@ -16,19 +16,6 @@ command -v uv >/dev/null 2>&1 || {
     curl -LsSf https://astral.sh/uv/install.sh | sh
 }
 
-# Create a virtual environment if Python is found
-if command -v python3 >/dev/null 2>&1; then
-    python3 -m venv ~/.venv
-    source ~/.venv/bin/activate
-    python3 -m pip install pynvim debugpy uv
-elif command -v python >/dev/null 2>&1; then
-    python -m venv ~/.venv
-    source ~/.venv/bin/activate
-    python -m pip install pynvim debugpy uv
-else
-    echo "No Python interpreter found. Skipping virtual environment creation."
-fi
-
 # Install Starship prompt if not already installed
 command -v starship >/dev/null 2>&1 || curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir ~/.local/bin
 
