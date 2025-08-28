@@ -1,6 +1,20 @@
 global !p
 def math():
-	return vim.eval('vimtex#syntax#in_mathzone()') == '1'
+    try:
+        # Check for various math environment node types
+        lua_code = """
+        local node = require('nvim-treesitter.ts_utils').get_node_at_cursor()
+        local node_type = node:type()
+        return node_type == 'latex_block' or 
+               node_type == 'math_block' or
+               node_type == 'inline_formula' or
+               node_type == 'displayed_equation'
+        """
+        result = vim.eval(f"luaeval(\"{lua_code}\")")
+        print("Math check:", result)
+        return result == 1
+    except:
+        return False
 
 def in_itemize(snip):
     # find using searchpairpos('\begin{itemize}','','\end{itemize}','bnWz')
@@ -652,4 +666,9 @@ endsnippet
 
 snippet ckls "checklist" iA
 - [ ] $1
+endsnippet
+
+context "math()"
+snippet test "Test math context" wA
+MATH DETECTED
 endsnippet

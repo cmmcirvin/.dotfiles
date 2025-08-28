@@ -17,6 +17,10 @@ function plugin.config()
   local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 
   cmp.setup({
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
     mapping = {
       ["<c-j>"] = cmp.mapping(
         function(fallback)
@@ -39,8 +43,8 @@ function plugin.config()
       { name = "ultisnips", group_index=0},
       { name = "nvim_lsp", group_index=1},
       { name = "path", group_index=1},
-      { name = "copilot", group_index=1},
       { name = "buffer", keyword_length=1, group_index=1},
+      { name = "copilot", group_index=2},
     },
     snippet = {
       expand = function(args)

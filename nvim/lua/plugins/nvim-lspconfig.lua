@@ -4,9 +4,19 @@ function plugin.config()
   local capabilities = require('cmp_nvim_lsp').default_capabilities()
   local lspconfig = require("lspconfig")
 
-  lspconfig.pyright.setup({capabilities = capabilities})
+  lspconfig.pyright.setup({
+    settings = {
+      python = {
+        analysis = {
+          autoSearchPaths = true,
+          useLibraryCodeForTypes = true,
+          autoImportCompletions = true,
+          diagnosticMode = "workspace",
+        }
+      }
+    }
+  })
   lspconfig.clangd.setup({capabilities = capabilities})
-  lspconfig.marksman.setup({capabilities = capabilities})
 
 end
 

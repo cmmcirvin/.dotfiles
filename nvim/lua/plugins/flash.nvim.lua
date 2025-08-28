@@ -11,16 +11,12 @@ plugin.keys = {
     vim.go.ignorecase = gi
     vim.go.smartcase = gs
   end, desc = "flash" },
-  { "f", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "flash treesitter" },
-  { "r", mode = "o", function() require("flash").remote() end, desc = "remote flash" }
+  { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+  { "r", mode = "o", function() require("flash").remote() end, desc = "remote flash" },
 }
 
 function plugin.config()
-  require("flash").setup({
-    modes = {
-      char = { enabled = false, keys = {} }
-    }
-  })
+  require("flash").setup({})
 end
 
 return plugin

@@ -58,10 +58,11 @@ snippet ... "ldots" iA
 \ldots
 endsnippet
 
-snippet lec "Template"
+snippet template "Template"
 \documentclass[11pt]{article}
 \usepackage[a4paper, total={7in, 10in}]{geometry}
 \usepackage{graphicx}
+\usepackage{amsmath,amssymb}
 \usepackage{caption}
 
 \title{\textbf{$1}}
@@ -359,8 +360,8 @@ snippet inf "\infty" iA
 \infty
 endsnippet
 
-snippet rij "mrij" i
-(${1:x}_${2:n})_{${3:$2}\\in${4:\\N}}$0
+snippet rij "mrij" iA
+(${1:x}_${2:n})_{${3:$2} \\in ${4:\\mathcal{N}}}$0
 endsnippet
 
 snippet <= "leq" iA
@@ -862,6 +863,11 @@ endsnippet
 context "math()"
 snippet app "approx" iA
 \approx 
+endsnippet
+
+context "math()"
+snippet esm "estimator" iA
+\hat{\theta_{${1:i}}}$0
 endsnippet
 
 snippet graph "graph" ia

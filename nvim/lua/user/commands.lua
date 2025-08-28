@@ -17,13 +17,23 @@ vim.cmd "let g:python3_host_prog = '~/.venv/bin/python'"
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    local opts = { buffer = ev.buf }
+  callback = function(args)
+    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+      vim.lsp.handlers.hover, {
+        border = "rounded",
+        max_width = math.floor(vim.o.columns * 0.75),  -- 50% of screen width
+        max_height = math.floor(vim.o.lines * 0.4),   -- 40% of screen height
+        wrap = true,
+        wrap_at = math.floor(vim.o.columns * 0.7),   -- Wrap slightly before max width}
+      }
+    )
+
+    local opts = { buffer = args.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts) -- 'K' again to jump into window
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
   end,
 })
 
@@ -35,10 +45,62 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.fn.sign_define('DapBreakpoint',{ text ='👀', texthl ='', linehl ='', numhl =''})
 
 vim.keymap.set('n', '<leader>lo', function()
   vim.api.nvim_put({
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
   }, 'l', true, true)
 end)
+
+vim.fn.sign_define('DapBreakpoint',{ text ='👀', texthl ='', linehl ='', numhl =''})
+
+-- Diagnostics configuration
+local diagnostic_signs = {
+  { name = "DiagnosticSignError", text = "‼", hl = "ErrorMsg" },
+  { name = "DiagnosticSignWarn",  text = "⁈",  hl = "WarningMsg" },
+  { name = "DiagnosticSignHint",  text = "⁇", hl = "Question" },
+  { name = "DiagnosticSignInfo",  text = "ℹ",  hl = "Directory" }
+}
+
+for _, sign in ipairs(diagnostic_signs) do
+  vim.fn.sign_define(sign.name, {
+    texthl = sign.hl,
+    text = sign.text,
+    numhl = ""
+  })
+end
+
+vim.diagnostic.config({
+  virtual_text = false,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+})
+
+-- Custom floating window with better formatting
+local function fancy_diagnostics()
+  local opts = {
+    focusable = true,
+    border = 'rounded',
+    source = 'always',
+    prefix = function(diagnostic, i, total)
+      local icons = {
+        [vim.diagnostic.severity.ERROR] = "‼",
+        [vim.diagnostic.severity.WARN] = "⁈",
+        [vim.diagnostic.severity.INFO] = "ℹ",
+        [vim.diagnostic.severity.HINT] = "⁇",
+      }
+      local icon = icons[diagnostic.severity] or "●"
+      return i .. ". " .. icon .. " "
+    end,
+    suffix = function(diagnostic)
+      return " (" .. vim.diagnostic.severity[diagnostic.severity]:lower() .. ")"
+    end,
+  }
+  vim.diagnostic.open_float(nil, opts)
+end
+
+vim.keymap.set('n', 'gl', fancy_diagnostics, { 
+  desc = "🔍 Show fancy diagnostics",
+  silent = true 
+})

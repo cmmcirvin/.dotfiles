@@ -9,7 +9,8 @@ plugin.event = 'VeryLazy'
 function plugin.config()
   require("copilot").setup({
     suggestion = { enabled = false },
-    panel = { enabled = false }
+    panel = { enabled = false },
+    filetypes = { telekasten = false, tex = false },
   })
 end
 

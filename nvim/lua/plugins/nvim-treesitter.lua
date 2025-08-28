@@ -12,8 +12,17 @@ function plugin.config()
       disable = disabled_filetypes,
     },
     indent = {
-      enable = false
-    }
+      enable = true
+    },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = "<c-m>",
+        node_incremental = "<c-m>",
+        scope_incremental = false,
+        node_decremental = "<c-n>",
+      },
+    },
   }
 end
 
