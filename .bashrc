@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Aliases
-alias vi=nvim
+alias vi='nvim'
 alias g="git"
 alias icat="kitty +kitten icat"
 alias pip='uv pip'
