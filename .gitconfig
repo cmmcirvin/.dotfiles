@@ -25,6 +25,7 @@
 	bd = "branch -D"
 	c = "commit --verbose"
 	ca = "commit --all --verbose"
+	e = "restore"
 	f = "diff"
 	i = "init"
 	l = "clone"
