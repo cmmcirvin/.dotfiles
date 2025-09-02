@@ -53,27 +53,18 @@ end)
 
 vim.fn.sign_define('DapBreakpoint',{ text ='👀', texthl ='', linehl ='', numhl =''})
 
--- Diagnostics configuration
-local diagnostic_signs = {
-  { name = "DiagnosticSignError", text = "‼", hl = "ErrorMsg" },
-  { name = "DiagnosticSignWarn",  text = "⁈",  hl = "WarningMsg" },
-  { name = "DiagnosticSignHint",  text = "⁇", hl = "Question" },
-  { name = "DiagnosticSignInfo",  text = "ℹ",  hl = "Directory" }
-}
-
-for _, sign in ipairs(diagnostic_signs) do
-  vim.fn.sign_define(sign.name, {
-    texthl = sign.hl,
-    text = sign.text,
-    numhl = ""
-  })
-end
-
 vim.diagnostic.config({
   virtual_text = false,
-  signs = true,
+  signs = {
+    text = {
+      ERROR = "‼",
+      WARN = "⁈",
+      INFO = "ℹ",
+      HINT = "⁇",
+    }
+  },
   underline = true,
-  update_in_insert = false,
+  update_in_insert = false
 })
 
 -- Custom floating window with better formatting
