@@ -12,7 +12,7 @@ alias ak="NVIM_TREESITTER_DISABLED=true ANKI_NVIM_ENABLED=true vi /tmp/anki.md"
 alias zk="cd ~/zettelkasten/; nvim"
 alias dp="vi ~/personal/daily_progress.md"
 alias yz="yazi"
-alias ll="ls -laht"
+alias l="ls -laht"
 
 # Environment variables
 export EDITOR='nvim'
