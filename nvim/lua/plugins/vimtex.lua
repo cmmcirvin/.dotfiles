@@ -12,11 +12,4 @@ function plugin.init()
 
 end
 
--- vim.api.nvim_exec([[
--- augroup VimtexConfig
---   autocmd!
---   autocmd TextChangedI *.tex silent! call vimtex#compiler#compile()
--- augroup END
--- ]], false)
-
 return plugin
