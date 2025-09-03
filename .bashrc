@@ -15,6 +15,7 @@ alias yz="yazi"
 alias l="ls -laht"
 
 # Environment variables
+export TERM='xterm'
 export EDITOR='nvim'
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/sbbin:$PATH"
