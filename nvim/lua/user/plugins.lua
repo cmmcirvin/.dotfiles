@@ -1,3 +1,5 @@
+vim.env.XDG_CACHE_HOME = "/tmp/nv"
+
 local lazy = {}
 
 function lazy.install(path)
