@@ -17,22 +17,24 @@ vim.cmd "tnoremap <Esc> <C-\\><C-n>"
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(args)
-    vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-      vim.lsp.handlers.hover, {
-        border = "rounded",
-        max_width = math.floor(vim.o.columns * 0.75),  -- 50% of screen width
-        max_height = math.floor(vim.o.lines * 0.4),   -- 40% of screen height
-        wrap = true,
-        wrap_at = math.floor(vim.o.columns * 0.7),   -- Wrap slightly before max width}
-      }
-    )
 
     local opts = { buffer = args.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+
+    vim.keymap.set('n', 'K', function()
+      vim.lsp.buf.hover({
+        border = "rounded",
+        max_width = math.floor(vim.o.columns * 0.75),
+        max_height = math.floor(vim.o.lines * 0.4),
+        wrap = true,
+        wrap_at = math.floor(vim.o.columns * 0.7),
+        pad_top = 1,     -- Add padding at top
+        pad_bottom = 1,  -- Add padding at bottom
+      })
+    end, { buffer = args.buf, desc = "LSP Hover" })
   end,
 })
 
