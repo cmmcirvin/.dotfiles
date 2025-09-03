@@ -14,8 +14,8 @@ ln -sf ~/.dotfiles/starship.toml ~/.config/starship.toml
 
 command -v uv >/dev/null 2>&1 || {
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    uv venv ~/.dotfiles/nvim/venv
-    uv pip install --python ~/.dotfiles/nvim/venv/bin/python pynvim
+    uv venv ~/.nvim_venv
+    uv pip install --python ~/.nvim_venv/bin/python pynvim
     # uv tool install --upgrade pynvim
 }
 
