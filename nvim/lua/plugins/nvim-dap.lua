@@ -62,6 +62,17 @@ function plugin.config()
     end;
   })
 
+  table.insert(dap.configurations.python, {
+      type = 'python',
+      justMyCode = false,
+      request = 'launch',
+      console='integratedTerminal',
+      name = 'FastAPI',
+      args = {'run', '${file}', '--port', '8001'},
+      program = vim.fn.exepath('fastapi'),
+      cwd = './'
+  })
+
   dap.configurations.cpp = {
     {
       name = "Launch executable",
