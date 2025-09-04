@@ -5,7 +5,7 @@ function plugin.config()
     enabled = true,
     file_types = { "markdown", "Avante" },
     latex = {
-      enabled = true,
+      enabled = false,
       converter = 'latex2text',
     },
   })
