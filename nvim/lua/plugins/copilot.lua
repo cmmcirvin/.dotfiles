@@ -1,4 +1,4 @@
-if not os.getenv("IN_LOCAL_SHELL") or os.getenv("COPILOT_DISABLE") then
+if os.getenv("COPILOT_DISABLE") then
   return {}
 end
 

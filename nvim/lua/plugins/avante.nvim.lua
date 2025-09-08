@@ -1,7 +1,3 @@
-if not os.getenv("IN_LOCAL_SHELL") then
-  return {}
-end
-
 local plugin = {
   "yetone/avante.nvim",
   event = "VeryLazy",
