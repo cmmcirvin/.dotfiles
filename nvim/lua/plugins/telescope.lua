@@ -57,7 +57,6 @@ function plugin.config()
   vim.keymap.set('n', '<leader>fb', require('telescope.builtin').buffers)
   vim.keymap.set('n', '<leader>fm', require('telescope.builtin').marks)
   vim.keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags)
-  vim.keymap.set('n', '<leader>fd', require('telescope.builtin').diagnostics)
   vim.keymap.set('n', '<leader>fe', ':Telescope file_browser<CR>')
   vim.keymap.set('n', '<leader>fc', ':Telescope file_browser path=%:p:h<CR>')
 
