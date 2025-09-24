@@ -21,6 +21,7 @@ export EDITOR='nvim'
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/sbbin:$PATH"
 export PATH="/opt/homebrew/anaconda3/bin:$PATH"
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"

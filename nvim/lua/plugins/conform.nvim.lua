@@ -6,7 +6,7 @@ function plugin.config()
       python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
       json = { "jq" },
       lua = { "stylua" },
-    }
+    },
   })
 
   vim.api.nvim_create_autocmd("BufWritePost", {

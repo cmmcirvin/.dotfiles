@@ -414,20 +414,6 @@ snippet yjj "yj" iA
 y_{j}
 endsnippet
 
-context "math()"
-snippet xp1 "x" iA
-x_{n+1}
-endsnippet
-
-context "math()"
-snippet xmm "x" iA
-x_{m}
-endsnippet
-
-snippet R0+ "R0+" iA
-\\R_0^+
-endsnippet
-
 snippet plot "Plot" w
 \begin{figure}[$1]
 	\centering
@@ -778,6 +764,21 @@ endsnippet
 context "math()"
 snippet ip "Inner Product" iA
 \langle $1, $2 \rangle$0
+endsnippet
+
+context "math()"
+snippet pr "Probability" iA
+\text{Pr}\left[$1\right]$0
+endsnippet
+
+context "math()"
+snippet var "Variance" iA
+\text{Var}\left[$1\right]$0
+endsnippet
+
+context "math()"
+snippet xp "Expectation" iA
+\mathbb{E}\left[$1\right]$0
 endsnippet
 
 snippet todo  "todo" A
