@@ -28,6 +28,11 @@ export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/usr/bin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
 # Required for dbus session zathura integration
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
 
@@ -42,8 +47,8 @@ function wd() {
     cd /Users/cmcirvin/Documents/VirginiaTech/Fall2025/
 }
 
-function np() {
-    cd /Users/cmcirvin/.config/nvim/lua/plugins/
+function df() {
+    cd ~/.dotfiles
 }
 
 # Function to activate virtual environment
