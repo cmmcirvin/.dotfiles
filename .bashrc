@@ -14,6 +14,7 @@ alias dp="vi ~/personal/daily_progress.md"
 alias yz="yazi"
 alias l="ls -laht"
 alias av='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+alias sd="rsync -a --exclude '.git' ~/.dotfiles/"
 
 # Environment variables
 export TERM='xterm'
