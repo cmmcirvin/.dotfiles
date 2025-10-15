@@ -48,7 +48,7 @@ function wd() {
     cd /Users/cmcirvin/Documents/VirginiaTech/Fall2025/
 }
 
-function df() {
+function sdf() {
     cd ~/.dotfiles
 }
 
