@@ -34,6 +34,7 @@
 	rg = "remote get-url"
 	s = "status -s"
 	u = "push"
+	un = "push -u origin $(git rev-parse --abbrev-ref HEAD)"
 	w = "switch"
 	wc = "switch -c"
 	wd = "switch --detach"
