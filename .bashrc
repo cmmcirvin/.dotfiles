@@ -68,3 +68,7 @@ function vv() {
 
 # Install Starship prompt if not already installed
 eval "$(starship init bash)"
+
+if [ -f .env ]; then
+    . .env
+fi
