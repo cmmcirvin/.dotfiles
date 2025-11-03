@@ -54,6 +54,12 @@ function sdf() {
 
 # Function to activate virtual environment
 function venv() {
+    if [ -z "$1" ]; then
+        echo "Error: Missing venv environment."
+        echo "Usage: venv <env_name>"
+        return 1
+    fi
+
     source ~/.venvs/$1/bin/activate
 }
 
@@ -64,6 +70,17 @@ function vv() {
         uv init
     fi
     uv add pynvim debugpy ruff pyright
+}
+
+
+function sce() {
+    if [ -z "$1" ]; then
+        echo "Error: Missing remote host argument."
+        echo "Usage: sce <user>@<remote_host>"
+        return 1
+    fi
+
+    scp ~/.env $1:~/.env
 }
 
 # Install Starship prompt if not already installed
