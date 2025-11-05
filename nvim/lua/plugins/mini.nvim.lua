@@ -1,5 +1,3 @@
-return {}
-
 local plugin = {"echasnovski/mini.nvim"}
 
 function plugin.config()
