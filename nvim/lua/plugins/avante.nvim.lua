@@ -1,3 +1,5 @@
+return {}
+
 -- local plugin = {
 --   "yetone/avante.nvim",
 --   event = "VeryLazy",
