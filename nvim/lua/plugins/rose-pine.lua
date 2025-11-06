@@ -1,4 +1,8 @@
-local plugin = {"rose-pine/neovim"}
+local plugin = {
+  "rose-pine/neovim",
+  lazy=false,
+  priority=1001
+}
 
 function plugin.config()
   require("rose-pine").setup({

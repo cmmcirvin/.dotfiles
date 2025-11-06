@@ -7,7 +7,7 @@ export PATH="$HOME/.local/bin:$PATH"
 # Create symbolic links for dotfiles
 ln -sf ~/.dotfiles/.bashrc ~/.bashrc
 ln -sf ~/.dotfiles/.tmux.conf ~/.tmux.conf
-ln -sf ~/.dotfiles/.tmux ~/.tmux
+# ln -sf ~/.dotfiles/.tmux ~/.tmux
 ln -sf ~/.dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/.dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/.dotfiles/.gitignore ~/.gitignore
@@ -46,3 +46,6 @@ command -v nvim >/dev/null 2>&1 || {
     curl -L "$NVIM_URL" -o ~/.local/bin/nvim
     chmod +x ~/.local/bin/nvim
 }
+
+# Install TPM (Tmux Plugin Manager) if not already installed
+[ ! -d ~/.tmux/plugins/tpm ] && mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm

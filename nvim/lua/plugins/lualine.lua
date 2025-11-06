@@ -40,9 +40,9 @@ function plugin.config()
           b = { fg=palette.foam, bg=palette.base },
           c = { bg=palette.base },
         },
-      }
+      },
     },
-    tabline = {
+    sections = {
       lualine_a = {},
       lualine_b = {
         {
@@ -57,7 +57,6 @@ function plugin.config()
       lualine_y = {},
       lualine_z = {'branch'},
     },
-    sections = {}
   })
 end
 
