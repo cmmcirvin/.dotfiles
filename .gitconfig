@@ -15,6 +15,7 @@
 [credential]
 	helper = 
 	helper = /usr/local/share/gcm-core/git-credential-manager
+	helper = store
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [init]
@@ -25,6 +26,7 @@
 	bd = "branch -D"
 	c = "commit --verbose"
 	ca = "commit --all --verbose"
+	ce = "commit --amend --no-edit"
 	cl = "clone"
 	e = "restore"
 	f = "diff"

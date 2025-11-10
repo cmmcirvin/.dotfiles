@@ -28,6 +28,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/usr/bin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
+export MANPAGER="nvim +Man!"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
