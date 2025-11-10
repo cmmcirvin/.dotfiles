@@ -96,3 +96,6 @@ vim.keymap.set('n', 'gl', fancy_diagnostics, {
   desc = "🔍 Show fancy diagnostics",
   silent = true 
 })
+
+-- Use system clipboard for all yank / paste operations
+vim.o.clipboard = 'unnamedplus'
