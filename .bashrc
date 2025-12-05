@@ -49,8 +49,14 @@ function wd() {
     cd /Users/cmcirvin/Documents/VirginiaTech/Fall2025/
 }
 
+# Function to change to dotfiles directory
 function sdf() {
     cd ~/.dotfiles
+}
+
+# Docker alias for nicely-formatted container output
+function dps() {
+    watch -n 1 'docker ps -a --format "table {{.Names}}\t{{.Image}}\t{{.Status}}"'
 }
 
 # Function to activate virtual environment
