@@ -14,6 +14,7 @@ ln -sf ~/.dotfiles/.gitignore ~/.gitignore
 ln -sfn ~/.dotfiles/nvim ~/.config/nvim
 ln -sf ~/.dotfiles/starship.toml ~/.config/starship.toml
 
+
 command -v uv >/dev/null 2>&1 || {
     curl -LsSf https://astral.sh/uv/install.sh | sh
     uv venv ~/.nvim_venv
@@ -26,7 +27,6 @@ command -v starship >/dev/null 2>&1 || curl -sS https://starship.rs/install.sh |
 
 # Install Neovim if not already installed
 command -v nvim >/dev/null 2>&1 || { 
-    mkdir -p ~/.local/bin 
 
     # Detect architecture
     ARCH=$(uname -m)

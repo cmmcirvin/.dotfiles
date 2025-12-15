@@ -26,6 +26,7 @@ export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.pixi/bin:$PATH"
+export PATH="$HOME/.dotfiles/scripts/:$PATH"
 export PATH="$HOME/usr/bin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
 export UHD_IMAGES_DIR=~/uhd_images
