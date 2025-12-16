@@ -1,9 +1,11 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S MPLBACKEND=Agg uv run --script
 # /// script
 # requires-python = ">=3.12"
 # dependencies = [
+# "natsort",
 # "numpy",
-# "matplotlib"
+# "matplotlib",
+# "tqdm"
 # ]
 # ///
 
@@ -13,6 +15,8 @@ from argparse import ArgumentParser
 
 import matplotlib.pyplot as plt
 import numpy as np
+import tqdm
+from natsort import natsorted
 
 
 def plot_spectrograms(args):
@@ -20,12 +24,13 @@ def plot_spectrograms(args):
 
     # print(glob.glob(args.input_paths))
 
-    for input_path in glob.glob(args.input_paths):
+    for input_path in tqdm.tqdm(natsorted(glob.glob(args.input_paths))):
         # print(input_path)
         iq_data = np.fromfile(input_path, dtype=np.complex64)
         plt.specgram(iq_data)
 
         out_path = os.path.join(args.output_dir, f"{os.path.basename(input_path)}.png")
+        plt.title(out_path)
         plt.savefig(out_path)
         plt.clf()
 
