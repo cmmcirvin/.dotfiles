@@ -49,3 +49,8 @@ command -v nvim >/dev/null 2>&1 || {
 
 # Install TPM (Tmux Plugin Manager) if not already installed
 [ ! -d ~/.tmux/plugins/tpm ] && mkdir -p ~/.tmux/plugins && git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+# Download git-completion if missing
+if [ ! -f ~/.git-completion.bash ]; then
+  curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+fi

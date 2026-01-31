@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Source git completions
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 # Aliases
 alias vi='nvim'
 alias g="git"
