@@ -3,6 +3,7 @@
 # Aliases
 alias vi='nvim'
 alias g="git"
+__git_complete g __git_main
 alias icat="kitty +kitten icat"
 alias pip='uv pip'
 alias sc="source .venv/bin/activate"

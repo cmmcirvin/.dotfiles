@@ -21,25 +21,25 @@
 [init]
 	defaultBranch = main
 [alias]
-	a = "add"
-	b = "branch"
-	bd = "branch -D"
-	c = "commit --verbose"
-	ca = "commit --all --verbose"
-	ce = "commit --amend --no-edit"
-	cl = "clone"
-	e = "restore"
-	f = "diff"
-	i = "init"
-	l = "pull"
-	ra = "remote add"
-	rg = "remote get-url"
-	s = "status -s"
-	u = "push"
-	un = "push -u origin $(git rev-parse --abbrev-ref HEAD)"
-	w = "switch"
-	wc = "switch -c"
-	wd = "switch --detach"
+	a = add
+	b = branch
+	bd = branch -D
+	c = commit --verbose
+	ca = commit --all --verbose
+	ce = commit --amend --no-edit
+	cl = clone
+	e = restore
+	f = diff
+	i = init
+	l = pull
+	ra = remote add
+	rg = remote get-url
+	s = status -s
+	u = push
+	un = push -u origin HEAD
+	w = switch
+	wc = switch -c
+	wd = switch --detach
 [core]
 	pager = nvim -R
 [color]
