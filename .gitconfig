@@ -32,6 +32,7 @@
 	f = diff
 	i = init
 	l = pull
+	r = reset
 	ra = remote add
 	rg = remote get-url
 	s = status -s

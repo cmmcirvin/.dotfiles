@@ -49,7 +49,7 @@ fi
 
 # Function to change to work directory
 function wd() {
-    cd /Users/cmcirvin/Documents/VirginiaTech/Fall2025/
+    cd /Users/cmcirvin/Documents/VirginiaTech/Spring2026/
 }
 
 # Function to change to dotfiles directory
