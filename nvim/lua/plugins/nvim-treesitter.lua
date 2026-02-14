@@ -1,4 +1,4 @@
-local plugin = {'nvim-treesitter/nvim-treesitter'}
+local plugin = {'nvim-treesitter/nvim-treesitter', branch='master'}
 
 plugin.dependencies = {
   {'nvim-tree/nvim-web-devicons'}
