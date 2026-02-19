@@ -61,6 +61,21 @@ function plugin.config()
       return vim.split(args_string, " +")
     end;
   })
+table.insert(dap.configurations.python, {
+    type = 'python',
+    request = 'attach',
+    name = 'Attach to Docker',
+    connect = {
+      port = 5678,
+      host = '127.0.0.1',
+    },
+    pathMappings = {
+      {
+        localRoot = vim.fn.getcwd(),
+        remoteRoot = '/app',
+      },
+    }
+  })
 
   table.insert(dap.configurations.python, {
       type = 'python',
