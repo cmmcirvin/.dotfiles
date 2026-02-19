@@ -14,6 +14,11 @@ ln -sf ~/.dotfiles/.gitignore ~/.gitignore
 ln -sfn ~/.dotfiles/nvim ~/.config/nvim
 ln -sf ~/.dotfiles/starship.toml ~/.config/starship.toml
 
+# Source git completions
+if [ -f ~/.git-completion.bash ]; then
+  curl https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash -o ~/.git-completion.bash
+fi
+
 
 command -v uv >/dev/null 2>&1 || {
     curl -LsSf https://astral.sh/uv/install.sh | sh
