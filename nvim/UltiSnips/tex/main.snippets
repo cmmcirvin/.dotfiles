@@ -107,6 +107,13 @@ snippet scn "Screenshot" b
 \end{figure}
 endsnippet
 
+snippet cd "Code" iA
+\begin{verbatim}
+$1
+\end{verbatim}
+$0
+endsnippet
+
 snippet fig "Figure environment" b
 \begin{figure}[${1:htpb}]
 	\centering
@@ -347,13 +354,8 @@ snippet cb "^3" iA
 endsnippet
 
 context "math()"
-snippet td "to the ... power" iA
-^{$1}$0
-endsnippet
-
-context "math()"
 snippet rd "to the ... power" iA
-^{($1)}$0
+^{$1}$0
 endsnippet
 
 context "math()"
@@ -781,8 +783,8 @@ snippet xp "Expectation" iA
 \mathbb{E}\left[$1\right]$0
 endsnippet
 
-snippet todo  "todo" A
-\todo[inline, color=gray!40]{$1}
+snippet td  "todo" A
+\todo[inline, color=orange!40]{CM: $1}
 endsnippet
 
 snippet TODO "TODO" A
