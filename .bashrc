@@ -8,6 +8,7 @@ fi
 # Aliases
 alias vi='nvim'
 alias cat="bat"
+alias rd="rmdir"
 alias g="git"
 __git_complete g __git_main
 alias icat="kitty +kitten icat"

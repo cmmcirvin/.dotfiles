@@ -34,6 +34,7 @@
 	l = pull
 	r = reset
 	ra = remote add
+	rs = restore --staged
 	rg = remote get-url
 	s = status -s
 	u = push
