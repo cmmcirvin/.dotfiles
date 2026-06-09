@@ -12,6 +12,7 @@ ln -sf ~/.dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/.dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/.dotfiles/.gitignore ~/.gitignore
 ln -sfn ~/.dotfiles/nvim ~/.config/nvim
+ln -sfn ~/.dotfiles/kitty ~/.config/kitty
 ln -sf ~/.dotfiles/starship.toml ~/.config/starship.toml
 
 command -v bat >/dev/null 2>&1 || {
