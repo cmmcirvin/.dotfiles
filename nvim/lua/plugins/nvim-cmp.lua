@@ -4,7 +4,6 @@ plugin.dependencies = {
   -- Sources
   -- {'quangnguyen30192/cmp-nvim-ultisnips'},
   { 'saadparwaiz1/cmp_luasnip' },
-  {'zbirenbaum/copilot-cmp'},
   {'hrsh7th/cmp-buffer'},
   {'hrsh7th/cmp-path'},
   {'hrsh7th/cmp-nvim-lsp'},
@@ -68,7 +67,6 @@ function plugin.config()
     sources = {
       -- { name = "ultisnips", group_index=0},
       { name = "luasnip", group_index=0},
-      { name = "copilot", group_index=1},
       { name = "nvim_lsp", group_index=1},
       { name = "path", group_index=2},
       { name = "buffer", keyword_length=2, group_index=2},

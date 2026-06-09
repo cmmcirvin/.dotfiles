@@ -62,10 +62,10 @@ command -v delta >/dev/null 2>&1 || {
     
     echo "Downloading delta from $DELTA_URL..."
     curl -L "$DELTA_URL" | tar -xz -C "$TEMP_DIR"
-    
+
     # Locate the binary regardless of the internal folder structure
     find "$TEMP_DIR" -type f -name "delta" -exec mv {} "$HOME/.local/bin/delta" \;
-    
+
     chmod +x "$HOME/.local/bin/delta"
     rm -rf "$TEMP_DIR"
     echo "delta installed to ~/.local/bin/delta"
@@ -82,8 +82,8 @@ command -v uv >/dev/null 2>&1 || {
 command -v starship >/dev/null 2>&1 || curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir ~/.local/bin
 
 # Install Neovim if not already installed
-command -v nvim >/dev/null 2>&1 || { 
 
+command -v nvim >/dev/null 2>&1 || { 
     # Detect architecture
     ARCH=$(uname -m)
     case $ARCH in
