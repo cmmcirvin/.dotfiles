@@ -25,26 +25,12 @@ function plugin.config()
     paths = { vim.fn.stdpath("config") .. "/lua/snippets" }
   })
 
-  local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-
   cmp.setup({
     window = {
       completion = cmp.config.window.bordered(),
       documentation = cmp.config.window.bordered(),
     },
     mapping = {
-      -- ["<c-j>"] = cmp.mapping(
-      --   function(fallback)
-      --     cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
-      --   end,
-      --   { "i", "s" }
-      -- ),
-      -- ["<c-k>"] = cmp.mapping(
-      --       function(fallback)
-      --         cmp_ultisnips_mappings.jump_backwards(fallback)
-      --       end,
-      --       { "i", "s" }
-      --     ),
       ["<c-j>"] = cmp.mapping(function(fallback)
         if luasnip.expand_or_locally_jumpable() then
           luasnip.expand_or_jump()
@@ -81,8 +67,6 @@ function plugin.config()
       ghost_text = true
     }
   })
-
-  cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 end
 
