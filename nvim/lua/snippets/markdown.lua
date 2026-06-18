@@ -31,7 +31,7 @@ return {
       t("---"),
     }),
   -- Code block (generic)
-  s({ trig = "mc", snippetType = "autosnippet" }, {
+  s({ trig = "cb", snippetType = "autosnippet" }, {
       t("```"),
       i(1, "py"),
       t({ "", "" }),
