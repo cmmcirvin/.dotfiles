@@ -10,6 +10,42 @@ local d = ls.dynamic_node
 local sn = ls.snippet_node
 local f = ls.function_node
 
+local marathon_plan = {
+  { start = { year=2026, month=6,  day=15 }, days = { "3 mi", "Rest", "4 mi", "Rest", "3 mi",  "9 mi",  "Rest"     } },
+  { start = { year=2026, month=6,  day=22 }, days = { "3 mi", "Rest", "5 mi", "Rest", "3 mi",  "10 mi", "Rest"     } },
+  { start = { year=2026, month=6,  day=29 }, days = { "3 mi", "Rest", "5 mi", "Rest", "3 mi",  "7 mi",  "Rest"     } },
+  { start = { year=2026, month=7,  day=6  }, days = { "3 mi", "Rest", "6 mi", "Rest", "3 mi",  "12 mi", "Rest"     } },
+  { start = { year=2026, month=7,  day=13 }, days = { "3 mi", "Rest", "6 mi", "Rest", "3 mi",  "13 mi", "Rest"     } },
+  { start = { year=2026, month=7,  day=20 }, days = { "3 mi", "Rest", "7 mi", "Rest", "4 mi",  "10 mi", "Rest"     } },
+  { start = { year=2026, month=7,  day=27 }, days = { "3 mi", "Rest", "7 mi", "Rest", "4 mi",  "15 mi", "Rest"     } },
+  { start = { year=2026, month=8,  day=3  }, days = { "4 mi", "Rest", "8 mi", "Rest", "4 mi",  "16 mi", "Rest"     } },
+  { start = { year=2026, month=8,  day=10 }, days = { "4 mi", "Rest", "8 mi", "Rest", "5 mi",  "12 mi", "Rest"     } },
+  { start = { year=2026, month=8,  day=17 }, days = { "4 mi", "Rest", "9 mi", "Rest", "5 mi",  "18 mi", "Rest"     } },
+  { start = { year=2026, month=8,  day=24 }, days = { "5 mi", "Rest", "9 mi", "Rest", "5 mi",  "14 mi", "Rest"     } },
+  { start = { year=2026, month=8,  day=31 }, days = { "5 mi", "Rest", "10 mi","Rest", "5 mi",  "20 mi", "Rest"     } },
+  { start = { year=2026, month=9,  day=7  }, days = { "5 mi", "Rest", "8 mi", "Rest", "4 mi",  "12 mi", "Rest"     } },
+  { start = { year=2026, month=9,  day=14 }, days = { "4 mi", "Rest", "6 mi", "Rest", "3 mi",  "8 mi",  "Rest"     } },
+  { start = { year=2026, month=9,  day=21 }, days = { "3 mi", "Rest", "4 mi", "Rest", "2 mi",  "Rest",  "Marathon" } },
+}
+
+-- Returns the training entry for a given os.time timestamp, or nil if outside plan.
+local function get_marathon_training_for_day(t)
+  -- Normalize t to midnight
+  local d = os.date("*t", t)
+  local target = os.time({ year=d.year, month=d.month, day=d.day, hour=0, min=0, sec=0 })
+ 
+  for _, week in ipairs(marathon_plan) do
+    local week_start = os.time({ year=week.start.year, month=week.start.month, day=week.start.day, hour=0, min=0, sec=0 })
+    local week_end   = week_start + 6 * 86400
+    if target >= week_start and target <= week_end then
+      -- day index: 0=Mon ... 6=Sun
+      local day_idx = math.floor((target - week_start) / 86400) + 1
+      return week.days[day_idx]
+    end
+  end
+  return nil
+end
+
 
 return {
   s({ trig = "tmw",
@@ -24,40 +60,10 @@ return {
     t({
       "",
       "- [ ] Stretched",
-      "- [ ] Bible: ",
+      "- [ ] 2 minutes plank",
+      "- [ ] 50 pushups",
+      "- [ ] Read Bible",
     }),
-    f(function()
-      local day = tonumber(os.date("%j", os.time() + 86400))
-      local handle = io.popen("awk -F',' 'NR==" .. day + 1 .. "' ~/personal/scripture_reading_plan_2026.csv")
-      local line = handle:read("*l")
-      handle:close()
-
-      if not line then
-        return ""
-      end
-
-      local fields = {}
-      local pos = 1
-      while true do
-        local sep = line:find(",", pos)
-        if not sep then
-          table.insert(fields, line:sub(pos))
-          break
-        end
-        table.insert(fields, line:sub(pos, sep - 1))
-        pos = sep + 1
-      end
-
-      local verses = {}
-      for i = 3, #fields do
-        if fields[i] and fields[i] ~= "" then
-          table.insert(verses, fields[i])
-        end
-      end
-
-      return table.concat(verses, " / ")
-    end),
-
     f(function()
       local wday = os.date("*t", os.time() + 86400).wday
       if wday == 3 or wday == 5 then
@@ -67,8 +73,16 @@ return {
     end),
     f(function()
       local wday = os.date("*t", os.time() + 86400).wday
-      if wday == 2 or wday == 6 then
+      if wday == 2 or wday == 3 or wday == 5 then
         return { "", "- [ ] Gym" }
+      end
+      return { "" }
+    end),
+    f(function()
+      local tomorrow = os.time() + 86400
+      local entry = get_marathon_training_for_day(tomorrow)
+      if entry and entry ~= "Rest" then
+        return { "", "- [ ] Ran " .. entry }
       end
       return { "" }
     end),
