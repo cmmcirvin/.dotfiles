@@ -14,7 +14,6 @@ __git_complete g __git_main
 alias icat="kitty +kitten icat"
 alias pip='uv pip'
 alias sc="source .venv/bin/activate"
-alias s="kitty +kitten ssh"
 alias shc="s edgar"
 alias ak="NVIM_TREESITTER_DISABLED=true ANKI_NVIM_ENABLED=true vi /tmp/anki.md"
 alias zk="cd ~/zettelkasten/; nvim"
