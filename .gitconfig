@@ -25,6 +25,7 @@
 	cl = clone
 	e = restore
 	f = diff
+	g = merge
 	i = init
 	l = pull
 	r = reset
