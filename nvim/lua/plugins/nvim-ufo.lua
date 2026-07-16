@@ -8,7 +8,7 @@ plugin.event = BufRead
 
 function plugin.config()
   vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-  vim.o.foldcolumn = "1"
+  vim.o.foldcolumn = "0"
   vim.o.foldlevel = 99
   vim.o.foldlevelstart = 100
   vim.o.foldenable = true
