@@ -64,6 +64,7 @@ return {
       "- [ ] 2 minutes plank",
       "- [ ] 50 pushups",
       "- [ ] Read Bible",
+      "- [ ] Added to RSS feed",
     }),
     f(function()
       local wday = os.date("*t", os.time() + 86400).wday

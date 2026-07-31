@@ -14,3 +14,8 @@ vim.keymap.set("i", "<c-k>", "<esc>:m .-2<cr>==gi")
 vim.keymap.set("v", "<c-j>", "<cmd>m '>+1<cr>gv=gv")
 vim.keymap.set("v", "<c-k>", "<cmd>m '<-2<cr>gv=gv")
 
+vim.keymap.set('n', 'zk', function()
+  local p = vim.fn.getpos('.')
+  vim.cmd([[s/\[\zs[ xX]\ze\]/\=(submatch(0)==" "?"x":" ")/]])
+  vim.fn.setpos('.', p)
+end, { silent = true })
