@@ -35,6 +35,10 @@ function plugin.config()
       layout_config = {
         width = 0.9
       },
+      path_display = {
+        "smart"
+      },
+      dynamic_preview_title = true,
       mappings = {
         i = {
           ['<S-CR>'] = select_one_or_multi,
@@ -47,6 +51,11 @@ function plugin.config()
           ['L'] = require('telescope.actions').preview_scrolling_right,
           ['H'] = require('telescope.actions').preview_scrolling_left,
         }
+      }
+    },
+    extensions = {
+      file_browser = {
+        follow_symlinks = true
       }
     }
   }

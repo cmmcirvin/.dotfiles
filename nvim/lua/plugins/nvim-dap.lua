@@ -61,7 +61,22 @@ function plugin.config()
       return vim.split(args_string, " +")
     end;
   })
-table.insert(dap.configurations.python, {
+  table.insert(dap.configurations.python, {
+    type = 'python',
+    justMyCode = false,
+    request = 'launch',
+    console='integratedTerminal',
+    name = 'Base working directory as module with arguments',
+    module = function()
+      return vim.fn.expand('%:r'):gsub('/', '.')
+    end,
+    cwd = './',
+    args = function()
+      local args_string = vim.fn.input('Arguments: ')
+      return vim.split(args_string, " +")
+    end;
+  })
+  table.insert(dap.configurations.python, {
     type = 'python',
     request = 'attach',
     name = 'Attach to Docker',
