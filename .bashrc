@@ -16,6 +16,7 @@ alias pip='uv pip'
 alias sc="source .venv/bin/activate"
 alias shc="s edgar"
 alias ak="NVIM_TREESITTER_DISABLED=true ANKI_NVIM_ENABLED=true vi /tmp/anki.md"
+alias les="vi ~/personal/lesson_plans.md"
 alias zk="cd ~/zettelkasten/; nvim"
 alias dp="vi ~/personal/daily_progress.md"
 alias yz="yazi"
