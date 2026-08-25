@@ -44,6 +44,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
+# direnv for loading environment variables
+export DIRENV_LOG_FORMAT=""
+eval "$(direnv hook bash)"
 
 # Required for dbus session zathura integration
 export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_LAUNCHD_SESSION_BUS_SOCKET"
@@ -56,7 +59,7 @@ fi
 
 # Function to change to work directory
 function wd() {
-    cd /Users/cmcirvin/Documents/VirginiaTech/Summer2026/
+    cd /Users/cmcirvin/Documents/VirginiaTech/Fall2026/
 }
 
 # Function to change to dotfiles directory

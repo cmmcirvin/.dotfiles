@@ -238,4 +238,10 @@ return {
       t("- [ ] "),
       i(1),
     }),
+  s({
+      trig = "taow",
+      snippetType = "autosnippet",
+    }, {
+      t("The Art of War"),
+    }),
 }

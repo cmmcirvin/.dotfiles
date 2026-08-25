@@ -15,6 +15,10 @@ ln -sfn ~/.dotfiles/nvim ~/.config/nvim
 ln -sfn ~/.dotfiles/kitty ~/.config/kitty
 ln -sf ~/.dotfiles/starship.toml ~/.config/starship.toml
 
+command -v pi >/dev/null 2>&1 || {
+    curl -fsSL https://pi.dev/install.sh | sh
+}
+
 command -v bat >/dev/null 2>&1 || {
     BAT_VERSION="0.24.0"
     OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -36,7 +40,7 @@ command -v bat >/dev/null 2>&1 || {
 
     curl -L "$BAT_URL" | tar -xz -C "$TEMP_DIR"
     find "$TEMP_DIR" -type f -name "bat" -exec mv {} "$HOME/.local/bin/bat" \;
-    
+
     chmod +x "$HOME/.local/bin/bat"
     rm -rf "$TEMP_DIR"
 }
@@ -60,7 +64,7 @@ command -v delta >/dev/null 2>&1 || {
 
     mkdir -p "$HOME/.local/bin"
     TEMP_DIR=$(mktemp -d)
-    
+
     echo "Downloading delta from $DELTA_URL..."
     curl -L "$DELTA_URL" | tar -xz -C "$TEMP_DIR"
 
