@@ -10,6 +10,8 @@ ln -sf ~/.dotfiles/.tmux.conf ~/.tmux.conf
 # ln -sf ~/.dotfiles/.tmux ~/.tmux
 ln -sf ~/.dotfiles/.bash_profile ~/.bash_profile
 ln -sf ~/.dotfiles/.gitconfig ~/.gitconfig
+ln -sf ~/.dotfiles/.pi ~/.pi
+ln -sf ~/.dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/.dotfiles/.gitignore ~/.gitignore
 ln -sfn ~/.dotfiles/nvim ~/.config/nvim
 ln -sfn ~/.dotfiles/kitty ~/.config/kitty

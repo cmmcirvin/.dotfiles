@@ -1,0 +1,83 @@
+{
+       "providers": {
+              "vt-arc": {
+                     "baseUrl": "https://llm-api.arc.vt.edu/api/",
+                     "api": "openai-completions",
+                     "apiKey": "$ARC_API_KEY",
+                     "models": [
+                            {
+                                   "id": "gpt-oss-120b",
+                                   "name": "GPT-OSS 120B (Medium Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "gpt-oss-120b-thinking-low",
+                                   "name": "GPT-OSS 120B (Low Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "gpt-oss-120b-thinking-high",
+                                   "name": "GPT-OSS 120B (High Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "GLM-5.2",
+                                   "name": "GLM 5.2 (Max Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "GLM-5.2-thinking-high",
+                                   "name": "GLM 5.2 (High Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "GLM-5.2-non-thinking",
+                                   "name": "GLM 5.2 (No Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": false
+                            },
+                            {
+                                   "id": "Kimi-K3",
+                                   "name": "Kimi K3 (Max Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "Kimi-K3-thinking-low",
+                                   "name": "Kimi K3 (Low Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "Kimi-K3-thinking-high",
+                                   "name": "Kimi K3 (High Thinking)",
+                                   "contextLength": 131072,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "DeepSeek-V4-Flash",
+                                   "name": "DeepSeek V4 Flash (High Thinking)",
+                                   "contextLength": 524288,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "DeepSeek-V4-Flash-thinking-low",
+                                   "name": "DeepSeek V4 Flash (Low Thinking)",
+                                   "contextLength": 524288,
+                                   "reasoning": true
+                            },
+                            {
+                                   "id": "DeepSeek-V4-Flash-thinking-max",
+                                   "name": "DeepSeek V4 Flash (Max Thinking)",
+                                   "contextLength": 524288,
+                                   "reasoning": true
+                            }
+                     ]
+              }
+       }
+}

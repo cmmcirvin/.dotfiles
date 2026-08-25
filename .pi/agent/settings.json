@@ -1,0 +1,10 @@
+{
+  "lastChangelogVersion": "0.84.3",
+  "theme": "dark",
+  "defaultProvider": "vt-arc",
+  "defaultModel": "DeepSeek-V4-Flash-thinking-low",
+  "tuiMode": "fullscreen",
+  "packages": [
+    "npm:pi-markdown-preview"
+  ]
+}
