@@ -7,7 +7,8 @@ local plugin = {"HakonHarnes/img-clip.nvim"}
 function plugin.config()
   require("img-clip").setup({
     default = {
-      use_absolute_path=true
+      use_absolute_path=true,
+      process_cmd="magick - -set gamma 1.0 -strip png:-"
     }
   })
 
