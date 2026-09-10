@@ -2,7 +2,7 @@ local plugin = { 'MeanderingProgrammer/render-markdown.nvim' }
 
 function plugin.config()
   require('render-markdown').setup({
-    render_modes = { 'n', 'c', 't', 'i' },
+    render_modes = { 'n', 'c', 't', 'i', 'V' },
     enabled = true,
     file_types = { "markdown", "Avante" },
     latex = {
