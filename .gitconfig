@@ -51,3 +51,5 @@
 	dark = true
 [merge]
 	conflictStyle = zdiff3
+[credential "https://git.overleaf.com"]
+	provider = generic
