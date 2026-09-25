@@ -24,6 +24,9 @@ alias l="ls -laht"
 alias av='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
 alias sd="rsync -a --exclude '.git' ~/.dotfiles/"
 
+# Key bindings
+bind -x "\"'x\": exit"
+
 # Environment variables
 export TERM='xterm'
 export EDITOR='nvim'
