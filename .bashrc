@@ -13,6 +13,7 @@ alias g="git"
 __git_complete g __git_main
 alias icat="kitty +kitten icat"
 alias pip='uv pip'
+alias fd='fdfind'
 alias sc="source .venv/bin/activate"
 alias shc="s edgar"
 alias ak="NVIM_TREESITTER_DISABLED=true ANKI_NVIM_ENABLED=true vi /tmp/anki.md"
@@ -40,7 +41,7 @@ export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/.dotfiles/scripts/:$PATH"
 export PATH="$HOME/usr/bin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
-export UHD_IMAGES_DIR=~/uhd_images
+export UHD_IMAGES_DIR="/data/nas/calm/uhd_images/"
 export MANPAGER="nvim +Man!"
 
 export NVM_DIR="$HOME/.nvm"
@@ -94,7 +95,6 @@ function vv() {
     fi
     uv add pynvim debugpy ruff pyright
 }
-
 
 function sce() {
     if [ -z "$1" ]; then

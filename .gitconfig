@@ -53,3 +53,7 @@
 	conflictStyle = diff3
 [credential "https://git.overleaf.com"]
 	provider = generic
+	conflictStyle = diff3
+[safe]
+	directory = /data/nas/calm/crab_rf
+	directory = /data/nas/calm/esn_forecasting
