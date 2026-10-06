@@ -41,6 +41,7 @@ export PATH="$HOME/.pixi/bin:$PATH"
 export PATH="$HOME/.dotfiles/scripts/:$PATH"
 export PATH="$HOME/usr/bin:$PATH"
 export PATH="$HOME/usr/local/bin:$PATH"
+export PATH="$HOME/.local/kitty.app/bin:$PATH"
 export UHD_IMAGES_DIR="/data/nas/calm/uhd_images/"
 export MANPAGER="nvim +Man!"
 
