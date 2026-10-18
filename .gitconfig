@@ -38,6 +38,10 @@
 	w = switch
 	wc = switch -c
 	wd = switch --detach
+	wk = worktree
+	wka = worktree add
+	wkl = worktree list
+	wkrm = worktree remove
 ; [core]
 ; 	pager = nvim -R
 ; [color]

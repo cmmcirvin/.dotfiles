@@ -206,6 +206,12 @@ return {
       t({ "", "$$", "" }),
       i(0),
     }),
+  -- Math
+  s({ trig = "mk", snippetType = "autosnippet" }, {
+      t("$"),
+      t("$"),
+      i(0),
+    }),
   -- Markdown break
   s({ trig = "bk", snippetType = "autosnippet" }, {
       t("<br>"),
