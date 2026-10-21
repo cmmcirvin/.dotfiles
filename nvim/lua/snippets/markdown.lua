@@ -60,39 +60,47 @@ return {
     end),
     t({
       "",
-      "- [ ] Stretched",
-      "- [ ] 2 minutes plank",
-      "- [ ] 50 pushups",
-      "- [ ] Read Bible",
-      "- [ ] Added to RSS feed",
-    }),
-    f(function()
-      local wday = os.date("*t", os.time() + 86400).wday
-      if wday == 3 or wday == 5 then
-        return { "", "- [ ] Climbing" }
-      end
-      return { "" }
-    end),
-    f(function()
-      local wday = os.date("*t", os.time() + 86400).wday
-      if wday == 2 or wday == 3 or wday == 5 then
-        return { "", "- [ ] Gym" }
-      end
-      return { "" }
-    end),
-    f(function()
-      local tomorrow = os.time() + 86400
-      local entry = get_marathon_training_for_day(tomorrow)
-      if entry and entry ~= "Rest" then
-        return { "", "- [ ] Ran " .. entry }
-      end
-      return { "" }
-    end),
-    t({
-      "",
-      "- [ ] Cleared Anki",
-      "- [ ] Work",
-    }),
+      "- [ ] WSR",
+      "- [ ] ECE 5614",
+      "- [ ] AWS",
+      "- [ ] SSNs",
+    })
+
+    -- t({
+    --   "",
+    --   "- [ ] Stretched",
+    --   "- [ ] 2 minutes plank",
+    --   "- [ ] 50 pushups",
+    --   "- [ ] Read Bible",
+    --   "- [ ] Added to RSS feed",
+    -- }),
+    -- f(function()
+    --   local wday = os.date("*t", os.time() + 86400).wday
+    --   if wday == 3 or wday == 5 then
+    --     return { "", "- [ ] Climbing" }
+    --   end
+    --   return { "" }
+    -- end),
+    -- f(function()
+    --   local wday = os.date("*t", os.time() + 86400).wday
+    --   if wday == 2 or wday == 3 or wday == 5 then
+    --     return { "", "- [ ] Gym" }
+    --   end
+    --   return { "" }
+    -- end),
+    -- f(function()
+    --   local tomorrow = os.time() + 86400
+    --   local entry = get_marathon_training_for_day(tomorrow)
+    --   if entry and entry ~= "Rest" then
+    --     return { "", "- [ ] Ran " .. entry }
+    --   end
+    --   return { "" }
+    -- end),
+    -- t({
+    --   "",
+    --   "- [ ] Cleared Anki",
+    --   "- [ ] Work",
+    -- }),
   }),
   s({ trig = "hl", snippetType = "autosnippet" }, {
       t("---"),
