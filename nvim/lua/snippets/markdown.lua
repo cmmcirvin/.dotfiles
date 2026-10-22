@@ -218,6 +218,7 @@ return {
   -- Math
   s({ trig = "mk", snippetType = "autosnippet" }, {
       t("$"),
+      i(1),
       t("$"),
       i(0),
     }),
