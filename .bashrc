@@ -13,7 +13,7 @@ alias g="git"
 __git_complete g __git_main
 alias icat="kitty +kitten icat"
 alias pip='uv pip'
-alias fd='fdfind'
+# alias fd='fdfind'
 alias sc="source .venv/bin/activate"
 alias shc="s edgar"
 alias ak="NVIM_TREESITTER_DISABLED=true ANKI_NVIM_ENABLED=true vi /tmp/anki.md"
@@ -113,3 +113,4 @@ eval "$(starship init bash)"
 if [ -f .env ]; then
     . .env
 fi
+. "/Users/cmcirvin/.deno/env"

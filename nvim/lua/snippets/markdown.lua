@@ -60,6 +60,7 @@ return {
     end),
     t({
       "",
+      "- [ ] Cleared Anki",
       "- [ ] WSR",
       "- [ ] ECE 5614",
       "- [ ] AWS",
